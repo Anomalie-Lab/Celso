@@ -1,0 +1,67 @@
+
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: dockerfile
+    volumes:
+      - ./server:/server
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    environment:
+      - VITE_NODE_ENV=development
+    depends_on:
+      - mysql
+
+  client:
+    build:  
+      context: ./client
+      dockerfile: dockerfile
+    volumes:
+      - ./client:/client
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_ecommerce
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  redis:
+    image: redis:latest
+    container_name: redis_ecommerce
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: db_ecommerce
+      MYSQL_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+  redis_data:

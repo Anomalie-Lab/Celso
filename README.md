@@ -100,20 +100,46 @@ Isso é essencial para garantir que todas as variáveis de ambiente estejam corr
 
 Caso você queira rodar o projeto com Docker, siga os passos abaixo:
 
-1. **Build** (criação do ambiente Docker):
+1. **Build e execução** (criação do ambiente Docker):
 
    > docker-compose up --build
 
-2. **Cuidado**:
+2. **Para parar os containers**:
+
+   > docker-compose down
+
+3. **Para executar em background**:
+
+   > docker-compose up -d --build
+
+4. **Cuidado**:
 
    - Certifique-se de que o **Docker** e o **Docker Compose** estão corretamente instalados.
    - Verifique se as portas **3000** (Frontend), **3001** (Backend), **3306** (Banco de Dados MySQL) e **6379** (Redis) estão disponíveis em sua máquina e não estão sendo usadas por outros processos.
+   - O frontend estará disponível em `http://localhost:3000`
+   - O backend estará disponível em `http://localhost:9000`
 
 #### 3.2 Desenvolvimento com Docker
 
-Para desenvolvimento com hot reload:
+Para desenvolvimento com hot reload (recomendado para desenvolvimento):
 
-> docker-compose -f docker-compose.dev.yml up --build
+1. **Iniciar ambiente de desenvolvimento**:
+
+   > docker-compose -f docker-compose.dev.yml up --build
+
+2. **Para parar os containers de desenvolvimento**:
+
+   > docker-compose -f docker-compose.dev.yml down
+
+3. **Para executar em background**:
+
+   > docker-compose -f docker-compose.dev.yml up -d --build
+
+4. **Vantagens do modo desenvolvimento**:
+   - Hot reload automático
+   - Volumes montados para sincronização de código
+   - Logs em tempo real
+   - Debug mais fácil
 
 #### 3.3 Sem Docker
 
@@ -166,6 +192,55 @@ O frontend estará disponível em `http://localhost:3000`.
    > npm start
 
 O backend estará disponível em `http://localhost:3001`.
+
+---
+
+## 🔧 Troubleshooting
+
+### Problemas Comuns com Docker
+
+**Erro: Porta já em uso**
+```bash
+# Verificar portas em uso
+netstat -tulpn | grep :3000
+netstat -tulpn | grep :3001
+
+# Parar processos que estão usando as portas
+sudo kill -9 PID_DO_PROCESSO
+```
+
+**Erro: Container não inicia**
+```bash
+# Verificar logs dos containers
+docker-compose logs
+
+# Rebuild completo
+docker-compose down
+docker system prune -f
+docker-compose up --build
+```
+
+**Erro: Volumes não sincronizam (desenvolvimento)**
+```bash
+# Verificar se os volumes estão montados
+docker-compose -f docker-compose.dev.yml ps
+
+# Recriar containers
+docker-compose -f docker-compose.dev.yml down
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+**Limpar cache do Docker**
+```bash
+# Limpar imagens não utilizadas
+docker image prune -f
+
+# Limpar volumes não utilizados
+docker volume prune -f
+
+# Limpar tudo (cuidado!)
+docker system prune -a -f
+```
 
 ---
 

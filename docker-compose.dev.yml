@@ -1,38 +1,73 @@
-version: '3.8'
-
 services:
-  server:
-    build:
-      context: ./server
-      dockerfile: dockerfile.dev
-    ports:
-      - "3001:3000"
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+  # server:
+  #   build:
+  #     context: ./server
+  #     dockerfile: dockerfile.dev
+  #   ports:
+  #     - "3001:3000"
+  #   volumes:
+  #     - ./server:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - NEXT_NODE_ENV=development
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - mysql
+  #     - redis
+
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: dockerfile.dev
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./client:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #     - /usr/src/app/.next
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - NEXT_NODE_ENV=development
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - server
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_dev
+    restart: always
     environment:
-      - NODE_ENV=development
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: db_ecommerce
+      MYSQL_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
     networks:
       - app-network
 
-  client:
-    build:
-      context: ./client
-      dockerfile: dockerfile.dev
+  redis:
+    image: redis:latest
+    container_name: redis_dev
+    restart: always
     ports:
-      - "3000:3000"
+      - "6379:6379"
     volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/.next
-    environment:
-      - NODE_ENV=development
+      - redis_dev_data:/data
     networks:
       - app-network
-    depends_on:
-      - server
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql_dev_data:
+  redis_dev_data:
 

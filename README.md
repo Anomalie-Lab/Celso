@@ -88,9 +88,11 @@ Primeiro, clone o repositório para o seu ambiente local:
 
 Copie o arquivo de exemplo e configure as variáveis no diretório raiz:
 
-> cp .env.example .env
+> cp env.example .env
 
-Isso é essencial para garantir que todas as variáveis de ambiente estejam corretamente configuradas.
+**Configure as variáveis de ambiente no arquivo `.env`:**
+
+**Importante:** As URLs do banco usam os nomes dos containers (`mysql`, `redis`) para comunicação interna.
 
 ---
 
@@ -218,6 +220,16 @@ docker-compose logs
 docker-compose down
 docker system prune -f
 docker-compose up --build
+```
+
+**Erro: npm ci - package-lock.json não encontrado**
+```bash
+# Gerar package-lock.json primeiro
+cd server && npm install
+cd ../client && npm install
+
+# Ou usar npm install em vez de npm ci nos Dockerfiles
+# (já corrigido nos Dockerfiles atuais)
 ```
 
 **Erro: Volumes não sincronizam (desenvolvimento)**

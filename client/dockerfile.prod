@@ -1,11 +1,12 @@
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package.json yarn.lock* pnpm-lock.yaml* ./
+COPY package.json yarn.lock* pnpm-lock.yaml* package-lock.json* ./
 RUN \ 
   if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
-  else npm install --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  else npm install; \
   fi
 
 # Stage 2: Builder

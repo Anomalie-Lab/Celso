@@ -4,7 +4,8 @@ FROM node:20-alpine AS build
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm ci
+# Use npm install if package-lock.json doesn't exist, otherwise use npm ci
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 COPY . .
 RUN npm run build
@@ -19,7 +20,7 @@ COPY --from=build /usr/src/app/dist ./dist
 COPY package*.json ./
 
 # Install only production dependencies for the final image
-RUN npm ci --only=production
+RUN if [ -f package-lock.json ]; then npm ci --only=production; else npm install --only=production; fi
 
 # Expose the port your NestJS application listens on
 EXPOSE 3000

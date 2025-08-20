@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("NEXT_DATABASE_URL")
+}
+
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+model Role {
+  id         Int      @id @default(autoincrement())
+  name       RoleEnum @unique
+  created_at DateTime @default(now())
+  User       User[]
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  google_id    String?
+  fullname     String
+  username     String
+  email        String
+  password     String
+  phone        String?
+  avatar       String         @default("https://lh3.googleusercontent.com/a/ACg8ocIjS-kV3SknQdY5dBfUaWuK0kp4WtnhGK89iRlo5OvjIdGGcjM=s96-c")
+  birthdate    String?
+  role_id      Int            @default(2)
+  document     String?
+  enable_2fa   Boolean        @default(false)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  Role         Role           @relation(fields: [role_id], references: [id])
+  Address      Address[]
+  Card         Card[]
+  Notification Notification[]
+
+  @@map("users")
+}
+
+model Address {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  user         User     @relation(fields: [user_id], references: [id])
+  primary      Boolean  @default(false)
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  zip_code     String
+  phone        String?
+  country      String   @default("Brazil")
+  created_at   DateTime @default(now())
+
+  @@map("addresses")
+}
+
+model Card {
+  id              Int     @id @default(autoincrement())
+  user_id         Int
+  user            User    @relation(fields: [user_id], references: [id])
+  primary         Boolean @default(false)
+  number          String
+  name            String
+  expiration_date String
+  cvv             String
+  created_at      DateTime @default(now())
+
+  @@map("cards")
+}
+
+model Notification {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  title      String
+  type       String
+  message    String    @db.Text
+  read_at    DateTime?
+  data       Json?
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "notifications_user_id_fkey")
+  @@map("notifications")
+}
+
+model PasswordReset {
+  id         Int      @id @default(autoincrement())
+  email      String
+  token      String   @unique @db.VarChar(255)
+  used       Boolean  @default(false)
+  created_at DateTime @default(now())
+
+  @@map("password_resets")
+}

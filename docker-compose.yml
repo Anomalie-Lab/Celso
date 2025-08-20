@@ -4,7 +4,7 @@ services:
   server:
     build:
       context: ./server
-      dockerfile: dockerfile
+      dockerfile: dockerfile.prod
     volumes:
       - ./server:/server
     ports:
@@ -19,7 +19,7 @@ services:
   client:
     build:  
       context: ./client
-      dockerfile: dockerfile
+      dockerfile: dockerfile.prod
     volumes:
       - ./client:/client
     env_file:

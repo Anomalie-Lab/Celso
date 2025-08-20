@@ -5,3 +5,8 @@ export type FormDataRegister = {
     confirmPassword: string;
     telephone: string;
 };
+export type FormDataLogin = {
+    email: string;
+    password: string;
+
+};

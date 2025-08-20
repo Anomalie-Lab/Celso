@@ -1,5 +1,6 @@
 
 import "./globals.css";
+import { Providers } from "@/providers/providers";
 
 export default function RootLayout({
   children,
@@ -7,12 +8,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+``

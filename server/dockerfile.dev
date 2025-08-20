@@ -1,0 +1,22 @@
+# Development Dockerfile for NestJS
+FROM node:20-alpine
+
+# Install dependencies for development
+RUN apk add --no-cache git
+
+WORKDIR /usr/src/app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Expose the port your NestJS application listens on
+EXPOSE 3000
+
+# Start the development server with hot reload
+CMD ["npm", "run", "start:dev"]

@@ -1,0 +1,109 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "discount": "10% OFF",
+      "productName": "Cactin 500mg",
+      "rating": 4.2,
+      "reviews": 53,
+      "description": "Suplemento natural para controle de peso e saciedade",
+      "currentPrice": "R$ 58,32",
+      "originalPrice": "R$ 64,00",
+      "color": "white",
+      "additionalInfo": "contém o autêntico Cactin",
+      "image": "/images/productImg.webp",
+      "category": "emagrecimento"
+    },
+    {
+      "id": 2,
+      "discount": "5% OFF",
+      "productName": "Fome Control Black",
+      "rating": 4.5,
+      "reviews": 42,
+      "description": "Controle natural do apetite e saciedade",
+      "currentPrice": "R$ 45,90",
+      "originalPrice": "R$ 48,32",
+      "color": "black",
+      "additionalInfo": "MENOS FOME MAIS SACIEDADE",
+      "image": "/images/productImg.webp",
+      "category": "emagrecimento"
+    },
+    {
+      "id": 3,
+      "discount": "5% OFF",
+      "productName": "Picolinato De Cromo",
+      "rating": 4.1,
+      "reviews": 38,
+      "description": "Suplemento para controle glicêmico e metabolismo",
+      "currentPrice": "R$ 32,50",
+      "originalPrice": "R$ 34,21",
+      "color": "white",
+      "image": "/images/productImg.webp",
+      "category": "diabetes"
+    },
+    {
+      "id": 4,
+      "discount": "5% OFF",
+      "productName": "Ioimbina",
+      "rating": 3.8,
+      "reviews": 25,
+      "description": "Suplemento para performance e energia",
+      "currentPrice": "R$ 28,90",
+      "originalPrice": "R$ 30,42",
+      "color": "white",
+      "image": "/images/productImg.webp",
+      "category": "performance"
+    },
+    {
+      "id": 5,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    }
+
+  ],
+  "categories": [
+    {
+      "id": "emagrecimento",
+      "name": "Emagrecimento",
+      "description": "Produtos para controle de peso e saciedade"
+    },
+    {
+      "id": "diabetes",
+      "name": "Diabetes",
+      "description": "Suplementos para controle glicêmico"
+    },
+    {
+      "id": "performance",
+      "name": "Performance",
+      "description": "Suplementos para energia e performance"
+    },
+    {
+      "id": "diuretico",
+      "name": "Diuréticos",
+      "description": "Produtos para redução de inchaço"
+    },
+    {
+      "id": "nutracêuticos",
+      "name": "Nutracêuticos",
+      "description": "Suplementos naturais para saúde"
+    },
+    {
+      "id": "vitaminas",
+      "name": "Vitaminas",
+      "description": "Suplementos vitamínicos"
+    },
+    {
+      "id": "omega",
+      "name": "Ômega 3",
+      "description": "Ácidos graxos essenciais"
+    }
+  ]
+}

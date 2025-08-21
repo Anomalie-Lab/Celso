@@ -1,13 +1,20 @@
-import { SegmentGroup } from "@chakra-ui/react";
-import Image from "next/image";
+import BannerPromo from "@/sections/bannerPromo";
+import ConditionsLayer from "@/sections/conditionsLayer";
+import Footer from "@/sections/footer";
+import Newsletter from "@/sections/newsleatter";
+import ProductsArea from "@/sections/productsArea";
+import Main from "@/sections/main";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <SegmentGroup.Root defaultValue="React">
-        <SegmentGroup.Indicator />
-        <SegmentGroup.Items items={["React", "Vue", "Solid"]} />
-      </SegmentGroup.Root>
+    <div className="h-[4200px] space-y-24 bg-background">
+      <Main/>
+      <ConditionsLayer/>
+      <ProductsArea titleArea="Produtos mais vendidos"/>
+      <BannerPromo/>
+      <ProductsArea titleArea="Mais buscados com 20% OFF"/>
+      <Newsletter/>
+      <Footer/>
     </div>
   );
 }

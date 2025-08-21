@@ -4,7 +4,7 @@ services:
   server:
     build:
       context: ./server
-      dockerfile: dockerfile
+      dockerfile: dockerfile.prod
     volumes:
       - ./server:/server
     ports:
@@ -12,14 +12,14 @@ services:
     env_file:
       - .env
     environment:
-      - VITE_NODE_ENV=development
+      - NEXT_NODE_ENV=development
     depends_on:
       - mysql
 
   client:
     build:  
       context: ./client
-      dockerfile: dockerfile
+      dockerfile: dockerfile.prod
     volumes:
       - ./client:/client
     env_file:

@@ -2,24 +2,17 @@
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import InputUi from "@/components/ui/input/inputLogin";
-import { CheckboxLogin } from "@/components/ui/checkbox/checkLogin";
-import { Sliders } from "@/data/carrosels";
-import { SchemaRegister } from "@/schemas/schemas";
+import { FormDataRegister, SchemaRegister } from "@/schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
+import { CarouselAuth } from "@/components/auth/carousel.auth";
+import { InputAuthUi } from "@/components/ui/inputs/input.auth";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 export default function Register() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors: errorsRegister },
-  } = useForm<Auth.FormDataRegister>({
-    mode: "onChange",
-    resolver: yupResolver(SchemaRegister),
-  });
+  const { register, handleSubmit, formState } = useForm<FormDataRegister>({ mode: "onChange", resolver: yupResolver(SchemaRegister) });
 
-  const onSubmit = (data: Auth.FormDataRegister) => {
+  const onSubmit = (data: FormDataRegister) => {
     console.log(data);
   };
 
@@ -29,31 +22,31 @@ export default function Register() {
         <section className="hidden md:flex w-1/2 h-screen items-center justify-center relative ">
           <p className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-lg z-10">logo</p>
 
-          <Sliders />
+          <CarouselAuth />
         </section>
         <section className="w-full md:w-1/2 flex justify-center items-center  flex-col ">
           <div className="w-[90%] ">
             <form className="mt-8 flex flex-col  w-full" onSubmit={handleSubmit(onSubmit)}>
-              <InputUi {...register("fullName")} name="fullName" type="text" placeholder="Username" error={errorsRegister.fullName?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
+              <InputAuthUi {...register("fullname")} name="fullname" type="text" placeholder="Username" error={formState.errors.fullname?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi {...register("email")} type="email" placeholder="Email" error={errorsRegister.email?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
+              <InputAuthUi {...register("email")} type="email" placeholder="Email" error={formState.errors.email?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi {...register("telephone")} name="telephone" type="text" maxLength={11} placeholder="Telefone" error={errorsRegister.telephone?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
+              <InputAuthUi {...register("phone")} name="phone" type="text" maxLength={11} placeholder="Telefone" error={formState.errors.phone?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi {...register("password")} name="password" type="password" placeholder="Senha" error={errorsRegister.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
+              <InputAuthUi {...register("password")} name="password" type="password" placeholder="Senha" error={formState.errors.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi
-                {...register("confirmPassword")}
+              <InputAuthUi
+                {...register("confirm_password")}
                 type="password"
-                error={errorsRegister.confirmPassword?.message}
-                name="confirmPassword"
+                error={formState.errors.confirm_password?.message}
+                name="confirm_password"
                 placeholder="Confirme sua senha"
                 className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
               />
 
               <motion.div className="flex justify-between items-center max-w-[800px]" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
                 <div className="flex items-center gap-2">
-                  <CheckboxLogin {...register("terms")} />
+                  <Checkbox {...register("terms")} />
                   <span>
                     Aceitar{" "}
                     <Link className="text-[var(--txt-quaternary)]  hover:underline" href="/terms">
@@ -66,7 +59,7 @@ export default function Register() {
                   </span>
                 </div>
               </motion.div>
-              {errorsRegister.terms && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{errorsRegister.terms.message}</span>}
+              {formState.errors.terms && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{formState.errors.terms.message}</span>}
 
               <motion.div className="flex flex-col max-w-[800px]" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
                 <button

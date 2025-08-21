@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function InputUi({ type, placeholder, className, error, ...props }: Ui.InputProps) {
+export const InputAuthUi = ({ type, placeholder, className, error, ...props }: Ui.InputProps) => {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex flex-col max-w-[800px]">
       <input type={type} placeholder={placeholder} {...props} className={`${className}  ${error ? 'focus:border-red-500' : 'focus:border-black' } }`} />

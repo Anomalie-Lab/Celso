@@ -1,19 +1,13 @@
 "use client";
-import InputUi from "@/components/ui/input/inputLogin";
+import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { SchemaContact } from "@/schemas/schemas";
+import { ContactFormData, SchemaContact } from "@/schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 export default function FaleConosco() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Contact.ContactFormData>({
-    resolver: yupResolver(SchemaContact),
-  });
+  const { register, handleSubmit, formState } = useForm<ContactFormData>({ resolver: yupResolver(SchemaContact) });
 
-  const onSubmit = (data: Contact.ContactFormData) => {
+  const onSubmit = (data: ContactFormData) => {
     console.log(data);
   };
   return (
@@ -64,23 +58,23 @@ export default function FaleConosco() {
         <form action="" onSubmit={handleSubmit(onSubmit)} className="flex flex-col  mt-4  w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">Nome completo:</p>
-            <InputUi {...register("name")} name="name" type="text" error={errors.name?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full max-w-[530px] pl-3" />
+            <InputAuthUi {...register("name")} name="name" type="text" error={formState.errors.name?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full max-w-[530px] pl-3" />
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">endereço de email:</p>
-            <InputUi {...register("email")} name="email" type="email" error={errors.email?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+            <InputAuthUi {...register("email")} name="email" type="email" error={formState.errors.email?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">telefone</p>
-            <InputUi {...register("telephone")} name="telephone" error={errors.telephone?.message} type="text" maxLength={11} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+            <InputAuthUi {...register("phone")} name="phone" error={formState.errors.phone?.message} type="text" maxLength={11} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">Mensagem</p>
-            <textarea {...register("txtMessage")} placeholder="Mensagem" className="border p-2 rounded h-32 max-w-[530px] w-full resize-none" />
+            <textarea {...register("txt_message")} placeholder="Mensagem" className="border p-2 rounded h-32 max-w-[530px] w-full resize-none" />
           </motion.div>
-          {errors.txtMessage?.message && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{errors.txtMessage.message}</span>}
+          {formState.errors.txt_message?.message && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{formState.errors.txt_message.message}</span>}
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex mt-4 max-w-[530px] w-full">
             <button className="bg-[var(--background-terciary)]  px-3 py-1.5 text-white cursor-pointer hover:opacity-85">Entrar em contato</button>

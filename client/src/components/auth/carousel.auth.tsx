@@ -3,11 +3,14 @@
 import * as React from "react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/buttons/button";
+import { SlidesImagesAuth } from "@/data/carousel.data";
 
-type CarouselApi = UseEmblaCarouselType[1];
+type CarouselAuthApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
@@ -16,7 +19,7 @@ type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
-  setApi?: (api: CarouselApi) => void;
+  setApi?: (api: CarouselAuthApi) => void;
 };
 
 type CarouselContextProps = {
@@ -40,7 +43,7 @@ function useCarousel() {
   return context;
 }
 
-function Carousel({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }: React.ComponentProps<"div"> & CarouselProps) {
+function CarouselAuthProvider({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }: React.ComponentProps<"div"> & CarouselProps) {
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
@@ -51,7 +54,7 @@ function Carousel({ orientation = "horizontal", opts, setApi, plugins, className
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const onSelect = React.useCallback((api: CarouselApi) => {
+  const onSelect = React.useCallback((api: CarouselAuthApi) => {
     if (!api) return;
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());
@@ -114,7 +117,7 @@ function Carousel({ orientation = "horizontal", opts, setApi, plugins, className
   );
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
+function CarouselAuthContent({ className, ...props }: React.ComponentProps<"div">) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
@@ -124,13 +127,13 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
+function CarouselAuthItem({ className, ...props }: React.ComponentProps<"div">) {
   const { orientation } = useCarousel();
 
   return <div role="group" aria-roledescription="slide" data-slot="carousel-item" className={cn("min-w-0 shrink-0 grow-0 basis-full", orientation === "horizontal" ? "pl-4" : "pt-4", className)} {...props} />;
 }
 
-function CarouselPrevious({ className, variant = "outline", size = "icon", ...props }: React.ComponentProps<typeof Button>) {
+function CarouselAuthPrevious({ className, variant = "outline", size = "icon", ...props }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
@@ -149,7 +152,7 @@ function CarouselPrevious({ className, variant = "outline", size = "icon", ...pr
   );
 }
 
-function CarouselNext({ className, variant = "outline", size = "icon", ...props }: React.ComponentProps<typeof Button>) {
+function CarouselAuthNext({ className, variant = "outline", size = "icon", ...props }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
@@ -168,4 +171,41 @@ function CarouselNext({ className, variant = "outline", size = "icon", ...props 
   );
 }
 
-export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+// Main Carousel Component
+export const CarouselAuth = () => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const autoplay = React.useRef(Autoplay({ delay: 5000 }));
+
+  return (
+    <CarouselAuthProvider
+      className="h-screen p-6"
+      opts={{
+        loop: true,
+        watchDrag: false,
+      }}
+      plugins={[autoplay.current]}
+      setApi={(api: CarouselAuthApi) => {
+        if (!api) return;
+        setActiveIndex(api.selectedScrollSnap());
+        api.on("select", () => setActiveIndex(api.selectedScrollSnap()));
+      }}
+    >
+      <CarouselAuthContent className="h-screen">
+        {SlidesImagesAuth.map((src, index) => (
+          <CarouselAuthItem key={index} className="h-screen">
+            <Image src={src} alt={`image ${index + 1}`} width={1920} height={1080} className="object-cover w-full h-[95%]" />
+          </CarouselAuthItem>
+        ))}
+      </CarouselAuthContent>
+
+      {/* Dots */}
+      <div className="absolute bottom-40 left-1/2 -translate-x-1/2 flex gap-2">
+        {SlidesImagesAuth.map((_, i) => (
+          <span key={i} className={`w-2 h-2 rounded-full transition-colors ${i === activeIndex ? "bg-white" : "bg-gray-400"}`} />
+        ))}
+      </div>
+    </CarouselAuthProvider>
+  );
+};
+
+export { type CarouselAuthApi, CarouselAuthProvider, CarouselAuthContent, CarouselAuthItem, CarouselAuthPrevious, CarouselAuthNext };

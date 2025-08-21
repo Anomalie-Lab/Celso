@@ -1,25 +1,18 @@
 "use client";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import InputUi from "@/components/ui/input/inputLogin";
-import { CheckboxLogin } from "@/components/ui/checkbox/checkLogin";
-import { Sliders } from "@/data/carrosels";
-import { SchemaLogin } from "@/schemas/schemas";
+import { FormDataLogin, SchemaLogin } from "@/schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-
+import { CarouselAuth } from "@/components/auth/carousel.auth";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
+import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 
 export default function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Auth.FormDataLogin>({
-    resolver: yupResolver(SchemaLogin),
-  });
+  const { register, handleSubmit, formState } = useForm<FormDataLogin>({ resolver: yupResolver(SchemaLogin) });
 
-  const onSubmit = (data: Auth.FormDataLogin) => {
+  const onSubmit = (data: FormDataLogin) => {
     console.log(data);
   };
 
@@ -28,7 +21,7 @@ export default function Login() {
       <div className="w-full max-w-[1750px] flex ">
         <section className="hidden md:flex w-1/2 h-screen items-center justify-center relative ">
           <p className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-lg z-10">logo</p>
-          <Sliders />
+          <CarouselAuth />
         </section>
 
         <section className="w-full md:w-1/2 flex justify-center items-center h-auto flex-col">
@@ -39,19 +32,19 @@ export default function Login() {
             <form className="mt-8 flex flex-col   w-full" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col max-w-[800px]">
                 <button type="button" className="relative w-[full] h-[53px] 2xl:h-[73px] border    bg-[var( --background-secondary)]text-black font-medium focus:ring-2 focus:black focus:outline-none cursor-pointer  shadow-md mb-4 max-w-[800px] hover:opacity-85">
-                <FcGoogle size={35} className="absolute left-4 top-1/2 transform -translate-y-1/2"/>
+                  <FcGoogle size={35} className="absolute left-4 top-1/2 transform -translate-y-1/2" />
 
                   <span className="block text-center w-full text-[17px] 2xl:text-[20px]">Login com Google</span>
                 </button>
               </div>
 
-              <InputUi {...register("email")} name="email" type="email" placeholder="Email" error={errors.email?.message} className="w-full h-[53px] 2xl:h-[73px] px-4 border  focus:outline-none bg-var text-[17px] 2xl:text-[21px] bg-[var(--background-secondary)] " />
+              <InputAuthUi {...register("email")} name="email" type="email" placeholder="Email" error={formState.errors.email?.message} className="w-full h-[53px] 2xl:h-[73px] px-4 border  focus:outline-none bg-var text-[17px] 2xl:text-[21px] bg-[var(--background-secondary)] " />
 
-              <InputUi {...register("password")} name="password" type="password" placeholder="Senha" error={errors.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px] " />
+              <InputAuthUi {...register("password")} name="password" type="password" placeholder="Senha" error={formState.errors.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px] " />
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex justify-between items-center max-w-[800px]">
                 <div className="flex items-center gap-2">
-                  <CheckboxLogin />
+                  <Checkbox />
                   <p>Lembrar-me</p>
                 </div>
 

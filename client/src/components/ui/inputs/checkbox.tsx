@@ -1,4 +1,4 @@
-export const CheckboxLogin = ({...props}) => {
+export const Checkbox = ({...props}) => {
   return (
     <div className="flex items-center">
       <div className="relative">

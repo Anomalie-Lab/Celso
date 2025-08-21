@@ -38,13 +38,7 @@ export default function Login() {
             <form className="mt-8 flex flex-col  2xl:gap-4  w-full" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col max-w-[800px]">
                 <button type="button" className="relative w-[full] h-[53px] 2xl:h-[73px] border    bg-[var( --background-secondary)]text-black font-medium focus:ring-2 focus:black focus:outline-none cursor-pointer  shadow-md mb-4 max-w-[800px] hover:opacity-85">
-                  <Image
-                    src="/icon/icon-google.png"
-                    alt="Google"
-                    width={32} 
-                    height={32} 
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2"
-                  />
+                  <Image src="/icon/icon-google.png" alt="Google" width={32} height={32} className="absolute left-4 top-1/2 transform -translate-y-1/2" />
 
                   <span className="block text-center w-full text-[17px] 2xl:text-[20px]">Login com Google</span>
                 </button>
@@ -60,7 +54,7 @@ export default function Login() {
                   <p>Lembrar-me</p>
                 </div>
 
-                <Link href="" className="text-[var(--txt-terciary)] mb-4 font-medium text-[17px] 2xl:text-[20px] text-end max-w-[800px] hover:underline">
+                <Link href="" className="text-[var(--txt-terciary)]  font-medium text-[17px] 2xl:text-[20px] text-end max-w-[800px] hover:underline">
                   Esqueceu sua senha?
                 </Link>
               </motion.div>

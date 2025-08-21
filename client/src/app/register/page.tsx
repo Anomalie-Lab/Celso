@@ -34,35 +34,13 @@ export default function Register() {
         <section className="w-full md:w-1/2 flex justify-center items-center  flex-col ">
           <div className="w-[90%] ">
             <form className="mt-8 flex flex-col  w-full" onSubmit={handleSubmit(onSubmit)}>
-              <InputUi
-                {...register("fullName")}
-                name="fullName"
-                type="text"
-                placeholder="Username"
-                error={errorsRegister.fullName?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
-              />
+              <InputUi {...register("fullName")} name="fullName" type="text" placeholder="Username" error={errorsRegister.fullName?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
               <InputUi {...register("email")} type="email" placeholder="Email" error={errorsRegister.email?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi
-                {...register("telephone")}
-                name="telephone"
-                type="text"
-                maxLength={11}
-                placeholder="Telefone"
-                error={errorsRegister.telephone?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
-              />
+              <InputUi {...register("telephone")} name="telephone" type="text" maxLength={11} placeholder="Telefone" error={errorsRegister.telephone?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
-              <InputUi
-                {...register("password")}
-                name="password"
-                type="password"
-                placeholder="Senha"
-                error={errorsRegister.password?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
-              />
+              <InputUi {...register("password")} name="password" type="password" placeholder="Senha" error={errorsRegister.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
               <InputUi
                 {...register("confirmPassword")}

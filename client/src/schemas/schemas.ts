@@ -16,3 +16,10 @@ export const SchemaLogin = yup.object({
   email: yup.string().email("Email inválido").required("Email é obrigatório"),
   password: yup.string().required("Senha é obrigatória"),
 });
+
+export const SchemaContact = yup.object({
+  name: yup.string().required("Nome é obrigatório"),
+  email: yup.string().email("Email inválido").required("Email é obrigatório"),
+  telephone: yup.string().required("Telefone é obrigatório").min(11, "Telefone inválido"),
+  txtMessage: yup.string().required("Mensagem é obrigatória"),
+});

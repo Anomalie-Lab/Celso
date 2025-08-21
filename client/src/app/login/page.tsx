@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import InputUi from "@/components/ui/input/inputLogin";
@@ -8,6 +7,8 @@ import { Sliders } from "@/data/carrosels";
 import { SchemaLogin } from "@/schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
+
 
 export default function Login() {
   const {
@@ -38,7 +39,7 @@ export default function Login() {
             <form className="mt-8 flex flex-col   w-full" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col max-w-[800px]">
                 <button type="button" className="relative w-[full] h-[53px] 2xl:h-[73px] border    bg-[var( --background-secondary)]text-black font-medium focus:ring-2 focus:black focus:outline-none cursor-pointer  shadow-md mb-4 max-w-[800px] hover:opacity-85">
-                  <Image src="/icon/icon-google.png" alt="Google" width={32} height={32} className="absolute left-4 top-1/2 transform -translate-y-1/2" />
+                <FcGoogle size={35} className="absolute left-4 top-1/2 transform -translate-y-1/2"/>
 
                   <span className="block text-center w-full text-[17px] 2xl:text-[20px]">Login com Google</span>
                 </button>

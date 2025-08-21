@@ -1,0 +1,92 @@
+"use client";
+import InputUi from "@/components/ui/input/inputLogin";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import { SchemaContact } from "@/schemas/schemas";
+import { yupResolver } from "@hookform/resolvers/yup";
+export default function FaleConosco() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Contact.ContactFormData>({
+    resolver: yupResolver(SchemaContact),
+  });
+
+  const onSubmit = (data: Contact.ContactFormData) => {
+    console.log(data);
+  };
+  return (
+    <main className=" flex-wrap font-inter flex w-full max-w-[1550px] mx-auto p-4 font-inter justify-center  gap-12 lg:flex-nowrap">
+      <section className=" w-[100%] lg:w-1/2 gap-6 flex flex-col text-[#555555] lg:pl-6 ">
+        <div className="max-w-[480px]] ">
+          <h2 className="font-bold">• Televendas</h2>
+          <p className="font-light">Fale com um Consultor de Negócios.</p>
+          <p className="font-light">Através do (11) 3136 - 2431 ou entre em contato Atendimento de segunda a sexta das 9h às 18h.</p>
+        </div>
+
+        <div className="max-w-[400px]">
+          <h2 className="font-bold">• E-mail</h2>
+          <p className="font-light">
+            Você também pode tirar todas suas dúvidas pelo e-mail <strong>sac@gmail.com.br</strong>
+          </p>
+          <p className="font-light">De segunda à sexta-feira, das 9 às 18 horas.</p>
+        </div>
+
+        <div className="max-w-[400px]">
+          <h2 className=" font-bold">• Formulário</h2>
+          <p className="font-light">Se preferir preencha com seus dados para que possamos responder.</p>
+        </div>
+
+        <div className="max-w-[800px]">
+          <h2 className=" font-bold">• medicine.com.br para empresas</h2>
+          <p className="font-light">Pelo fato atendermos somente no varejo, pedidos de quantidades superiores a 5 exemplares de um mesmo produto estarão sujeitos à disponibilidade de estoque. Se o seu perfil é este entre em contato com nossos Consultor de Negócios.</p>
+        </div>
+
+        <div className="max-w-[400px]">
+          <h2 className=" font-bold">• Informações:</h2>
+          <p className="font-light">Atendimento de segunda a sexta das 9:00 as 18:00</p>
+        </div>
+
+        <div className="max-w-[400px]">
+          <h2 className=" font-bold">• Medicine </h2>
+          <p className="font-light">new York, Estados Unidos - NY | CEP: 000-001</p>
+        </div>
+
+        <div className="max-w-[400px]">
+          <p className="font-bold">TEDIO DOS SANTOS OLIVEIRA CNPJ: 00.000.000/0001-11 </p>
+        </div>
+        <p>© Copyright 2025 - Todos os Direitos Reservados !</p>
+      </section>
+
+      <section className=" w-[100%] lg:w-1/2 flex flex-col items-center lg:pl-16 mt-9">
+        <h3 className="font-medium text-[#555555] text-[18px] text-start  w-full">Enviar uma mensagem</h3>
+        <form action="" onSubmit={handleSubmit(onSubmit)} className="flex flex-col  mt-4  w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+            <p className="text-[13px] text-[#555555] ">Nome completo:</p>
+            <InputUi {...register("name")} name="name" type="text" error={errors.name?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full max-w-[530px] pl-3" />
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+            <p className="text-[13px] text-[#555555] ">endereço de email:</p>
+            <InputUi {...register("email")} name="email" type="email" error={errors.email?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+            <p className="text-[13px] text-[#555555] ">telefone</p>
+            <InputUi {...register("telephone")} name="telephone" error={errors.telephone?.message} type="text" maxLength={11} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+            <p className="text-[13px] text-[#555555] ">Mensagem</p>
+            <textarea {...register("txtMessage")} placeholder="Mensagem" className="border p-2 rounded h-32 max-w-[530px] w-full resize-none" />
+          </motion.div>
+          {errors.txtMessage?.message && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{errors.txtMessage.message}</span>}
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex mt-4 max-w-[530px] w-full">
+            <button className="bg-[var(--background-terciary)]  px-3 py-1.5 text-white cursor-pointer hover:opacity-85">Entrar em contato</button>
+          </motion.div>
+        </form>
+      </section>
+    </main>
+  );
+}

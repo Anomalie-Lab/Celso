@@ -44,9 +44,9 @@ export default function Login() {
                 </button>
               </div>
 
-              <InputUi {...register("email")} name="email" type="email" placeholder="Email" error={errors.email?.message} className="w-full h-[53px] 2xl:h-[73px] px-4 border focus:ring-2 focus:black focus:outline-none bg-var text-[17px] 2xl:text-[21px] bg-[var(--background-secondary)] " />
+              <InputUi {...register("email")} name="email" type="email" placeholder="Email" error={errors.email?.message} className="w-full h-[53px] 2xl:h-[73px] px-4 border  focus:outline-none bg-var text-[17px] 2xl:text-[21px] bg-[var(--background-secondary)] " />
 
-              <InputUi {...register("password")} name="password" type="password" placeholder="Senha" error={errors.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px] " />
+              <InputUi {...register("password")} name="password" type="password" placeholder="Senha" error={errors.password?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px] " />
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex justify-between items-center max-w-[800px]">
                 <div className="flex items-center gap-2">

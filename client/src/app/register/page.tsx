@@ -40,10 +40,10 @@ export default function Register() {
                 type="text"
                 placeholder="Username"
                 error={errorsRegister.fullName?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
+                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
               />
 
-              <InputUi {...register("email")} type="email" placeholder="Email" error={errorsRegister.email?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
+              <InputUi {...register("email")} type="email" placeholder="Email" error={errorsRegister.email?.message} className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]" />
 
               <InputUi
                 {...register("telephone")}
@@ -52,7 +52,7 @@ export default function Register() {
                 maxLength={11}
                 placeholder="Telefone"
                 error={errorsRegister.telephone?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
+                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
               />
 
               <InputUi
@@ -61,7 +61,7 @@ export default function Register() {
                 type="password"
                 placeholder="Senha"
                 error={errorsRegister.password?.message}
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
+                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
               />
 
               <InputUi
@@ -70,7 +70,7 @@ export default function Register() {
                 error={errorsRegister.confirmPassword?.message}
                 name="confirmPassword"
                 placeholder="Confirme sua senha"
-                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border focus:ring-2 focus:black focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
+                className="w-[full] h-[53px] 2xl:h-[73px]  px-4 border  focus:outline-none bg-[var(--background-secondary)] text-[17px] 2xl:text-[21px]"
               />
 
               <motion.div className="flex justify-between items-center max-w-[800px]" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>

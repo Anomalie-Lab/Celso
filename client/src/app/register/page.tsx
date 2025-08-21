@@ -56,11 +56,11 @@ export default function Register() {
                   <CheckboxLogin {...register("terms")} />
                   <span>
                     Aceitar{" "}
-                    <Link className="text-[var(--txt-quaternary)]  hover:underline" href="#">
+                    <Link className="text-[var(--txt-quaternary)]  hover:underline" href="/terms">
                       termos
                     </Link>{" "}
                     e{" "}
-                    <Link className="text-[var(--txt-quaternary)] hover:underline" href="#">
+                    <Link className="text-[var(--txt-quaternary)] hover:underline" href="/conditions">
                       condições
                     </Link>
                   </span>

@@ -178,7 +178,7 @@ export const CarouselAuth = () => {
 
   return (
     <CarouselAuthProvider
-      className="h-screen p-6"
+      className="h-screen "
       opts={{
         loop: true,
         watchDrag: false,
@@ -190,10 +190,10 @@ export const CarouselAuth = () => {
         api.on("select", () => setActiveIndex(api.selectedScrollSnap()));
       }}
     >
-      <CarouselAuthContent className="h-screen">
+      <CarouselAuthContent className="h-[100vh] ">
         {SlidesImagesAuth.map((src, index) => (
-          <CarouselAuthItem key={index} className="h-screen">
-            <Image src={src} alt={`image ${index + 1}`} width={1920} height={1080} className="object-cover w-full h-[95%]" />
+          <CarouselAuthItem key={index} >
+            <Image src={src} alt={`image ${index + 1}`} width={1920} height={1080} className="object-cover w-full h-full" />
           </CarouselAuthItem>
         ))}
       </CarouselAuthContent>

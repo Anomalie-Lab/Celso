@@ -55,19 +55,19 @@ export default function FaleConosco() {
 
       <section className=" w-[100%] lg:w-1/2 flex flex-col items-center lg:pl-16 mt-9">
         <h3 className="font-medium text-[#555555] text-[18px] text-start  w-full">Enviar uma mensagem</h3>
-        <form action="" onSubmit={handleSubmit(onSubmit)} className="flex flex-col  mt-4  w-full">
+        <form action="" onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-4  w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">Nome completo:</p>
-            <InputAuthUi {...register("name")} name="name" type="text" error={formState.errors.name?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full max-w-[530px] pl-3" />
+            <InputAuthUi {...register("name")} name="name" type="text" error={formState.errors.name?.message} className="border  w-full max-w-[530px] pl-3" />
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">endereço de email:</p>
-            <InputAuthUi {...register("email")} name="email" type="email" error={formState.errors.email?.message} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+            <InputAuthUi {...register("email")} name="email" type="email" error={formState.errors.email?.message} className="border  w-full not-visited:pl-3 max-w-[530px]" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
             <p className="text-[13px] text-[#555555] ">telefone</p>
-            <InputAuthUi {...register("phone")} name="phone" error={formState.errors.phone?.message} type="text" maxLength={11} className="border-[1px] border-[#cccccc] px-3 py-1.5 w-full   pl-3 max-w-[530px]" />
+            <InputAuthUi {...register("phone")} name="phone" error={formState.errors.phone?.message} type="text" maxLength={11} className="border  w-full   pl-3 max-w-[530px]" />
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
@@ -77,7 +77,7 @@ export default function FaleConosco() {
           {formState.errors.txt_message?.message && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{formState.errors.txt_message.message}</span>}
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex mt-4 max-w-[530px] w-full">
-            <button className="bg-[var(--background-terciary)]  px-3 py-1.5 text-white cursor-pointer hover:opacity-85">Entrar em contato</button>
+            <button className="bg-[var(--background-terciary)] px-3 py-1.5 text-white cursor-pointer hover:opacity-85">Entrar em contato</button>
           </motion.div>
         </form>
       </section>

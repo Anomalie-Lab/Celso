@@ -4,12 +4,32 @@ import React from 'react'
 import { LiaUserSolid } from "react-icons/lia";
 import {  LuSearch } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
+import { LogOut, User } from "lucide-react";
 import Cart from "./cart";
+import { useUser } from "@/hooks/user.hook";
+import { Auth } from "@/api/auth.api";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Header() {
     const [isOpen, setIsOpen] = React.useState(false)
+    const { user, setUser } = useUser();
+    const router = useRouter();
+    
     const toggleDrawer = () => {
         setIsOpen((prevState) => !prevState)
+    }
+
+    const handleLogout = async () => {
+        try {
+            await Auth.logout();
+            setUser(null);
+            toast.success("Logout realizado com sucesso!");
+            router.push('/');
+        } catch (error) {
+            toast.error("Erro ao fazer logout");
+        }
     }
 
     return (
@@ -27,10 +47,32 @@ export default function Header() {
                     </button>
                 </div>
                 <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-2">
-                        <LiaUserSolid className="text-3xl" />
-                        <p className="text-[12px]">Faça seu <a href="" className="underline hover:text-primary transition-colors">login</a> ou <br></br><a href="" className="underline hover:text-primary transition-colors">cadastre-se</a></p>
-                    </div>
+                    {user ? (
+                        <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
+                                <User className="text-2xl" />
+                                <div>
+                                    <p className="text-sm font-medium">Olá, {user.fullname}</p>
+                                    <p className="text-xs text-gray-500">{user.email}</p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                Sair
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <LiaUserSolid className="text-3xl" />
+                            <p className="text-[12px]">
+                                Faça seu <Link href="/login" className="underline hover:text-primary transition-colors">login</Link> ou <br></br>
+                                <Link href="/register" className="underline hover:text-primary transition-colors">cadastre-se</Link>
+                            </p>
+                        </div>
+                    )}
                     <button 
                         onClick={toggleDrawer}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"

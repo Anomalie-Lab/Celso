@@ -13,25 +13,30 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/hooks/user.hook";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { log } from "console";
+import { AxiosError } from "axios";
 
 export default function Register() {
   const { register, handleSubmit, formState } = useForm<FormDataRegister>({ mode: "onChange", resolver: yupResolver(SchemaRegister) });
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
+  const router = useRouter();
 
   const onSubmit = async (data: FormDataRegister) => {
     try {
       setIsLoading(true);
-      const response = await Auth.register({email: data.email, fullname: data.fullname, password: data.password, phone: data.phone});
-      if (response.user) {
-        setUser(response.user);
+
+      const response = await Auth.register({ email: data.email, fullname: data.fullname, password: data.password, phone: data.phone });
+      if (response) {
+        setUser(response);
         toast.success("Conta criada com sucesso!", {
           description: "Bem-vindo! Sua conta foi registrada.",
         });
+        router.push("/");
       }
     } catch (error: unknown) {
-      console.log(error);
-      const errorMessage = error instanceof Error ? error.message : "Verifique os dados e tente novamente.";
+      const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Verifique os dados e tente novamente.";
       toast.error("Erro ao criar conta", {
         description: errorMessage,
       });

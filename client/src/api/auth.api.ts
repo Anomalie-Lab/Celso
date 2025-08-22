@@ -13,9 +13,9 @@ const login = async ({ email, password }: LoginApiProps): Promise<LoginApiRespon
   return { user: response.data, status: response.status };
 };
 
-const register = async (data: RegisterApiProps): Promise<LoginApiResponse> => {
+const register = async (data: RegisterApiProps) => {
   const response: AxiosResponse = await api.post("/auth/register", data);
-  return { user: response.data, status: response.status };
+  return response.data;
 };
 
 const logout = async (): Promise<number> => {

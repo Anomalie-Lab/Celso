@@ -20,18 +20,20 @@ export class RegisterDto {
   password: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({ description: "Telefone de Contato", example: "(11) 99999-9999" })
-  phone: string;
+  phone?: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({ description: "CPF/CNPJ", example: "99.999.999/9999-99" })
-  document: string;
+  document?: string;
 }
 
 export class LoginDto {
   @IsString()
-  @ApiProperty({ description: "email or username", example: "john.doe@email.com" })
-  credential: string;
+  @ApiProperty({ description: "email", example: "john.doe@email.com" })
+  email: string;
 
   @IsString()
   @MinLength(6)

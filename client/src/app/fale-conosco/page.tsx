@@ -2,7 +2,7 @@
 import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { ContactFormData, SchemaContact } from "@/schemas/schemas";
+import { ContactFormData, SchemaContact } from "@/entities/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 export default function FaleConosco() {
   const { register, handleSubmit, formState } = useForm<ContactFormData>({ resolver: yupResolver(SchemaContact) });

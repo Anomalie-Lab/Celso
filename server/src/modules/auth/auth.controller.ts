@@ -21,8 +21,8 @@ export class AuthController {
   @ApiResponse({ status: 400, description: "Invalid request data. Please ensure all fields are correct.", type: ErrorFieldsSwagger })
   @ApiResponse({ status: 201, description: "User successfully created. The response may contain additional details or errors." })
   async register(@Body() dto: RegisterDto, @Res() res) {
-    await this.authService.register(dto);
-    return res.status(HttpStatus.CREATED).end();
+    const user = await this.authService.register(dto, res);
+    return res.status(HttpStatus.CREATED).json(user);
   }
 
   @isPublic()

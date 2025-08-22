@@ -1,21 +1,10 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-@theme {
+@theme inline {
   --radius: 0.625rem;
-  
   --color-background: #FAFAFA;
   --color-primary-100: #B2D5CD;
   --color-primary-500: #3C9984;
   --color-primary: #03624C;
   --color-secondary: #1E2939;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  } 
-  body {
-    @apply bg-background text-foreground;
-  }
 }

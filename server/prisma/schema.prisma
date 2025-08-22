@@ -22,15 +22,15 @@ model Role {
 model User {
   id           Int            @id @default(autoincrement())
   google_id    String?
-  fullname     String
-  username     String
-  email        String
+  fullname     String 
+  username     String         @unique
+  email        String         @unique
   password     String
   phone        String?
   avatar       String         @default("https://lh3.googleusercontent.com/a/ACg8ocIjS-kV3SknQdY5dBfUaWuK0kp4WtnhGK89iRlo5OvjIdGGcjM=s96-c")
   birthdate    String?
   role_id      Int            @default(2)
-  document     String?
+  document     String?        @unique
   enable_2fa   Boolean        @default(false)
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt

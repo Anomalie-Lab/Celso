@@ -15,4 +15,16 @@ declare namespace Account {
     created_at: Date;
     updated_at: Date;
   }
+
+  interface NotificationI {
+    id: number;
+    user_id: number;
+    title: string;
+    type: string;
+    message: string;
+    read_at: Date | null;
+    data: any;
+    deleted_at: Date | null;
+    created_at: Date;
+}
 }

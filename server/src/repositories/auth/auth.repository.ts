@@ -7,7 +7,7 @@ import { RegisterDto } from "src/dtos/auth.dto";
 export class AuthRepository {
   constructor(private readonly prisma: PrismaService) {}
   async create(dto: RegisterDto & {username: string}) {
-    return await this.prisma.user.create({ data: { ...dto, role_id: 6, avatar: "https://ui-avatars.com/api/?name=John+Doe", enable_2fa: false } });
+    return await this.prisma.user.create({ data: { ...dto, avatar: "https://ui-avatars.com/api/?name=John+Doe", enable_2fa: false } });
   }
 
   async updateUser(id: number, data: any) {

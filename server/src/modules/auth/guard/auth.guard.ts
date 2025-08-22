@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
         ?.split("=")[1];
     };
 
-    const token = getCookie(process.env.NEXT_SESSION_COOKIE);
+    const token = getCookie(process.env.NEXT_PUBLIC_SESSION_COOKIE);
     if (!token) return false;
 
     try {

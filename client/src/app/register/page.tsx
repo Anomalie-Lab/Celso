@@ -14,7 +14,6 @@ import { Loader2 } from "lucide-react";
 import { useUser } from "@/hooks/user.hook";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { log } from "console";
 import { AxiosError } from "axios";
 
 export default function Register() {

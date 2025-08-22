@@ -28,6 +28,7 @@ export default function Header() {
             toast.success("Logout realizado com sucesso!");
             router.push('/');
         } catch (error) {
+            console.log(error);
             toast.error("Erro ao fazer logout");
         }
     }

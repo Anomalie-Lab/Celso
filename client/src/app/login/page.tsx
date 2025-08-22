@@ -13,15 +13,13 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/hooks/user.hook";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const { register, handleSubmit, formState } = useForm<FormDataLogin>({ resolver: yupResolver(SchemaLogin) });
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/';
   
   const onSubmit = async (data: FormDataLogin) => {
     try {
@@ -32,7 +30,7 @@ export default function Login() {
         toast.success("Login realizado com sucesso!", {
           description: "Bem-vindo de volta!",
         });
-        router.push(redirectTo);
+        router.push('/');
       }
     } catch (error: unknown) {
       console.log(error);

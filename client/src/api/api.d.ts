@@ -1,13 +1,10 @@
-import { FormStepTwoI } from "@/entities/schemas.entitie";
-import { UserI } from "../@types/user";
-
 export interface LoginApiProps {
   email: string;
   password: string;
 }
 
 export interface LoginApiResponse {
-  user?: UserI;
+  user?: Account.UserI;
   message?: string;
   status: number;
 }
@@ -15,6 +12,7 @@ export interface LoginApiResponse {
 export interface ForgotPasswordApiProps {
   email: string;
 }
+
 export interface ResetPasswordApiProps {
   email: string;
   password: string;

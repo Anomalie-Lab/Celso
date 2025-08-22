@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/hooks/user.hook";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function Login() {
   const { register, handleSubmit, formState } = useForm<FormDataLogin>({ resolver: yupResolver(SchemaLogin) });
@@ -29,9 +30,11 @@ export default function Login() {
           description: "Bem-vindo de volta!",
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      console.log(error);
+      const errorMessage = error instanceof Error ? error.message : "Verifique suas credenciais e tente novamente.";
       toast.error("Erro ao fazer login", {
-        description: error?.message || "Verifique suas credenciais e tente novamente.",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

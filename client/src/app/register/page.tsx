@@ -19,19 +19,21 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
 
-  const onSubmit = async ({ confirm_password, terms, ...data }: FormDataRegister) => {
+  const onSubmit = async (data: FormDataRegister) => {
     try {
       setIsLoading(true);
-      const response = await Auth.register(data);
+      const response = await Auth.register({email: data.email, fullname: data.fullname, password: data.password, phone: data.phone});
       if (response.user) {
         setUser(response.user);
         toast.success("Conta criada com sucesso!", {
           description: "Bem-vindo! Sua conta foi registrada.",
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      console.log(error);
+      const errorMessage = error instanceof Error ? error.message : "Verifique os dados e tente novamente.";
       toast.error("Erro ao criar conta", {
-        description: error?.message || "Verifique os dados e tente novamente.",
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);

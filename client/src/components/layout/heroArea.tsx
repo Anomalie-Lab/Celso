@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import Image from "next/image"
 import {
   Carousel,
   CarouselContent,
@@ -46,10 +47,11 @@ return (
           {images.map((image, index) => (
             <CarouselItem key={index} className="h-full w-full basis-full">
               <div className="relative h-full w-full">
-                <img
+                <Image
                   src={image}
                   alt={`Hero banner ${index + 1}`}
-                  className="w-full h-full object-cover object-center"
+                  fill
+                  className="object-cover object-center"
                   onError={(e) => {
                     console.error('Erro ao carregar imagem:', image);
                     e.currentTarget.style.display = 'none';

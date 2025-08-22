@@ -23,7 +23,7 @@ declare namespace Account {
         type: string;
         message: string;
         read_at: Date | null;
-        data: any;
+        data: JsonValue;
         deleted_at: Date | null;
         created_at: Date;
     }

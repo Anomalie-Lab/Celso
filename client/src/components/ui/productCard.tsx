@@ -8,12 +8,9 @@ export default function ProductCard({
   productName,
   rating,
   reviews,
-  description,
   currentPrice,
   originalPrice,
-  color,
-  image,
-  additionalInfo
+  image
 }: Product) {
   const renderStars = (rating: number) => {
     const stars = [];

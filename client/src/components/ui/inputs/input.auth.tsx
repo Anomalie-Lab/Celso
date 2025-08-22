@@ -3,10 +3,13 @@ import { motion } from "framer-motion";
 export const InputAuthUi = ({ type, placeholder, className, error, ...props }: Ui.InputProps) => {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex flex-col relative ">
-      <input type={type} placeholder="" {...props} className={`${className} peer w-full h-[53px] 2xl:h-[60px] peer-focus:placeholder-transparent px-3 border  focus:outline-none bg-var bg-[var(--background-secondary)] rounded-sm ${error ? "focus:border-red-500" : "focus:border-black"} }`} />
+      <input type={type} placeholder="" {...props} className={`${className}
+        z-[999]
+        peer w-full h-[53px] 2xl:h-[60px] peer-focus:placeholder-transparent px-3 border  focus:outline-none bg-var (--background-secondary)] rounded-sm ${error ? "focus:border-red-500" : "focus:border-black"} }`} />
 
       <label
         className={`
+         
     absolute left-4 text-gray-500
     transition-all duration-200
     peer-placeholder-shown:top-4

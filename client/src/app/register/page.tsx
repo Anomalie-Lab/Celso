@@ -18,8 +18,8 @@ export default function Register() {
 
   return (
     <main className={`font-inter min-h-screen flex flex-col md:flex-row justify-center items-center`}>
-      {/* max de 1920px */}
-      <div className="w-full max-w-[1920px] flex ">
+
+      <div className="w-full  flex ">
         <section className="hidden md:flex w-1/2 h-screen items-center justify-center relative">
           <p className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-lg z-10">logo</p>
           <CarouselAuth />

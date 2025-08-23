@@ -66,8 +66,85 @@
       "color": "black",
       "image": "/images/productImg.webp",
       "category": "diuretico"
+    },
+    {
+      "id": 6,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    },
+    {
+      "id": 7,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    },
+    {
+      "id": 8,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    },
+    {
+      "id": 9,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    },
+    {
+      "id": 10,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
+    },
+    {
+      "id": 11,
+      "discount": "10% OFF",
+      "productName": "Diuretik Black",
+      "rating": 4.3,
+      "reviews": 47,
+      "description": "Ação diurética natural para redução de inchaço",
+      "currentPrice": "R$ 52,80",
+      "originalPrice": "R$ 58,67",
+      "color": "black",
+      "image": "/images/productImg.webp",
+      "category": "diuretico"
     }
-
   ],
   "categories": [
     {

@@ -5,7 +5,7 @@ export const User = createParamDecorator((_: unknown, context: ExecutionContext)
   const request = context.switchToHttp().getRequest();
   const cookies = request.cookies;
 
-  const token = cookies[process.env.NEXT_SESSION_COOKIE];
+  const token = cookies[process.env.NEXT_PUBLIC_SESSION_COOKIE];
   if (!token) throw new UnauthorizedException("Token not found in cookies");
 
   try {

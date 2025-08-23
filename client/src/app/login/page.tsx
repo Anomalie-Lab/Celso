@@ -1,19 +1,46 @@
 "use client";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { FormDataLogin, SchemaLogin } from "@/schemas/schemas";
+import { FormDataLogin, SchemaLogin } from "@/entities/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { CarouselAuth } from "@/components/auth/carousel.auth";
 import { Checkbox } from "@/components/ui/inputs/checkbox";
 import { InputAuthUi } from "@/components/ui/inputs/input.auth";
+import { Auth } from "@/api/auth.api";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useUser } from "@/hooks/user.hook";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const { register, handleSubmit, formState } = useForm<FormDataLogin>({ resolver: yupResolver(SchemaLogin) });
-
-  const onSubmit = (data: FormDataLogin) => {
-    console.log(data);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useUser();
+  const router = useRouter();
+  
+  const onSubmit = async (data: FormDataLogin) => {
+    try {
+      setIsLoading(true);
+      const response = await Auth.login(data);
+      if (response.user) {
+        setUser(response.user);
+        toast.success("Login realizado com sucesso!", {
+          description: "Bem-vindo de volta!",
+        });
+        router.push('/');
+      }
+    } catch (error: unknown) {
+      console.log(error);
+      const errorMessage = error instanceof Error ? error.message : "Verifique suas credenciais e tente novamente.";
+      toast.error("Erro ao fazer login", {
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,8 +82,8 @@ export default function Login() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
-                <button type="submit" className="w-full h-[53px] 2xl:h-[60px]  px-4 border bg-black focus:outline-none text-white cursor-pointer hover:opacity-85  font-bold   transition ease-in duration-300 mt-8 rounded-sm">
-                  Entrar
+                <button type="submit" className="w-full h-[53px] 2xl:h-[60px]  px-4 border bg-black focus:outline-none text-white cursor-pointer hover:opacity-85  font-bold   transition ease-in duration-300 mt-8 rounded-sm" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Entrar"}
                 </button>
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="text-center max-w-[800px] mt-9 font-medium">

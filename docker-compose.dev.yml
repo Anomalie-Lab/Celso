@@ -11,7 +11,7 @@ services:
   #   env_file:
   #     - .env
   #   environment:
-  #     - NEXT_NODE_ENV=development
+  #     - NEXT_PUBLIC_NODE_ENV=development
   #   networks:
   #     - app-network
   #   depends_on:
@@ -31,7 +31,7 @@ services:
   #   env_file:
   #     - .env
   #   environment:
-  #     - NEXT_NODE_ENV=development
+  #     - NEXT_PUBLIC_NODE_ENV=development
   #   networks:
   #     - app-network
   #   depends_on:

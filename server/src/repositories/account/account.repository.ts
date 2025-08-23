@@ -25,4 +25,8 @@ export class AccountRepository {
   async deleteAddress(data: { user_id: number, id: number }) {
     return await this.prisma.address.delete({ where: { id: data.id } });
   }
+
+  async findAll({ ids }: { ids?: number[] }) {
+    return await this.prisma.user.findMany({ where: { id: { in: ids ?? [] } } });
+  }
 }

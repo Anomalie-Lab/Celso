@@ -1,4 +1,4 @@
-import { Product } from "@/types/products";
+import { Product } from "@/types/productTypes";
 import { LuHeart, LuStar } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 
@@ -43,12 +43,17 @@ export default function ProductCard({
 
       {/* Imagem do produto */}
       <div className="relative mb-4">
-        <div className="w-full h-68 bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden" style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="w-full h-68 bg-gray-100 rounded-lg overflow-hidden relative">
+          <img
+            src={image}
+            alt="Imagem de fundo"
+            className="w-full h-full object-cover transform transition-transform duration-500 ease-in-out hover:scale-110"
+          />
         </div>
       </div>
 
       {/* Botão Adicionar */}
-      <button className="w-full bg-primary text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-500 cursor-pointer">
+      <button className="w-full bg-primary text-white py-3 rounded-lg font-regular flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-500 cursor-pointer">
         <PiBasketLight className="w-5 h-5" />
         Adicionar
       </button>

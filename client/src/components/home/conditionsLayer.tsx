@@ -15,7 +15,7 @@ export default function ConditionsLayer() {
                 <div className="flex gap-5">
                     <IoCardOutline className="text-4xl text-primary"/>
                     <div className="flex flex-col">
-                        <h3 className="font-bold text-lg">10 x sem juros</h3>
+                        <h3 className="font-bold text-lg">10x sem juros</h3>
                         <p className="text-sm">aceitamos diversos tipos de cartões</p>	
                     </div>
                 </div>

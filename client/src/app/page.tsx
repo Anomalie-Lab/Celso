@@ -1,20 +1,18 @@
-import BannerPromo from "@/sections/bannerPromo";
-import ConditionsLayer from "@/sections/conditionsLayer";
-import Footer from "@/sections/footer";
-import Newsletter from "@/sections/newsleatter";
-import ProductsArea from "@/sections/productsArea";
-import Main from "@/sections/main";
+import BannerPromo from "@/components/home/bannerPromo";
+import ConditionsLayer from "@/components/home/conditionsLayer";
+import Newsletter from "@/components/home/newsleatter";
+import ProductsArea from "@/components/home/productsArea";
+import HeroArea from "@/components/home/heroArea";
 
 export default function Home() {
   return (
-    <div className="h-[4200px] space-y-24 bg-background">
-      <Main/>
+    <div className="h-[3400px] space-y-24 bg-background">
+      <HeroArea/>
       <ConditionsLayer/>
       <ProductsArea titleArea="Produtos mais vendidos"/>
       <BannerPromo/>
       <ProductsArea titleArea="Mais buscados com 20% OFF"/>
       <Newsletter/>
-      <Footer/>
     </div>
   );
 }

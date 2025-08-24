@@ -53,17 +53,17 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                         <p className="text-sm font-semibold text-gray-800">Calcular frete</p>
                     <InputOTP maxLength={9}>
                         <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
+                            <InputOTPSlot index={0} className='border-gray-300'/>
+                            <InputOTPSlot index={1} className='border-gray-300'/>
+                            <InputOTPSlot index={2} className='border-gray-300'/>
+                            <InputOTPSlot index={4} className='border-gray-300'/>
+                            <InputOTPSlot index={5} className='border-gray-300'/>
                         </InputOTPGroup>
                         <InputOTPSeparator className="text-gray-300"/>
                         <InputOTPGroup>
-                            <InputOTPSlot index={6} />
-                            <InputOTPSlot index={7} />
-                            <InputOTPSlot index={8} />
+                            <InputOTPSlot index={6} className='border-gray-300'/>
+                            <InputOTPSlot index={7} className='border-gray-300'/>
+                            <InputOTPSlot index={8} className='border-gray-300'/>
                         </InputOTPGroup>
                     </InputOTP>
                     </div>
@@ -72,10 +72,10 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                         <span className="text-md font-semibold text-gray-800">R$ 0,00</span>
                     </div>
                     <button 
-                        className="w-full bg-primary text-white py-4 px-4 rounded-full font-medium flex items-center justify-center gap-4"
+                        className="w-full bg-primary text-white py-4 px-4 rounded-full font-regular flex items-center justify-center gap-3"
                     >
-                        Finalizar Compra
                         <PiBasketLight className="w-5 h-5" />
+                        Finalizar Compra
                     </button>
                 </div>
             </div>

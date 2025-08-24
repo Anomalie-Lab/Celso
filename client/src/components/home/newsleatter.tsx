@@ -6,10 +6,10 @@ export default function Newsletter() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
           <div className="space-y-4">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white">
+            <h2 className="text-3xl font-bold text-white">
               RECEBA NOVIDADES E PROMOÇÕES
             </h2>
-            <p className="text-white text-md leading-relaxed">
+            <p className="text-white text-sm leading-relaxed">
               Cadastre-se e receba promoções exclusivas e saiba tudo antes de todo mundo !
             </p>
           </div>
@@ -26,7 +26,7 @@ export default function Newsletter() {
                 className="w-full px-4 py-3 bg-gray-700 text-white placeholder-gray-400 rounded-lg border border-gray-600 focus:outline-none transition-colors"
               />
             </div>
-            <button className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold  transition-colors cursor-pointer">
+            <button className="w-full bg-primary text-white py-3 px-6 rounded-lg font-regular  transition-colors cursor-pointer">
               Cadastre-se
             </button>
             <p className="text-gray-400 text-sm text-center">

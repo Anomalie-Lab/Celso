@@ -6,9 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import ProductCard from "../components/ui/productCard"
+import ProductCard from "../ui/productCard"
 import productsData from "@/data/products.json"
-import { Product } from "@/types/products"
+import { Product } from "@/types/productTypes"
 
 const products: Product[] = productsData.products as Product[];
 

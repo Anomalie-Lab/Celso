@@ -1,7 +1,14 @@
 
+import Header from "@/components/layout/header";
 import "./globals.css";
-import { Inter } from 'next/font/google';
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+import {  Montserrat } from 'next/font/google';
+import Footer from "@/components/layout/footer";
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -9,8 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased ${inter.variable}`}>
-        {children}
+      <body className={`${montserrat.variable}`}>
+        <Header/>
+        <div className="pt-32">
+          {children}
+        </div>
+        <Footer/>
       </body>
     </html>
   );

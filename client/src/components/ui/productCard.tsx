@@ -1,16 +1,8 @@
 import { Product } from "@/types/products";
 import { LuHeart, LuStar } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
-
+import { renderStars } from "./renderStarts";
 export default function ProductCard({ data }: { data: Product }) {
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(<LuStar key={i} className={`w-3 h-3 ${i <= rating ? "text-yellow-400 fill-current" : "text-yellow-400 fill-current opacity-50"}`} />);
-    }
-    return stars;
-  };
-
   return (
     <div className="bg-white rounded-lg p-4 relative w-ful transition-shadow cursor-pointer">
       {/* Selo de desconto */}

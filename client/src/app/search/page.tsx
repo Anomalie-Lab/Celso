@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { searchProducts } from "@/utils/products";
+import { searchProducts, getProducts } from "@/utils/products";
 import { Product } from "@/types/products";
 import ProductCard from "@/components/ui/productCard";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,9 @@ export default function Search() {
   const [productCategory, setProductCategory] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
+  const [totalPage, setTotalPage] = useState<number>(0);
+  const maxPerPage = 20;
 
   const handleChangeCategory = (category: string) => {
     setSelectedCategory(category);
@@ -23,19 +26,15 @@ export default function Search() {
     return Number(discount.replace("% OFF", "").trim()) || 0;
   }
 
-  useEffect(() => {
+  const fetchProduct = () => {
     if (!q) {
       router.push("/");
       return;
     }
+
     let filteredProduct = searchProducts(q);
 
-    if (filteredProduct.length === 0) {
-      return;
-    }
-
     setProductCategory([...new Set(filteredProduct.map((product) => product.category))]);
-
     if (selectedCategory) {
       filteredProduct = filteredProduct.filter((p) => p.category === selectedCategory);
     }
@@ -50,7 +49,13 @@ export default function Search() {
         break;
     }
 
+    setTotalPage(Math.ceil(filteredProduct.length / maxPerPage));
+    console.log(filteredProduct);
     setResult(filteredProduct);
+  };
+
+  useEffect(() => {
+    fetchProduct();
   }, [q, selectedCategory, sortOption]);
 
   return (
@@ -98,10 +103,17 @@ export default function Search() {
           </div>
 
           <div className="grid grid-cols-4 gap-4">
-            {result.map((product) => (
+            {result.slice(page * maxPerPage, (page + 1) * maxPerPage).map((product) => (
               <ProductCard key={product.id} data={product} />
             ))}
             {result.length === 0 && q && <p>Nenhum produto encontrado 😢</p>}
+          </div>
+          <div className="flex gap-2 mt-6 justify-center">
+            {Array.from({ length: totalPage }).map((_, i) => (
+              <button key={i} onClick={() => setPage(i)} className={`px-3 py-1 rounded ${i === page ? "bg-[var(--color-secondary)] text-white" : "bg-gray-200"}`}>
+                {i + 1}
+              </button>
+            ))}
           </div>
         </section>
       </div>

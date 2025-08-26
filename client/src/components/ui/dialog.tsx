@@ -86,8 +86,11 @@ function DialogFilter({ children, trigger }: DialogFilterProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
+          <DialogTitle>Filtrar produtos</DialogTitle>
         </DialogHeader>
-          <DialogDescription>{children}</DialogDescription>
+        <DialogDescription asChild>
+          <div>{children}</div>
+        </DialogDescription>
       </DialogContent>
     </Dialog>
   );

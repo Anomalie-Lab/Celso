@@ -56,7 +56,6 @@ export default function Search() {
 
       default:
         filteredProduct.sort((a, b) => a.id - b.id);
-        break;
     }
 
     setTotalPage(Math.ceil(filteredProduct.length / maxPerPage));
@@ -70,13 +69,15 @@ export default function Search() {
 
   return (
     <main className="flex  w-full justify-center items-center">
-      <div className="flex w-full px-2 xl:px-24">
+      <div className="flex w-full px-2 lg:px-24">
         {/* Filtros */}
         {showFilter && (
-          <section className=" w-60 p-4 rounded hidden md:block">
-            <div>
-              <Filter filteredCategory={filteredCategory} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
-            </div>
+          <section className=" w-60 p-4 rounded hidden lg:block">
+            {result.length > 0 && (
+              <div>
+                <Filter filteredCategory={filteredCategory} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
+              </div>
+            )}
           </section>
         )}
 
@@ -90,7 +91,8 @@ export default function Search() {
             </h1>
 
             <div className="flex items-center justify-center gap-5">
-              <div className=" md:hidden">
+              <div className=" lg:hidden">
+                {/* filtro mobile */}
                 <DialogFilter
                   trigger={
                     <button className="flex items-center justify-center gap-2 hover:text-[var(--color-secondary)] cursor-pointer">
@@ -102,7 +104,7 @@ export default function Search() {
                   <Filter filteredCategory={filteredCategory} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
                 </DialogFilter>
               </div>
-              <button onClick={() => setShowFilter(!showFilter)} className="hidden md:flex items-center justify-center gap-2 hover:text-[var(--color-secondary)] cursor-pointer">
+              <button onClick={() => setShowFilter(!showFilter)} className="hidden lg:flex items-center justify-center gap-2 hover:text-[var(--color-secondary)] cursor-pointer">
                 Filtros
                 <IoFilterOutline />
               </button>

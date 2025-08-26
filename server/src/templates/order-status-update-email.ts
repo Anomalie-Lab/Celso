@@ -1,4 +1,65 @@
-<!DOCTYPE html>
+interface OrderStatusUpdateEmailData {
+  userName: string;
+  userEmail: string;
+  orderNumber: string;
+  previousStatus: string;
+  newStatus: string;
+  updateDate: string;
+  deliveryCompany?: string;
+  statusDescription: string;
+  estimatedDelivery?: string;
+  trackingCode?: string;
+  pickupInfo?: string;
+  nextSteps?: string;
+  orderTrackingUrl: string;
+}
+
+export function OrderStatusUpdateEmailHtml(data: OrderStatusUpdateEmailData): string {
+  const estimatedDeliverySection = data.estimatedDelivery ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+        <tr>
+            <td style="background-color: #FEF3C7; padding: 20px; border-left: 4px solid #F59E0B;">
+                <h4 style="color: #92400E; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">📦 Previsão de Entrega</h4>
+                <p style="color: #92400E; margin: 0; font-size: 14px; line-height: 1.5;">
+                    <strong>${data.estimatedDelivery}</strong>
+                </p>
+            </td>
+        </tr>
+    </table>` : '';
+
+  const trackingCodeSection = data.trackingCode ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+        <tr>
+            <td style="background-color: #E8F5F2; padding: 20px; border-left: 4px solid #03624C;">
+                <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">📋 Código de Rastreamento</h4>
+                <p style="color: #1E2939; margin: 0; font-size: 14px; line-height: 1.5;">
+                    <strong>${data.trackingCode}</strong>
+                </p>
+                <p style="color: #64748B; margin: 8px 0 0 0; font-size: 12px; line-height: 1.5;">
+                    Use este código para rastrear seu pedido no site da empresa de entrega.
+                </p>
+            </td>
+        </tr>
+    </table>` : '';
+
+  const pickupInfoSection = data.pickupInfo ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+        <tr>
+            <td style="background-color: #F3E8FF; padding: 20px; border-left: 4px solid #8B5CF6;">
+                <h4 style="color: #7C3AED; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">🏪 Informações de Retirada</h4>
+                <div style="color: #1E2939; font-size: 14px; line-height: 1.6;">
+                    ${data.pickupInfo}
+                </div>
+            </td>
+        </tr>
+    </table>` : '';
+
+  const nextStepsContent = data.nextSteps || `
+    <li>Acompanhe o status do seu pedido em tempo real</li>
+    <li>Receba notificações sobre atualizações</li>
+    <li>Entre em contato se tiver dúvidas</li>`;
+
+  return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +90,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td style="text-align: center; margin-bottom: 30px;">
-                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, {{userName}}!</h2>
+                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, ${data.userName}!</h2>
                                         <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin: 0; max-width: 480px; margin-left: auto; margin-right: auto;">
                                             Seu pedido teve uma atualização de status. Confira os detalhes abaixo:
                                         </p>
@@ -47,33 +108,34 @@
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #B2D5CD;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Número do Pedido:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{orderNumber}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.orderNumber}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #B2D5CD;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Status Anterior:</span>
-                                                    <span style="color: #64748B; font-size: 14px; margin-left: 8px;">{{previousStatus}}</span>
+                                                    <span style="color: #64748B; font-size: 14px; margin-left: 8px;">${data.previousStatus}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #B2D5CD;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Novo Status:</span>
-                                                    <span style="color: #10B981; font-size: 14px; margin-left: 8px; font-weight: 600;">{{newStatus}}</span>
+                                                    <span style="color: #10B981; font-size: 14px; margin-left: 8px; font-weight: 600;">${data.newStatus}</span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="padding: 8px 0; border-bottom: 1px solid #B2D5CD;">
+                                                <td style="padding: 8px 0; ${data.deliveryCompany ? 'border-bottom: 1px solid #B2D5CD;' : ''}">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Data da Atualização:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{updateDate}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.updateDate}</span>
                                                 </td>
                                             </tr>
+                                            ${data.deliveryCompany ? `
                                             <tr>
                                                 <td style="padding: 8px 0;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Empresa de Entrega:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{deliveryCompany}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.deliveryCompany}</span>
                                                 </td>
-                                            </tr>
+                                            </tr>` : ''}
                                         </table>
                                     </td>
                                 </tr>
@@ -85,56 +147,15 @@
                                     <td style="background-color: #FAFAFA; padding: 20px; border: 1px solid #E2E8F0;">
                                         <h4 style="color: #1E2939; margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">O que isso significa?</h4>
                                         <p style="color: #64748B; margin: 0; font-size: 14px; line-height: 1.6;">
-                                            {{statusDescription}}
+                                            ${data.statusDescription}
                                         </p>
                                     </td>
                                 </tr>
                             </table>
                             
-                            <!-- Estimated Delivery -->
-                            {{#if estimatedDelivery}}
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                                <tr>
-                                    <td style="background-color: #FEF3C7; padding: 20px; border-left: 4px solid #F59E0B;">
-                                        <h4 style="color: #92400E; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">📦 Previsão de Entrega</h4>
-                                        <p style="color: #92400E; margin: 0; font-size: 14px; line-height: 1.5;">
-                                            <strong>{{estimatedDelivery}}</strong>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            {{/if}}
-                            
-                            <!-- Tracking Code -->
-                            {{#if trackingCode}}
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                                <tr>
-                                    <td style="background-color: #E8F5F2; padding: 20px; border-left: 4px solid #03624C;">
-                                        <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">📋 Código de Rastreamento</h4>
-                                        <p style="color: #1E2939; margin: 0; font-size: 14px; line-height: 1.5;">
-                                            <strong>{{trackingCode}}</strong>
-                                        </p>
-                                        <p style="color: #64748B; margin: 8px 0 0 0; font-size: 12px; line-height: 1.5;">
-                                            Use este código para rastrear seu pedido no site da empresa de entrega.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            {{/if}}
-                            
-                            <!-- Pickup Information -->
-                            {{#if pickupInfo}}
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                                <tr>
-                                    <td style="background-color: #F3E8FF; padding: 20px; border-left: 4px solid #8B5CF6;">
-                                        <h4 style="color: #7C3AED; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">🏪 Informações de Retirada</h4>
-                                        <div style="color: #1E2939; font-size: 14px; line-height: 1.6;">
-                                            {{pickupInfo}}
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            {{/if}}
+                            ${estimatedDeliverySection}
+                            ${trackingCodeSection}
+                            ${pickupInfoSection}
                             
                             <!-- Next Steps -->
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
@@ -142,13 +163,7 @@
                                     <td style="background-color: #E8F5F2; padding: 20px; border-left: 4px solid #03624C;">
                                         <h4 style="color: #03624C; margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">Próximos Passos</h4>
                                         <ul style="color: #1E2939; margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
-                                            {{#if nextSteps}}
-                                                {{nextSteps}}
-                                            {{else}}
-                                                <li>Acompanhe o status do seu pedido em tempo real</li>
-                                                <li>Receba notificações sobre atualizações</li>
-                                                <li>Entre em contato se tiver dúvidas</li>
-                                            {{/if}}
+                                            ${nextStepsContent}
                                         </ul>
                                     </td>
                                 </tr>
@@ -158,7 +173,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                                 <tr>
                                     <td style="text-align: center;">
-                                        <a href="{{orderTrackingUrl}}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <a href="${data.orderTrackingUrl}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
                                             Acompanhar Pedido
                                         </a>
                                     </td>
@@ -177,7 +192,7 @@
                                 <tr>
                                     <td style="text-align: center;">
                                         <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
-                                            Se você tiver alguma dúvida sobre seu pedido, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@Medicine Shop.com</strong>
+                                            Se você tiver alguma dúvida sobre seu pedido, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@medicineshop.com</strong>
                                         </p>
                                     </td>
                                 </tr>
@@ -190,7 +205,7 @@
                     <tr>
                         <td style="background-color: #1E2939; color: white; padding: 30px 40px; text-align: center;">
                             <p style="font-size: 12px; color: #94A3B8; margin: 0; line-height: 1.5;">
-                                Este email foi enviado para: {{userEmail}}<br>
+                                Este email foi enviado para: ${data.userEmail}<br>
                                 © 2024 Medicine Shop. Todos os direitos reservados.
                             </p>
                         </td>
@@ -203,5 +218,5 @@
     </table>
     
 </body>
-</html>
-
+</html>`;
+}

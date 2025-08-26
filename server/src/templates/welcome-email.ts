@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+interface WelcomeEmailData {
+  userName: string;
+  userEmail: string;
+  loginUrl: string;
+}
+
+export function WelcomeEmailHtml(data: WelcomeEmailData): string {
+  return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +36,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td style="text-align: center; margin-bottom: 30px;">
-                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, {{userName}}!</h2>
+                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, ${data.userName}!</h2>
                                         <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin: 0; max-width: 480px; margin-left: auto; margin-right: auto;">
                                             Estamos muito felizes em tê-lo conosco! Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.
                                         </p>
@@ -63,7 +70,7 @@
                                 
                                 <!-- Feature 1 -->
                                 <tr>
-                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #3C9984;">
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
                                         <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Produtos Exclusivos</h4>
                                         <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Acesse nossa seleção premium de produtos com os melhores preços do mercado</p>
                                     </td>
@@ -71,7 +78,7 @@
                                 
                                 <!-- Feature 2 -->
                                 <tr>
-                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #3C9984;">
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
                                         <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Ofertas Personalizadas</h4>
                                         <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Receba notificações sobre ofertas especiais criadas especialmente para você</p>
                                     </td>
@@ -79,17 +86,9 @@
                                 
                                 <!-- Feature 3 -->
                                 <tr>
-                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #3C9984;">
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
                                         <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Experiência Mobile</h4>
                                         <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Use nossa plataforma de qualquer dispositivo, a qualquer hora</p>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Feature 4 -->
-                                <tr>
-                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #3C9984;">
-                                        <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Segurança Garantida</h4>
-                                        <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Suas informações e transações estão totalmente protegidas</p>
                                     </td>
                                 </tr>
                             </table>
@@ -98,7 +97,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                                 <tr>
                                     <td style="text-align: center;">
-                                        <a href="{{loginUrl}}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <a href="${data.loginUrl}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
                                             Acessar Minha Conta
                                         </a>
                                     </td>
@@ -117,7 +116,7 @@
                                 <tr>
                                     <td style="text-align: center;">
                                         <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
-                                            Se você tiver alguma dúvida, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@Medicine Shop.com</strong>
+                                            Se você tiver alguma dúvida, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@medicineshop.com</strong>
                                         </p>
                                     </td>
                                 </tr>
@@ -129,33 +128,10 @@
                     <!-- Footer -->
                     <tr>
                         <td style="background-color: #1E2939; color: white; padding: 30px 40px; text-align: center;">
-                            <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600;">Conecte-se Conosco</h3>
-                            
-                            <!-- Social Links -->
-                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
-                                <tr>
-                                    <td style="text-align: center;">
-                                        <a href="#" style="display: inline-block; margin: 0 12px; color: white; text-decoration: none; font-weight: 500; font-size: 13px;">Facebook</a>
-                                        <a href="#" style="display: inline-block; margin: 0 12px; color: white; text-decoration: none; font-weight: 500; font-size: 13px;">Instagram</a>
-                                        <a href="#" style="display: inline-block; margin: 0 12px; color: white; text-decoration: none; font-weight: 500; font-size: 13px;">LinkedIn</a>
-                                        <a href="#" style="display: inline-block; margin: 0 12px; color: white; text-decoration: none; font-weight: 500; font-size: 13px;">Twitter</a>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <!-- Footer Text -->
-                            <table width="100%" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td style="text-align: center;">
-                                        <p style="font-size: 12px; color: #94A3B8; margin: 20px 0 0 0; line-height: 1.5;">
-                                            Este email foi enviado para: {{userEmail}}<br>
-                                            Se você não se cadastrou em nossa plataforma, ignore este email.<br><br>
-                                            © 2024 Medicine Shop. Todos os direitos reservados.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            
+                            <p style="font-size: 12px; color: #94A3B8; margin: 0; line-height: 1.5;">
+                                Este email foi enviado para: ${data.userEmail}<br>
+                                © 2024 Medicine Shop. Todos os direitos reservados.
+                            </p>
                         </td>
                     </tr>
                     
@@ -166,4 +142,5 @@
     </table>
     
 </body>
-</html>
+</html>`;
+}

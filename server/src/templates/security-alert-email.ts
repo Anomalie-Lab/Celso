@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+interface SecurityAlertEmailData {
+  userName: string;
+  userEmail: string;
+  activityType: string;
+  activityDate: string;
+  location: string;
+  device: string;
+  changePasswordUrl: string;
+  accountSettingsUrl: string;
+}
+
+export function SecurityAlertEmailHtml(data: SecurityAlertEmailData): string {
+  return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +41,7 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td style="text-align: center; margin-bottom: 30px;">
-                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, {{userName}}!</h2>
+                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, ${data.userName}!</h2>
                                         <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin: 0; max-width: 480px; margin-left: auto; margin-right: auto;">
                                             Detectamos uma atividade suspeita na sua conta. Por favor, verifique os detalhes abaixo:
                                         </p>
@@ -47,25 +59,25 @@
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #FCA5A5;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Tipo de Atividade:</span>
-                                                    <span style="color: #DC2626; font-size: 14px; margin-left: 8px; font-weight: 600;">{{activityType}}</span>
+                                                    <span style="color: #DC2626; font-size: 14px; margin-left: 8px; font-weight: 600;">${data.activityType}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #FCA5A5;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Data/Hora:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{activityDate}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.activityDate}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 8px 0; border-bottom: 1px solid #FCA5A5;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Localização:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{location}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.location}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding: 8px 0;">
                                                     <span style="color: #64748B; font-size: 14px; font-weight: 600;">Dispositivo:</span>
-                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">{{device}}</span>
+                                                    <span style="color: #1E2939; font-size: 14px; margin-left: 8px;">${data.device}</span>
                                                 </td>
                                             </tr>
                                         </table>
@@ -95,10 +107,10 @@
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                                 <tr>
                                     <td style="text-align: center;">
-                                        <a href="{{changePasswordUrl}}" style="display: inline-block; background-color: #DC2626; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 8px;">
+                                        <a href="${data.changePasswordUrl}" style="display: inline-block; background-color: #DC2626; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 8px;">
                                             Alterar Senha
                                         </a>
-                                        <a href="{{accountSettingsUrl}}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 8px;">
+                                        <a href="${data.accountSettingsUrl}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 8px;">
                                             Configurações
                                         </a>
                                     </td>
@@ -128,7 +140,7 @@
                                 <tr>
                                     <td style="text-align: center;">
                                         <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
-                                            Se você tiver dúvidas sobre a segurança da sua conta, entre em contato conosco imediatamente: <strong style="color: #DC2626;">suporte@Medicine Shop.com</strong>
+                                            Se você tiver dúvidas sobre a segurança da sua conta, entre em contato conosco imediatamente: <strong style="color: #DC2626;">suporte@medicineshop.com</strong>
                                         </p>
                                     </td>
                                 </tr>
@@ -141,7 +153,7 @@
                     <tr>
                         <td style="background-color: #1E2939; color: white; padding: 30px 40px; text-align: center;">
                             <p style="font-size: 12px; color: #94A3B8; margin: 0; line-height: 1.5;">
-                                Este email foi enviado para: {{userEmail}}<br>
+                                Este email foi enviado para: ${data.userEmail}<br>
                                 © 2024 Medicine Shop. Todos os direitos reservados.
                             </p>
                         </td>
@@ -154,5 +166,5 @@
     </table>
     
 </body>
-</html>
-
+</html>`;
+}

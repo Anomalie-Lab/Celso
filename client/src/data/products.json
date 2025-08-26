@@ -65,7 +65,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "diabetes"
     },
     {
       "id": 6,
@@ -78,7 +78,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "diabetes"
     },
     {
       "id": 7,
@@ -91,7 +91,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "diabetes"
     },
     {
       "id": 8,
@@ -148,7 +148,7 @@
     {
       "id": 12,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "vitamina 3b",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -156,12 +156,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "vitaminas"
     },
     {
       "id": 13,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "vitamina 3b",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -169,12 +169,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "vitaminas"
     },
     {
       "id": 14,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "vitamina 3b",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -182,7 +182,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "vitaminas"
     },
     {
       "id": 15,
@@ -260,7 +260,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "diabetes"
     },
     {
       "id": 21,
@@ -273,7 +273,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "diabetes"
     },
     {
       "id": 22,
@@ -306,7 +306,7 @@
       "description": "Suplementos para energia e performance"
     },
     {
-      "id": "diuretico",
+      "id": "diabetes",
       "name": "Diuréticos",
       "description": "Produtos para redução de inchaço"
     },

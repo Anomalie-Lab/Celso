@@ -162,6 +162,17 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
   );
 }
 
+function Order({ sortOption, setSortOption }: Ui.Order) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="px-3 py-1  cursor-pointer hover:text-[var(--color-secondary)] outline-none">{sortOption === "" ? "Ordenar por" : sortOption === "descont" ? "Maior desconto" : "Maior avaliação"}</DropdownMenuTrigger>
+      <DropdownMenuContent className="z-[999] bg-white shadow-md min-w-[180px] rounded-md">
+        <DropdownMenuItem onClick={() => setSortOption("descont")}>Maior desconto</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setSortOption("rating")}>Maior avaliação</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 export {
   DropdownMenu,
   DropdownMenuPortal,
@@ -178,4 +189,5 @@ export {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  Order,
 };

@@ -58,7 +58,7 @@ export default function Terms() {
           <h2 className="text-xl font-semibold mb-2">7. Contato</h2>
           <p className="text-gray-700">
             Dúvidas ou solicitações podem ser enviadas para:{" "}
-            <a href="#" className="text-[var(--txt-terciary)] hover:underline">
+            <a href="#" className="hover:underline">
               @gmail.com
             </a>
           </p>

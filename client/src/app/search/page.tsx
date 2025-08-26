@@ -1,21 +1,22 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { searchProducts } from "@/utils/products";
 import { Product } from "@/types/products";
 import ProductCard from "@/components/ui/productCard";
 import { IoFilterOutline } from "react-icons/io5";
-import Filter from "@/components/layout/Filters";
+import {FilterSearch} from "@/components/layout/filters";
 import { Order } from "@/components/ui/dropdown-menu";
 import { DialogFilter } from "@/components/ui/dialog";
 
-export default function Search() {
+
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   const [result, setResult] = useState<Product[]>([]);
   const [showFilter, setShowFilter] = useState<boolean>(true);
-  const [filteredCategory, setFilteredCategory] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [page, setPage] = useState<number>(0);
@@ -32,19 +33,14 @@ export default function Search() {
   }
 
   const fetchProduct = () => {
-    if (!q) {
-      router.push("/");
-      return;
-    }
-
+    if (!q) return router.push("/");
+      
     let filteredProduct = searchProducts(q);
 
-    setFilteredCategory([...new Set(filteredProduct.map((product) => product.category))]);
+    setCategories([...new Set(filteredProduct.map((product) => product.category))]);
 
-    if (selectedCategory) {
-      filteredProduct = filteredProduct.filter((p) => p.category === selectedCategory);
-    }
-
+    if (selectedCategory) filteredProduct = filteredProduct.filter((p) => p.category === selectedCategory);
+    
     switch (sortOption) {
       case "descont":
         filteredProduct.sort((a, b) => parseDiscount(b.discount) - parseDiscount(a.discount));
@@ -75,7 +71,7 @@ export default function Search() {
           <section className=" w-60 p-4 rounded hidden lg:block">
             {result.length > 0 && (
               <div>
-                <Filter filteredCategory={filteredCategory} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
+                <FilterSearch filteredCategory={categories} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
               </div>
             )}
           </section>
@@ -95,16 +91,16 @@ export default function Search() {
                 {/* filtro mobile */}
                 <DialogFilter
                   trigger={
-                    <button className="flex items-center justify-center gap-2 hover:text-[var(--color-secondary)] cursor-pointer">
+                    <button className="flex items-center justify-center gap-2 hover:text-secondary cursor-pointer">
                       Filtros
                       <IoFilterOutline />
                     </button>
                   }
                 >
-                  <Filter filteredCategory={filteredCategory} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
+                  <FilterSearch filteredCategory={categories} selectedCategory={selectedCategory} onChangeCategory={handleChangeCategory} onClear={() => setSelectedCategory("")} />
                 </DialogFilter>
               </div>
-              <button onClick={() => setShowFilter(!showFilter)} className="hidden lg:flex items-center justify-center gap-2 hover:text-[var(--color-secondary)] cursor-pointer">
+              <button onClick={() => setShowFilter(!showFilter)} className="hidden lg:flex items-center justify-center gap-2 hover:text-secondary cursor-pointer">
                 Filtros
                 <IoFilterOutline />
               </button>
@@ -121,7 +117,7 @@ export default function Search() {
           </div>
           <div className="flex gap-2 m-6 justify-center">
             {Array.from({ length: totalPage }).map((_, i) => (
-              <button key={i} onClick={() => setPage(i)} className={`px-3 py-1 rounded ${i === page ? "bg-[var(--color-secondary)] text-white" : "bg-gray-200"}`}>
+              <button key={i} onClick={() => setPage(i)} className={`px-3 py-1 rounded ${i === page ? "bg-secondary text-white" : "bg-gray-200"}`}>
                 {i + 1}
               </button>
             ))}
@@ -129,5 +125,12 @@ export default function Search() {
         </section>
       </div>
     </main>
+  );
+}
+export default function Search() {
+  return (
+    <Suspense>
+      <SearchContent />
+    </Suspense>
   );
 }

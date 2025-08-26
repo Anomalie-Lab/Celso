@@ -21,7 +21,7 @@ export const InputAuthUi = ({ type, placeholder, className, error, ...props }: U
       >
         {placeholder}
       </label>
-      <div className="min-h-[15px] 2xl:my-2 mt-1.5">{error && <span className="text-[var(--destructive)] text-sm mt-1 2xl:text-[17px]">{error}</span>}</div>
+      <div className="min-h-[15px] 2xl:my-2 mt-1.5">{error && <span className="text-red-500 text-sm mt-1 2xl:text-[17px]">{error}</span>}</div>
     </motion.div>
   );
 };

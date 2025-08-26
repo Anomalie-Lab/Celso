@@ -1,25 +1,25 @@
-import { Injectable } from "@nestjs/common";
-import { CreateNotificationDTO } from "src/dtos/notification.dto";
-import { AccountRepository } from "src/repositories";
-import { NotificationRepository } from "src/repositories/notification/notification.repository";
-import { NotificationsGateway } from "src/services/gateways/notification.gateway";
-import { HandleErrorsUserConflict } from "src/utils/handle-errors-database.util";
+import {Injectable} from '@nestjs/common';
+import {CreateNotificationDTO} from 'src/dtos/notification.dto';
+import {AccountRepository} from 'src/repositories';
+import {NotificationRepository} from 'src/repositories/notification/notification.repository';
+import {NotificationsGateway} from 'src/services/gateways/notification.gateway';
+import {HandleErrorsUserConflict} from 'src/utils/handle-errors-database.util';
 
 @Injectable()
 export class NotificationService {
   constructor(
     private readonly notificationRepository: NotificationRepository,
     private readonly accountRepository: AccountRepository,
-    private readonly notificationsGateway: NotificationsGateway,
+    private readonly notificationsGateway: NotificationsGateway
   ) {}
 
-  async create({ users: ids, ...dto }: CreateNotificationDTO) {
+  async create({users: ids, ...dto}: CreateNotificationDTO) {
     try {
       let userIds: number[] = [];
-      
+
       if (ids.length === 0) {
-        const allUsers = await this.accountRepository.findAll({ ids: [] });
-        userIds = allUsers.map(user => user.id);
+        const allUsers = await this.accountRepository.findAll({ids: []});
+        userIds = allUsers.map((user) => user.id);
       } else {
         userIds = ids;
       }
@@ -27,7 +27,7 @@ export class NotificationService {
       const notifications = await Promise.all(
         userIds.map(async (userId) => {
           const notification = await this.notificationRepository.create(dto, userId);
-          this.notificationsGateway.sendToUser(String(userId), { ...notification });
+          this.notificationsGateway.sendToUser(String(userId), {...notification});
           return notification;
         })
       );

@@ -62,6 +62,7 @@ export class AuthService {
       LoginUser(res, user);
       return user;
     } catch (error) {
+      console.log(error);
       HandleErrorsUserConflict(error);
     }
   }

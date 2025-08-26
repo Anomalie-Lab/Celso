@@ -29,6 +29,22 @@ services:
     ports:
       - "3000:3000"
 
+  admin:
+    build:
+      context: ./admin
+      dockerfile: dockerfile.prod
+    volumes:
+      - ./admin:/admin
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - VITE_ADMIN_CREDENTIALS=admin@admin:admin123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq_ecommerce

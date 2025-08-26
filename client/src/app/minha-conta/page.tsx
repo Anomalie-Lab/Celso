@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react";
 import AccountSidebar from "@/components/account/accountSidebar";;
 import ResumeTab from "@/components/account/resumeTab";
@@ -32,12 +31,9 @@ export default function MinhaConta() {
     <div className="bg-background">
       <div className="bg-white h-[1200px] flex justify-center items-center">
         <main className="container h-full flex gap-20 mx-auto px-4 py-24 bg-white">
-            {/* Sidebar */}
             <div className="lg:w-80 flex-shrink-0">
                 <AccountSidebar activeTab={activeTab} onTabChange={setActiveTab} />
             </div>
-            
-            {/* Conteúdo Principal */}
             <div className="flex-1">
                 {renderActiveTab()}
             </div>

@@ -4,7 +4,7 @@ import { IoCardOutline, IoPeopleOutline, IoShieldOutline } from "react-icons/io5
 export default function ConditionsLayer() {
     return (
         <div className="flex justify-center">
-           <div className="flex container shadow-xs h-32 bg-white justify-around items-center rounded-lg">
+           <div className="flex container shadow-xs border border-gray-100 h-32 bg-white justify-around items-center rounded-lg">
                 <div className="flex gap-5">
                     <CiDeliveryTruck className="text-4xl text-primary"/>
                     <div className="flex flex-col">

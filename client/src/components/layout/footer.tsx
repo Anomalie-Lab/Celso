@@ -1,104 +1,128 @@
+"use client"
 import { LuPhone, LuMail, LuClock, LuArrowRight } from "react-icons/lu";
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 import { MdOutlineSecurity } from "react-icons/md";
+import { useState } from "react";
+import Cart from "../home/cartDrawer";
+import WishListDrawer from "../home/wishListDrawer";
+import { LoginAuth } from "../auth/login.auth";
+import { useRouter } from "next/navigation";
+type AuthPage = "Login" | "Register" | "ForgotPass"
 
 export default function Footer() {
+  const navigate = useRouter();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishListOpen, setIsWishListOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authPage, setAuthPage] = useState<AuthPage>("Login");
+
+  const toggleCart = () => setIsCartOpen(prev => !prev);
+  const toggleWishList = () => setIsWishListOpen(prev => !prev);
+  const toggleAuth = () => setIsAuthOpen(prev => !prev);
+  const toggleAuthPage = (page: AuthPage) => setAuthPage(page);
+
   return (
     <footer className="bg-gray-50 border-t border-gray-100">
-      {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          
-          {/* Company Info */}
           <div className="space-y-6">
-            <div>
+            <button onClick={() => navigate.push('/')} className="cursor-pointer">
               <Image 
                 src="/images/logo.png" 
                 width={130} 
                 height={140} 
                 alt="logo"
               />
-            </div>
+            </button>
             
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <p className="text-gray-600 text-sm leading-relaxed mt-6">
               Líder em equipamentos hospitalares de alta qualidade. 
               Comprometida com a excelência e inovação na área da saúde, 
               oferecendo produtos que fazem a diferença.
             </p>
 
-            {/* Social Media */}
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="#" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">
                 <FaFacebookF className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="#" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">
                 <FaInstagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="#" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">
                 <FaWhatsapp className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="#" className="text-gray-400 hover:text-primary transition-colors cursor-pointer">
                 <FaLinkedin className="w-5 h-5" />
               </a>
             </div>
           </div>
 
-          {/* Information */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-gray-900">Informações</h3>
             <ul className="space-y-3">
               <li>
-                <a href="/politica-privacidade" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  Política de Privacidade
-                </a>
-              </li>
-              <li>
-                <a href="/perguntas-frequentes" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  Perguntas Frequentes
-                </a>
-              </li>
-              <li>
-                <a href="/formas-pagamento" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  Formas de Pagamento
-                </a>
-              </li>
-              <li>
-                <a href="/troca-devolucao" className="text-gray-600 hover:text-primary transition-colors text-sm">
-                  Troca ou Devolução
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                <button onClick={() => navigate.push('/sobre-nos')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
                   Sobre Nós
-                </a>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate.push('/troca-devolucao')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
+                  Troca ou Devolução
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate.push('/politica-privacidade')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
+                  Política de Privacidade
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate.push('/perguntas-frequentes')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
+                  Perguntas Frequentes
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate.push('/formas-pagamento')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
+                  Formas de Pagamento
+                </button>
               </li>
             </ul>
           </div>
 
-          {/* My Account */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-gray-900">Minha Conta</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                <button 
+                  onClick={() => navigate.push('/minha-conta')}
+                  className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer"
+                >
                   Meus Dados
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                <button 
+                  onClick={toggleCart}
+                  className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer"
+                >
                   Meus Pedidos
-                </a>
+                </button>
               </li>
               <li>
-                <a href="/login" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                <button 
+                  onClick={() => { toggleAuth(); toggleAuthPage("Login"); }}
+                  className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer"
+                >
                   Login
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                <button 
+                  onClick={toggleWishList}
+                  className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer"
+                >
                   Favoritos
-                </a>
+                </button>
               </li>
             </ul>
 
@@ -106,30 +130,29 @@ export default function Footer() {
               <h4 className="text-sm font-semibold text-gray-900 mb-3">Categorias</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  <button onClick={() => navigate.push('/categorias/autoclave')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
                     Autoclave
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  <button onClick={() => navigate.push('/categorias/estetica')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
                     Estética
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  <button onClick={() => navigate.push('/categorias/micropigmentacao')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
                     Micropigmentação
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">
+                  <button onClick={() => navigate.push('/categorias/macas')} className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer">
                     Macas
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Contact & Newsletter */}
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-gray-900">Fale Conosco</h3>
             
@@ -166,48 +189,41 @@ export default function Footer() {
                   placeholder="Seu email" 
                   className="flex-1 px-3 py-2 border border-gray-200 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-white"
                 />
-                <button className="px-4 py-2 bg-primary text-white rounded-r-md hover:bg-primary/90 transition-colors">
+                <button className="px-4 py-2 bg-primary text-white rounded-r-md hover:bg-primary/90 transition-colors cursor-pointer">
                   <LuArrowRight className="w-4 h-4" />
                 </button>
               </div>
               <p className="text-gray-500 text-xs mt-3">
                 Ao se inscrever, você concorda com nossa 
-                <a href="/politica-privacidade" className="text-primary hover:underline"> Política de Privacidade</a>.
+                <button onClick={() => navigate.push('/politica-privacidade')} className="text-primary hover:underline"> Política de Privacidade</button>.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="border-t border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             
-            {/* Copyright */}
             <div className="text-center lg:text-left">
               <p className="text-gray-500 text-sm">
                 © 2024 Hospitalar Distribuidora. CNPJ: 03.375.328/0001-80
               </p>
             </div>
 
-            {/* Payment Methods */}
             <div className="flex items-center gap-3">
               <span className="text-gray-500 text-sm mr-2">Formas de Pagamento:</span>
               <div className="flex items-center gap-4">            
-                {/* Visa */}
                 <img src="/images/visa.png" width={50} height={50} alt="Visa" />
 
-                {/* Mastercard */}
                 <img src="/images/mastercard.png" width={50} height={50} alt="Mastercard" />    
 
-                {/* Pix */}
                 <img src="/images/pix.png" width={50} height={50} alt="Pix" />    
                 
               </div>
             </div>
 
-            {/* Security Badge */}
             <div className="flex items-center gap-2">
               <MdOutlineSecurity className="w-5 h-5 text-primary" />
               <span className="text-gray-500 text-sm">Site Seguro SSL</span>
@@ -215,6 +231,15 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <Cart isOpen={isCartOpen} toggleDrawer={toggleCart} />
+      <WishListDrawer isOpen={isWishListOpen} toggleDrawer={toggleWishList} />
+      <LoginAuth 
+        isOpen={isAuthOpen} 
+        toggleDialog={toggleAuth} 
+        authPage={authPage}
+        onAuthPageChange={toggleAuthPage}
+      />
     </footer>
   );
 }

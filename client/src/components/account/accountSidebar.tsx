@@ -48,7 +48,7 @@ export default function AccountSidebar({ activeTab, onTabChange }: AccountSideba
         <p className="text-sm text-gray-500">Gerencie suas informações pessoais</p>
       </div>
 
-      <nav className="space-y-2">
+      <nav className="space-y-3">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -57,24 +57,24 @@ export default function AccountSidebar({ activeTab, onTabChange }: AccountSideba
             <button
               key={item.id}
               onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center gap-3 p-3 rounded-lg text-left cursor-pointer transition-all duration-200 ${
+              className={`w-full flex items-center border border-gray-100 gap-4 p-3 rounded-lg text-left cursor-pointer transition-all duration-200 ${
                 isActive
-                  ? "bg-primary-50 text-primary"
-                  : "text-gray-600 hover:text-gray-800"
+                  ? "bg-primary text-primary"
+                  : "text-gray-600 hover:text-gray-800 hover:text-primary hover:bg-primary-50 group"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "text-primary" : "text-gray-400"}`} />
+              <Icon className={`w-5 h-5 group-hover:text-primary ${isActive ? "text-white" : "text-gray-500"}`} />
               <div className="flex-1">
-                <div className="font-medium text-primary">{item.label}</div>
-                <div className="text-xs text-gray-500">{item.description}</div>
+                <div className={`font-regular group-hover:text-primary ${isActive ? "text-white" : "text-gray-700"}`}>{item.label}</div>
+                <div className={`text-xs font-regular group-hover:text-primary ${isActive ? "text-white" : "text-gray-700"}`}>{item.description}</div>
               </div>
             </button>
           );
         })}
       </nav>
 
-      <div className="mt-8 pt-6 border-t border-gray-100">
-        <button className="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200">
+      <div className="mt-8 pt-6">
+        <button className="w-full border border-gray-200 flex items-center justify-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer">
           <LuLogOut className="w-5 h-5" />
           <span className="font-medium">Sair</span>
         </button>

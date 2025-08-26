@@ -13,3 +13,52 @@
 body {
   font-family: var(--font-montserrat);
 }
+
+body.drawer-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Scroll Bar Personalizada */
+/* Webkit (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+  opacity: 0.8;
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f5f9;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) #f1f5f9;
+}
+
+/* Internet Explorer */
+* {
+  scrollbar-face-color: var(--color-primary);
+  scrollbar-track-color: #f1f5f9;
+  scrollbar-arrow-color: var(--color-primary);
+  scrollbar-shadow-color: #f1f5f9;
+  scrollbar-highlight-color: #f1f5f9;
+  scrollbar-3dlight-color: #f1f5f9;
+  scrollbar-darkshadow-color: #f1f5f9;
+}

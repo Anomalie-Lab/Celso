@@ -1,6 +1,9 @@
+"use client"
+import { useRouter } from "next/navigation";
 import { LuInfo } from "react-icons/lu";
 
 export default function Newsletter() {
+  const router = useRouter();
   return (
     <section className="bg-secondary py-12">
       <div className="container mx-auto px-4">
@@ -31,9 +34,9 @@ export default function Newsletter() {
             </button>
             <p className="text-gray-400 text-sm text-center">
               Ao se cadastrar você aceita nossa{" "}
-              <a href="#" className="text-white underline hover:text-primary-500 transition-colors">
+              <button onClick={() => router.push('/politica-privacidade')} className="text-white underline hover:text-primary-500 transition-colors cursor-pointer">
                 Política de Privacidade e Segurança
-              </a>
+              </button>
               .
             </p>
           </div>

@@ -1,6 +1,5 @@
 "use client";
-
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { FormDataRegister, SchemaRegister } from "@/schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +9,7 @@ import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 export default function Register() {
+  const router = useRouter();
   const { register, handleSubmit, formState } = useForm<FormDataRegister>({ mode: "onChange", resolver: yupResolver(SchemaRegister) });
 
   const onSubmit = (data: FormDataRegister) => {
@@ -18,7 +18,6 @@ export default function Register() {
 
   return (
     <main className={`font-inter min-h-screen flex flex-col md:flex-row justify-center items-center`}>
-      {/* max de 1920px */}
       <div className="w-full max-w-[1920px] flex ">
         <section className="hidden md:flex w-1/2 h-screen items-center justify-center relative">
           <p className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-lg z-10">logo</p>
@@ -42,13 +41,13 @@ export default function Register() {
                   <Checkbox {...register("terms")} />
                   <span>
                     Aceitar{" "}
-                    <Link className="text-[var(--txt-quaternary)]  hover:underline" href="/terms">
+                    <button onClick={() => router.push('/terms')} className="text-[var(--txt-quaternary)]  hover:underline">
                       termos
-                    </Link>{" "}
+                    </button>{" "}
                     e{" "}
-                    <Link className="text-[var(--txt-quaternary)] hover:underline" href="/conditions">
+                    <button onClick={() => router.push('/conditions')} className="text-[var(--txt-quaternary)] hover:underline">
                       condições
-                    </Link>
+                    </button>
                   </span>
                 </div>
               </motion.div>
@@ -63,9 +62,9 @@ export default function Register() {
               <motion.div className=" rounded-sm  text-center max-w-[800px] font-semibold mt-9" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
                 <span>
                   Já tenho uma conta!{" "}
-                  <Link className="text-[var(--txt-terciary)] font-bold" href="/login">
+                  <button onClick={() => router.push('/login')} className="text-[var(--txt-terciary)] font-bold">
                     Entrar
-                  </Link>
+                  </button>
                 </span>
               </motion.div>
             </form>

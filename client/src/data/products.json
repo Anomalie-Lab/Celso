@@ -7,7 +7,7 @@
       "rating": 4.2,
       "reviews": 53,
       "description": "Suplemento natural para controle de peso e saciedade",
-      "currentPrice": "R$ 20,32",
+      "currentPrice": "R$ 120,32",
       "originalPrice": "R$ 64,00",
       "color": "white",
       "additionalInfo": "contém o autêntico Cactin",
@@ -16,7 +16,7 @@
     },
     {
       "id": 2,
-      "discount": "80% OFF",
+      "discount": "50% OFF",
       "productName": "Diuretik Black",
       "rating": 4.5,
       "reviews": 42,
@@ -56,7 +56,7 @@
     },
     {
       "id": 5,
-      "discount": "30% OFF",
+      "discount": "90% OFF",
       "productName": "Diuretik Black",
       "rating": 4.3,
       "reviews": 47,
@@ -173,7 +173,7 @@
     },
     {
       "id": 14,
-      "discount": "10% OFF",
+      "discount": "50% OFF",
       "productName": "vitamina 3b",
       "rating": 4.3,
       "reviews": 47,

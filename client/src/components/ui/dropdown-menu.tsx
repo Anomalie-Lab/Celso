@@ -25,7 +25,7 @@ function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.Comp
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         className={cn(
-          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border p-1 shadow-md",
+          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md  p-1 shadow-md",
           className
         )}
         {...props}
@@ -117,7 +117,7 @@ function DropdownMenuLabel({
 }
 
 function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
-  return <DropdownMenuPrimitive.Separator data-slot="dropdown-menu-separator" className={cn("bg-border -mx-1 my-1 h-px", className)} {...props} />;
+  return <DropdownMenuPrimitive.Separator data-slot="dropdown-menu-separator" className={cn("bg-border -mx-1 my-1 h-px  ", className)} {...props} />;
 }
 
 function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"span">) {
@@ -154,7 +154,7 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
-        "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg",
+        "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border p-1 shadow-lg  ",
         className
       )}
       {...props}
@@ -165,10 +165,26 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
 function Order({ sortOption, setSortOption }: Ui.Order) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="px-3 py-1  cursor-pointer hover:text-secondary outline-none">{sortOption === "" ? "Ordenar por" : sortOption === "descont" ? "Maior desconto" : "Maior avaliação"}</DropdownMenuTrigger>
-      <DropdownMenuContent className="z-[999] bg-white shadow-md min-w-[180px] rounded-md">
-        <DropdownMenuItem onClick={() => setSortOption("descont")}>Maior desconto</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setSortOption("rating")}>Maior avaliação</DropdownMenuItem>
+      <DropdownMenuTrigger className="px-2 py-1  cursor-pointer bg-secondary rounded-sm text-white  outline-none">
+        {" "}
+        {sortOption === "" ? "Ordenar por" : sortOption === "relevancia" ? "Relevância" : sortOption === "descont" ? "Maior desconto" : sortOption === "rating" ? "Maior avaliação" : sortOption === "minPrice" ? "Menor Preço" : sortOption === "maxPrice" ? "Maior Preço" : "Ordenar por"}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="z-[999] bg-white shadow-md min-w-[180px] rounded-md text-sm">
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("relevancia")}>
+          Relevância
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("descont")}>
+          Maior desconto
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("rating")}>
+          Maior avaliação
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("minPrice")}>
+          Menor Preço
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("maxPrice")}>
+          Maior Preço
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

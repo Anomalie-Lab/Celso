@@ -26,7 +26,7 @@ async function bootstrap() {
   SwaggerModule.setup("docs", app, document);
 
   app.use(cookieParser());
-  app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+  app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:5173"], credentials: true }));
 
   app.useWebSocketAdapter(new IoAdapter(app));
 

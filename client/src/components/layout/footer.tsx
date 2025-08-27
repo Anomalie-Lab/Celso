@@ -6,7 +6,7 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { useState } from "react";
 import Cart from "../home/cartDrawer";
 import WishListDrawer from "../home/wishListDrawer";
-import { LoginAuth } from "../auth/login.auth";
+import { ModalAuth } from "../auth/modal.auth";
 import { useRouter } from "next/navigation";
 type AuthPage = "Login" | "Register" | "ForgotPass"
 
@@ -234,7 +234,7 @@ export default function Footer() {
 
       <Cart isOpen={isCartOpen} toggleDrawer={toggleCart} />
       <WishListDrawer isOpen={isWishListOpen} toggleDrawer={toggleWishList} />
-      <LoginAuth 
+      <ModalAuth 
         isOpen={isAuthOpen} 
         toggleDialog={toggleAuth} 
         authPage={authPage}

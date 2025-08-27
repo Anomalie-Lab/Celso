@@ -53,7 +53,7 @@ export default function FormasPagamentoPage() {
               </h3>
               <p className="text-gray-700 leading-relaxed">
                 A <strong>Braspag</strong> é uma plataforma de pagamento online que oferece um serviço de 
-                "compras inteligente" e checkout seguro com sistema antifraudes.
+                &ldquo;compras inteligente&rdquo; e checkout seguro com sistema antifraudes.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 De acordo com nossa política de privacidade, dados pessoais, bancários ou de cartão de crédito 

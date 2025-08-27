@@ -2,7 +2,7 @@
 
 import { getProducts } from "@/utils/productUtils";
 import Image from "next/image";
-import { LuHeart, LuTrash2, LuEye } from "react-icons/lu";
+import { LuHeart, LuTrash2 } from "react-icons/lu";
 import { PiBasket } from "react-icons/pi";
 
 export default function WishesTab() {

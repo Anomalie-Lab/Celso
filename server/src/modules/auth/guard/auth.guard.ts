@@ -1,8 +1,9 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { IS_PUBLIC_KEY } from "../../../decorators/public.decorator";
-import { verify, JwtPayload } from "jsonwebtoken";
-import { LogoutUser } from "src/services/cookies.service";
+import {CanActivate, ExecutionContext, ForbiddenException, Injectable} from '@nestjs/common';
+import {Reflector} from '@nestjs/core';
+import {IS_PUBLIC_KEY} from '../../../decorators/public.decorator';
+import {IS_ADMIN_KEY} from '../../../decorators/admin.decorator';
+import {verify, JwtPayload} from 'jsonwebtoken';
+import {LogoutUser} from 'src/services/cookies.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -13,8 +14,24 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
-
     const req = context.switchToHttp().getRequest();
+
+    const isAdmin = this.reflector.getAllAndOverride<boolean>(IS_ADMIN_KEY, [context.getHandler(), context.getClass()]);
+    if (isAdmin) {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new ForbiddenException('Token de administrador necessário.');
+      }
+      
+      const token = authHeader.split(' ')[1];
+      const expectedToken = Buffer.from(process.env.VITE_ADMIN_CREDENTIALS || 'admin@admin:admin123').toString('base64');
+      
+      if (token !== expectedToken) {
+        throw new ForbiddenException('Token de administrador inválido.');
+      }
+      return true;
+    }
+
     const res = context.switchToHttp().getResponse();
     const cookies = req.headers.cookie;
 
@@ -22,12 +39,12 @@ export class AuthGuard implements CanActivate {
 
     const getCookie = (name: string): string | undefined => {
       return cookies
-        .split("; ")
+        .split('; ')
         .find((cookie) => cookie.startsWith(`${name}=`))
-        ?.split("=")[1];
+        ?.split('=')[1];
     };
 
-    const token = getCookie(process.env.NEXT_SESSION_COOKIE);
+    const token = getCookie(process.env.NEXT_PUBLIC_SESSION_COOKIE);
     if (!token) return false;
 
     try {
@@ -40,11 +57,12 @@ export class AuthGuard implements CanActivate {
 
         if (daysSinceExpiration > 30) {
           LogoutUser(res);
-          throw new ForbiddenException("Conta expirada.");
+          throw new ForbiddenException('Conta expirada.');
         }
       }
 
-      req.user = { ...decoded.user };
+      req.user = {...decoded.user};
+
       return true;
     } catch (err) {
       LogoutUser(res);

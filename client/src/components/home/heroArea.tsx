@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import Image from "next/image"
 import {
   Carousel,
   CarouselContent,
@@ -8,7 +9,6 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
-import Image from "next/image"
 
 export default function HeroArea() {
   const images = [

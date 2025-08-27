@@ -193,7 +193,7 @@ O frontend estará disponível em `http://localhost:3000`.
 
    > npm start
 
-O backend estará disponível em `http://localhost:3001`.
+O backend estará disponível em `http://localhost:9000`.
 
 ---
 

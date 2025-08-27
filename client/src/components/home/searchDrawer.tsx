@@ -117,7 +117,7 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                                 <div className="space-y-4">
                                     {filteredProducts.map((product) => (
                                         <div key={product.id} className="border border-gray-200 rounded-lg p-4">
-                                            <ProductCard {...product} />
+                                            <ProductCard data={product} />
                                         </div>
                                     ))}
                                 </div>

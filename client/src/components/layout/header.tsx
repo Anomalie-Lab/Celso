@@ -66,7 +66,7 @@ export default function Header() {
     }
     console.log(isScrolled);
     setLastScrollY(currentScrollY);
-  }, [lastScrollY]);
+  }, [lastScrollY, isScrolled]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

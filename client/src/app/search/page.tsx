@@ -1,10 +1,21 @@
 "use client";
+import { FilterSearch } from "@/components/search/filters";
+import { AccordionSearch } from "@/components/ui/accordion";
 import { Order } from "@/components/ui/dropdown-menu";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 import ProductCard from "@/components/ui/productCard";
+import { priceRanges } from "@/data/pricesFilter";
 import { Product } from "@/types/productTypes";
 import { searchProducts } from "@/utils/productUtils";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import { IoFilterOutline } from "react-icons/io5";
 
 function SearchContent() {
@@ -45,7 +56,7 @@ function SearchContent() {
     return Number(price.replace("R$ ", "").replace(/\./g, "").replace(",", ".").trim());
   }
 
-  const fetchProduct = () => {
+  const fetchProduct = useCallback(() => {
     if (!q) return router.push("/");
 
     let filteredProduct = searchProducts(q);
@@ -101,11 +112,11 @@ function SearchContent() {
     }
     setTotalPage(Math.ceil(filteredProduct.length / maxPerPage));
     setResult(filteredProduct);
-  };
+  }, [q, filters, router]);
 
   useEffect(() => {
     fetchProduct();
-  }, [q, filters]);
+  }, [fetchProduct]);
 
   return (
     <main className="flex  w-full justify-center items-center">
@@ -139,7 +150,7 @@ function SearchContent() {
           <section className="flex-1 ">
             <div className="flex flex-row-reverse justify-between px-9">
               <h1 className="text-lg  mb-4">
-                <span>Resultados da pesquisa para '{q}'</span>
+                <span>Resultados da pesquisa para &lsquo;{q}&rsquo;</span>
               </h1>
               <div className="flex items-center justify-center gap-5">
                 <button onClick={() => setShowFilter(!showFilter)} className="bg-secondary px-2 text-white py-1 rounded-sm hidden lg:flex items-center justify-center gap-2 cursor-pointer">
@@ -156,7 +167,35 @@ function SearchContent() {
 
               {result.length === 0 && q && <p className="px-5">Nenhum produto encontrado </p>}
             </div>
-            {result.length > 0 && <Pagination page={page} setPage={setPage} totalPage={totalPage} />}
+            {result.length > 0 && (
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setPage(Math.max(0, page - 1))}
+                      className={page === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: totalPage }, (_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        onClick={() => setPage(i)}
+                        isActive={page === i}
+                        className="cursor-pointer"
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setPage(Math.min(totalPage - 1, page + 1))}
+                      className={page === totalPage - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </section>
         </div>
       </div>

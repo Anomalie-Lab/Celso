@@ -8,7 +8,7 @@ declare namespace Account {
     password?: string;
     phone: string | null;
     avatar: string;
-    birthdate: string | null;
+    birthdate: Date | null;
     role_id: number;
     document: string | null;
     enable_2fa: boolean;
@@ -26,5 +26,5 @@ declare namespace Account {
     data: any;
     deleted_at: Date | null;
     created_at: Date;
-}
+  }
 }

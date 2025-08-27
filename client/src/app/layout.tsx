@@ -1,11 +1,14 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/contexts/providers";
-import Header from "@/components/layout/header";
-import Footer from "@/sections/footer";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
 
 export default function RootLayout({
   children,
@@ -14,13 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased ${inter.variable}`}>
+      <body className={`${montserrat.variable} antialiased`}>
         <Providers>
+          <Toaster />
           <Header />
-          {children}
+          <div className="pt-32">{children}</div>
           <Footer />
         </Providers>
-        <Toaster />
       </body>
     </html>
   );

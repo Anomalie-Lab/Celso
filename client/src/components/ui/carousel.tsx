@@ -224,7 +224,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <ArrowRight/>
       <span className="sr-only">Next slide</span>
     </Button>
   )

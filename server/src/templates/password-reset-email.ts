@@ -1,0 +1,136 @@
+interface PasswordResetEmailData {
+  userName: string;
+  userEmail: string;
+  resetPasswordUrl: string;
+}
+
+export function PasswordResetEmailHtml(data: PasswordResetEmailData): string {
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha - Medicine Shop</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #FAFAFA; line-height: 1.6;">
+    
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #03624C; color: white; padding: 40px; text-align: center;">
+                            <h1 style="margin: 0; font-size: 28px; font-weight: 600;">Redefinir Senha</h1>
+                            <p style="margin: 8px 0 0 0; font-size: 16px; opacity: 0.9;">Solicitação de redefinição de senha</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            
+                            <!-- Message -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="text-align: center; margin-bottom: 30px;">
+                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, ${data.userName}!</h2>
+                                        <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin: 0; max-width: 480px; margin-left: auto; margin-right: auto;">
+                                            Recebemos uma solicitação para redefinir a senha da sua conta. Clique no botão abaixo para criar uma nova senha:
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Security Notice -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="background-color: #FEF3C7; padding: 20px; border-left: 4px solid #F59E0B;">
+                                        <h4 style="color: #92400E; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">⚠️ Importante</h4>
+                                        <p style="color: #92400E; margin: 0; font-size: 14px; line-height: 1.5;">
+                                            Este link é válido por 1 hora. Se você não solicitou esta redefinição, ignore este email.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- CTA Button -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <a href="${data.resetPasswordUrl}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Redefinir Senha
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Alternative Link -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 20px 0;">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
+                                            Se o botão não funcionar, copie e cole este link no seu navegador:<br>
+                                            <a href="${data.resetPasswordUrl}" style="color: #03624C; text-decoration: underline; word-break: break-all;">${data.resetPasswordUrl}</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Security Tips -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="background-color: #E8F5F2; padding: 20px; border-left: 4px solid #03624C;">
+                                        <h4 style="color: #03624C; margin: 0 0 12px 0; font-size: 16px; font-weight: 600;">Dicas de Segurança</h4>
+                                        <ul style="color: #1E2939; margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
+                                            <li>Use uma senha forte com pelo menos 8 caracteres</li>
+                                            <li>Combine letras maiúsculas, minúsculas, números e símbolos</li>
+                                            <li>Não compartilhe sua senha com ninguém</li>
+                                            <li>Use senhas diferentes para cada conta</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Divider -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="border-top: 1px solid #E2E8F0; height: 1px;"></td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Support Text -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
+                                            Se você tiver alguma dúvida, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@medicineshop.com</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #1E2939; color: white; padding: 30px 40px; text-align: center;">
+                            <p style="font-size: 12px; color: #94A3B8; margin: 0; line-height: 1.5;">
+                                Este email foi enviado para: ${data.userEmail}<br>
+                                © 2024 Medicine Shop. Todos os direitos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>`;
+}

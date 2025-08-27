@@ -1,15 +1,11 @@
 "use client";
+import { Order } from "@/components/ui/dropdown-menu";
+import ProductCard from "@/components/ui/productCard";
+import { Product } from "@/types/productTypes";
+import { searchProducts } from "@/utils/productUtils";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { searchProducts } from "@/utils/products";
-import { Product } from "@/types/products";
-import ProductCard from "@/components/ui/productCard";
 import { IoFilterOutline } from "react-icons/io5";
-import { FilterSearch } from "@/components/search/filters";
-import { Order } from "@/components/ui/dropdown-menu";
-import { AccordionSearch } from "@/components/ui/accordion";
-import { priceRanges } from "@/data/pricesFilter";
-import { Pagination } from "@/components/search/pagination";
 
 function SearchContent() {
   const router = useRouter();

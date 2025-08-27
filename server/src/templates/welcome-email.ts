@@ -1,0 +1,146 @@
+interface WelcomeEmailData {
+  userName: string;
+  userEmail: string;
+  loginUrl: string;
+}
+
+export function WelcomeEmailHtml(data: WelcomeEmailData): string {
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Medicine Shop!</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #FAFAFA; line-height: 1.6;">
+    
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #FAFAFA;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #03624C; color: white; padding: 40px; text-align: center;">
+                            <h1 style="margin: 0; font-size: 28px; font-weight: 600;">Bem-vindo ao Medicine Shop</h1>
+                            <p style="margin: 8px 0 0 0; font-size: 16px; opacity: 0.9;">Sua jornada começa aqui</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            
+                            <!-- Welcome Message -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="text-align: center; margin-bottom: 30px;">
+                                        <h2 style="color: #1E2939; font-size: 24px; margin: 0 0 16px 0; font-weight: 600;">Olá, ${data.userName}!</h2>
+                                        <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin: 0; max-width: 480px; margin-left: auto; margin-right: auto;">
+                                            Estamos muito felizes em tê-lo conosco! Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Special Offer -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="background-color: #FAFAFA; padding: 24px; text-align: center; border: 1px solid #E2E8F0;">
+                                        <h3 style="color: #03624C; margin: 0 0 12px 0; font-size: 18px; font-weight: 600;">Presente de Boas-vindas</h3>
+                                        <p style="color: #64748B; margin: 0 0 16px 0; font-size: 14px;">Para celebrar sua chegada, você ganhou um desconto especial:</p>
+                                        
+                                        <div style="background-color: #03624C; color: white; padding: 12px 20px; font-weight: 600; font-size: 16px; display: inline-block; margin: 8px 0;">
+                                            BEMVINDO20
+                                        </div>
+                                        
+                                        <p style="color: #03624C; margin: 12px 0 0 0; font-size: 14px; font-weight: 600;">20% de desconto na sua primeira compra</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Features -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td>
+                                        <h3 style="color: #1E2939; margin: 0 0 20px 0; font-size: 20px; font-weight: 600; text-align: center;">O que você pode fazer aqui</h3>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Feature 1 -->
+                                <tr>
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
+                                        <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Produtos Exclusivos</h4>
+                                        <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Acesse nossa seleção premium de produtos com os melhores preços do mercado</p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Feature 2 -->
+                                <tr>
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
+                                        <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Ofertas Personalizadas</h4>
+                                        <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Receba notificações sobre ofertas especiais criadas especialmente para você</p>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Feature 3 -->
+                                <tr>
+                                    <td style="padding: 20px; background-color: #FAFAFA; margin: 12px 0; border-left: 4px solid #03624C;">
+                                        <h4 style="color: #03624C; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">Experiência Mobile</h4>
+                                        <p style="margin: 0; color: #64748B; font-size: 14px; line-height: 1.5;">Use nossa plataforma de qualquer dispositivo, a qualquer hora</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- CTA Button -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <a href="${data.loginUrl}" style="display: inline-block; background-color: #03624C; color: white; text-decoration: none; padding: 16px 32px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Acessar Minha Conta
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Divider -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="border-top: 1px solid #E2E8F0; height: 1px;"></td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Support Text -->
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <p style="color: #64748B; font-size: 13px; margin: 0; line-height: 1.5;">
+                                            Se você tiver alguma dúvida, entre em contato conosco através do email: <strong style="color: #03624C;">suporte@medicineshop.com</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #1E2939; color: white; padding: 30px 40px; text-align: center;">
+                            <p style="font-size: 12px; color: #94A3B8; margin: 0; line-height: 1.5;">
+                                Este email foi enviado para: ${data.userEmail}<br>
+                                © 2024 Medicine Shop. Todos os direitos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>`;
+}

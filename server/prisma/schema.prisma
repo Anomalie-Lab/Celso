@@ -7,37 +7,37 @@ datasource db {
   url      = env("NEXT_DATABASE_URL")
 }
 
-enum RoleEnum {
-  ADMIN
-  USER
-}
-
 model Role {
   id         Int      @id @default(autoincrement())
-  name       RoleEnum @unique
+  name       String   @unique
   created_at DateTime @default(now())
   User       User[]
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  google_id    String?
-  fullname     String 
-  username     String         @unique
-  email        String         @unique
-  password     String
-  phone        String?
-  avatar       String         @default("https://lh3.googleusercontent.com/a/ACg8ocIjS-kV3SknQdY5dBfUaWuK0kp4WtnhGK89iRlo5OvjIdGGcjM=s96-c")
-  birthdate    String?
-  role_id      Int            @default(2)
-  document     String?        @unique
-  enable_2fa   Boolean        @default(false)
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  Role         Role           @relation(fields: [role_id], references: [id])
-  Address      Address[]
-  Card         Card[]
-  Notification Notification[]
+  id            Int      @id @default(autoincrement())
+  google_id     String?
+  fullname      String
+  username      String   @unique
+  email         String   @unique
+  password      String
+  phone         String?
+  avatar        String   @default("https://lh3.googleusercontent.com/a/default-avatar")
+  birthdate     DateTime?
+  role_id       Int      @default(2)
+  document      String?  @unique
+  enable_2fa    Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  role          Role     @relation(fields: [role_id], references: [id])
+  addresses     Address[]
+  cards         Card[]
+  notifications Notification[]
+  comments      ProductComment[]
+  carts         Cart[]
+  transactions  Transaction[]
+  wishlists     Wishlist[]
 
   @@map("users")
 }
@@ -62,10 +62,10 @@ model Address {
 }
 
 model Card {
-  id              Int     @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   user_id         Int
-  user            User    @relation(fields: [user_id], references: [id])
-  primary         Boolean @default(false)
+  user            User     @relation(fields: [user_id], references: [id])
+  primary         Boolean  @default(false)
   number          String
   name            String
   expiration_date String
@@ -99,4 +99,237 @@ model PasswordReset {
   created_at DateTime @default(now())
 
   @@map("password_resets")
+}
+
+model Product {
+  id                Int      @id @default(autoincrement())
+  title             String
+  summary           String   @db.Text
+  description       String   @db.Text
+  brand             String
+  price             Decimal  @db.Decimal(10, 2)
+  last_price        Decimal  @db.Decimal(10, 2)
+  installments      Int      @default(12)
+  blur              String?  @db.Text
+  details           Json?
+  flags             Json?
+  categories        Json?
+  sizes             Json?
+  stock             Int      @default(0)
+  views             Int      @default(0)
+  added_to_cart     Int      @default(0)
+  added_to_wishlist Int      @default(0)
+
+  updated_at DateTime @updatedAt
+  created_at DateTime @default(now())
+
+  comments   ProductComment[]
+  cart_items CartItem[]
+  wishlist_items WishlistItem[]
+  invoices   InvoiceItem[]
+
+  @@map("products")
+}
+
+model ProductComment {
+  id          Int     @id @default(autoincrement())
+  message     String
+  rating      Int
+  attachments Json?
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  product_id Int
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("product_comments")
+}
+
+model Cart {
+  id         Int        @id @default(autoincrement())
+  user_id    Int
+  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  items      CartItem[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  @@map("carts")
+}
+
+model CartItem {
+  id       Int    @id @default(autoincrement())
+  quantity Int
+  size     String
+  color    String
+
+  cart_id Int
+  cart    Cart @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+
+  product_id Int
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("cart_items")
+}
+
+model Wishlist {
+  id         Int         @id @default(autoincrement())
+  user_id    Int
+  user       User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  items      WishlistItem[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+
+  @@map("wishlists")
+}
+
+model WishlistItem {
+  id           Int       @id @default(autoincrement())
+  wishlist_id  Int
+  wishlist     Wishlist  @relation(fields: [wishlist_id], references: [id], onDelete: Cascade)
+
+  product_id   Int
+  product      Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+
+  @@unique([wishlist_id, product_id])
+  @@map("wishlist_items")
+}
+
+model Coupon {
+  id                  Int       @id @default(autoincrement())
+  code                String
+  valid_categories    Json
+  valid_brands        Json
+  valid_products      Json
+  valid_all           Boolean   @default(false)
+  start_date          DateTime?
+  discount_amount     Decimal?  @db.Decimal(10, 2)
+  discount_percentage Int
+  end_date            DateTime?
+
+  Invoice Invoice[]
+
+  @@map("coupons")
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  invoices  Invoice[]
+  histories History[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("transactions")
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  SHIPPED
+  RECEIVED
+  COMPLETED
+}
+
+model History {
+  id Int @id @default(autoincrement())
+
+  status Status
+  text   String
+
+  transaction_id Int
+  transaction    Transaction @relation(fields: [transaction_id], references: [id], onDelete: Cascade)
+
+  deliveries Delivery[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum DeliveryStatus {
+  CONFIRMED
+  PREPARING
+  PACKAGED
+  READY_FOR_SHIPPING
+  SHIPPED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  RECEIVED
+  COMPLETED
+}
+
+model Delivery {
+  id Int @id @default(autoincrement())
+
+  status          DeliveryStatus
+  tracking_number String?
+  message         String?
+
+  history_id Int
+  history    History @relation(fields: [history_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("deliveries")
+}
+
+model Invoice {
+  id                 Int     @id @default(autoincrement())
+  subtotal           Decimal? @db.Decimal(10,2)
+  total_amount       Decimal? @db.Decimal(10,2)
+  freight_provider   String?
+  freight_fee        Decimal? @default(0.00) @db.Decimal(10,2)
+  payment_method_fee Decimal  @default(0.00) @db.Decimal(10,2)
+  processing_fee     Decimal  @default(0.00) @db.Decimal(10,2)
+  coupon_discount    Decimal  @default(0.00) @db.Decimal(10,2)
+
+  receiver_first_name   String?
+  receiver_last_name    String?
+  receiver_country_name String?
+  receiver_state        String?
+  receiver_city         String?
+  receive_postcode      String?
+  receiver_address      String?
+
+  coupon_id Int?
+  coupon    Coupon?   @relation(fields: [coupon_id], references: [id])
+
+  transaction_id Int
+  transaction    Transaction @relation(fields: [transaction_id], references: [id], onDelete: Cascade)
+
+  items InvoiceItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id         Int     @id @default(autoincrement())
+
+  invoice_id Int
+  invoice    Invoice @relation(fields: [invoice_id], references: [id], onDelete: Cascade)
+
+  product_id Int
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  quantity Int
+  price    Decimal @db.Decimal(10, 2)
+
+  created_at DateTime @default(now())
 }

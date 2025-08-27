@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import Image from "next/image"
 
 export default function HeroArea() {
   const images = [
@@ -46,9 +47,11 @@ return (
           {images.map((image, index) => (
             <CarouselItem key={index} className="h-full w-full basis-full">
               <div className="relative h-full w-full">
-                <img
+                <Image
                   src={image}
                   alt={`Hero banner ${index + 1}`}
+                  width={1080}
+                  height={1080}
                   className="w-full h-full object-cover object-center"
                   onError={(e) => {
                     console.error('Erro ao carregar imagem:', image);
@@ -59,8 +62,8 @@ return (
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-4 z-20" />
-        <CarouselNext className="right-4 z-20" />
+        <CarouselPrevious className="left-4 z-20 cursor-pointer bg-transparent text-white hover:bg-white hover:text-black hover:border-none" />
+        <CarouselNext className="right-4 z-20 cursor-pointer bg-transparent text-white hover:bg-white hover:text-black hover:border-none" />
       </Carousel>
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
         {images.map((_, index) => (

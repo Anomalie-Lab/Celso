@@ -60,7 +60,7 @@ export default function AccountSidebar({ activeTab, onTabChange }: AccountSideba
               className={`w-full flex items-center border border-gray-100 gap-4 p-3 rounded-lg text-left cursor-pointer transition-all duration-200 ${
                 isActive
                   ? "bg-primary text-primary"
-                  : "text-gray-600 hover:text-gray-800 hover:text-primary hover:bg-primary-50 group"
+                  : "text-gray-600 hover:text-primary hover:bg-primary-50 group"
               }`}
             >
               <Icon className={`w-5 h-5 group-hover:text-primary ${isActive ? "text-white" : "text-gray-500"}`} />

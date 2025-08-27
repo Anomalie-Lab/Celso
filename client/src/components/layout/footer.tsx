@@ -195,7 +195,7 @@ export default function Footer() {
               </div>
               <p className="text-gray-500 text-xs mt-3">
                 Ao se inscrever, você concorda com nossa 
-                <button onClick={() => navigate.push('/politica-privacidade')} className="text-primary hover:underline"> Política de Privacidade</button>.
+                <button onClick={() => navigate.push('/politica-privacidade')} className="text-primary hover:underline cursor-pointer"> Política de Privacidade</button>.
               </p>
             </div>
           </div>
@@ -215,11 +215,11 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <span className="text-gray-500 text-sm mr-2">Formas de Pagamento:</span>
               <div className="flex items-center gap-4">            
-                <img src="/images/visa.png" width={50} height={50} alt="Visa" />
+                <Image src="/images/visa.png" width={50} height={50} alt="Visa" />
 
-                <img src="/images/mastercard.png" width={50} height={50} alt="Mastercard" />    
+                <Image src="/images/mastercard.png" width={50} height={50} alt="Mastercard" />    
 
-                <img src="/images/pix.png" width={50} height={50} alt="Pix" />    
+                <Image src="/images/pix.png" width={50} height={50} alt="Pix" />    
                 
               </div>
             </div>

@@ -1,11 +1,12 @@
 "use client"
 
 import { getProducts } from "@/utils/productUtils";
+import Image from "next/image";
 import { LuHeart, LuTrash2, LuEye } from "react-icons/lu";
 import { PiBasket } from "react-icons/pi";
 
 export default function WishesTab() {
-  const products = getProducts().slice(0, 6); // Pegando apenas 6 produtos para exemplo
+  const products = getProducts().slice(0, 6);
 
   return (
     <div className="space-y-6">
@@ -27,7 +28,7 @@ export default function WishesTab() {
           </label>
         </div>
         <div className="flex items-center gap-2">
-          <button className="px-4 py-3 border border-gray-300 rounded-lg transition-colors text-sm flex items-center gap-2">
+          <button className="px-4 py-3 border border-gray-300 rounded-lg transition-colors text-sm flex items-center gap-2 cursor-pointer">
             <LuTrash2 className="w-4 h-4 text-gray-500" />
             Remover Selecionados
           </button>
@@ -38,13 +39,15 @@ export default function WishesTab() {
         {products.map((product) => (
           <div key={product.id} className="bg-white rounded-lg border border-gray-100  overflow-hidden">
             <div className="relative h-48 bg-gray-100">
-              <img
+              <Image
                 src={product.image}
+                width={1080}
+                height={1080}
                 alt={product.productName}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-3 right-3">
-                <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
+                <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
                   <LuHeart className="w-4 h-4" />
                 </button>
               </div>
@@ -55,14 +58,10 @@ export default function WishesTab() {
                 <h3 className="font-semibold text-gray-800 text-sm leading-tight">
                   {product.productName}
                 </h3>
-                <button className="w-6 h-6 text-gray-400 hover:text-red-500 transition-colors">
+                <button className="w-6 h-6 text-gray-400 hover:text-red-500 transition-colors cursor-pointer">
                   <LuTrash2 className="w-4 h-4" />
                 </button>
               </div>
-
-              <p className="text-gray-600 text-xs mb-3 line-clamp-2">
-                {product.description}
-              </p>
 
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center">
@@ -89,12 +88,9 @@ export default function WishesTab() {
               </div>
 
               <div className="flex items-center gap-2">
-                <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-lg transition-colors text-sm">
+                <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-lg transition-colors text-sm cursor-pointer">
                   <PiBasket className="w-4 h-4" />
                   Adicionar ao Carrinho
-                </button>
-                <button className="px-4 py-3 border border-gray-200 text-gray-700 rounded-lg">
-                  <LuEye className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -109,7 +105,7 @@ export default function WishesTab() {
           <p className="text-gray-500 mb-6">
             Adicione produtos à sua lista de desejos para encontrá-los facilmente depois
           </p>
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
             Continuar Comprando
           </button>
         </div>

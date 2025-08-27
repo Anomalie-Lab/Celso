@@ -1,7 +1,5 @@
 "use client"
-
-import { LucideCheckCircle } from "lucide-react";
-import { LuPackage, LuTruck, LuClock, LuEye, LuDownload } from "react-icons/lu";
+import { LuPackage, LuTruck, LuEye, LuDownload } from "react-icons/lu";
 
 export default function OrdersTab() {
   const orders = [
@@ -43,32 +41,6 @@ export default function OrdersTab() {
     }
   ];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Entregue":
-        return <LucideCheckCircle className="w-5 h-5 text-green-600" />;
-      case "Em Transporte":
-        return <LuTruck className="w-5 h-5 text-blue-600" />;
-      case "Processando":
-        return <LuClock className="w-5 h-5 text-yellow-600" />;
-      default:
-        return <LuPackage className="w-5 h-5 text-gray-600" />;
-    }
-  };
-
-  const getStatusColor = (color: string) => {
-    switch (color) {
-      case "green":
-        return "bg-green-100 text-green-800";
-      case "blue":
-        return "bg-blue-100 text-blue-800";
-      case "yellow":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -79,16 +51,16 @@ export default function OrdersTab() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">
+        <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium cursor-pointer">
           Todos
         </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
           Processando
         </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
           Em Transporte
         </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
           Entregues
         </button>
       </div>
@@ -105,12 +77,12 @@ export default function OrdersTab() {
                   </div>
                   <span className="text-sm text-gray-500">{order.date}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.statusColor)}`}>
                     {order.status}
                   </span>
                   {getStatusIcon(order.status)}
-                </div>
+                </div> */}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -131,17 +103,17 @@ export default function OrdersTab() {
               </div>
 
               <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg">
+                <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg cursor-pointer">
                   <LuEye className="w-4 h-4" />
                   Ver Detalhes
                 </button>
                 {order.tracking && (
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
                     <LuTruck className="w-4 h-4" />
                     Rastrear
                   </button>
                 )}
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
                   <LuDownload className="w-4 h-4" />
                   Nota Fiscal
                 </button>
@@ -152,13 +124,13 @@ export default function OrdersTab() {
       </div>
 
       <div className="flex items-center justify-center gap-2">
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
           Anterior
         </button>
-        <button className="px-3 py-2 bg-primary text-white rounded-lg">1</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">2</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">3</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+        <button className="px-3 py-2 bg-primary text-white rounded-lg cursor-pointer">1</button>
+        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">2</button>
+        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">3</button>
+        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
           Próxima
         </button>
       </div>

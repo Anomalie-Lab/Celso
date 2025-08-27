@@ -101,17 +101,17 @@ export default function Header() {
                 <div className="">
                     <div className="flex items-center justify-between px-24">
                         <div className="hidden lg:flex items-center space-x-8">
-                            <button onClick={() => router.push('/produtos')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm">
-                                Produtos
+                            <button onClick={() => router.push('/produtos')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+                                Autoclave
                             </button>
-                            <button onClick={() => router.push('/categorias')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm">
-                                Categorias
+                            <button onClick={() => router.push('/categorias')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+                                Estética
                             </button>
-                            <button onClick={() => router.push('/sobre-nos')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm">
-                                Sobre Nós
+                            <button onClick={() => router.push('/sobre-nos')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+                                Micropigmentação
                             </button>
-                            <button onClick={() => router.push('/fale-conosco')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm">
-                                Contato
+                            <button onClick={() => router.push('/fale-conosco')} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+                                Macas
                             </button>
                         </div>
                         <div className="">
@@ -162,7 +162,7 @@ export default function Header() {
                                 </span>
                             </button>
                               <button 
-                                className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
+                                className="p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer"
                             >
                                 <IoMdNotificationsOutline className="w-5 h-5 text-gray-600" />
                                 <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">

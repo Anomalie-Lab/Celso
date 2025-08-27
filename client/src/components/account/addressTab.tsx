@@ -47,7 +47,7 @@ export default function AddressTab() {
         </div>
         <button
           onClick={() => setShowAddForm(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg cursor-pointer"
         >
           <LuPlus className="w-4 h-4" />
           Adicionar Endereço
@@ -73,10 +73,10 @@ export default function AddressTab() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <button className="p-1 text-gray-400 hover:text-blue-600 transition-colors">
+                  <button className="p-1 text-gray-400 hover:text-blue-600 transition-colors cursor-pointer">
                     <LucideEdit className="w-4 h-4" />
                   </button>
-                  <button className="p-1 text-gray-400 hover:text-red-600 transition-colors">
+                  <button className="p-1 text-gray-400 hover:text-red-600 transition-colors cursor-pointer">
                     <LuTrash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -96,11 +96,11 @@ export default function AddressTab() {
 
               <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
                 {!address.isDefault && (
-                  <button className="text-sm text-primary-500 hover:text-primary font-medium">
+                  <button className="text-sm text-primary-500 hover:text-primary font-medium cursor-pointer">
                     Definir como Padrão
                   </button>
                 )}
-                <button className="text-sm text-gray-600 hover:text-gray-800">
+                <button className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
                   Usar para Entrega
                 </button>
               </div>
@@ -116,16 +116,16 @@ export default function AddressTab() {
               <h2 className="text-xl font-semibold text-gray-800">Adicionar Novo Endereço</h2>
               <button
                 onClick={() => setShowAddForm(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4 text-gray-700">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Tipo de Endereço
                   </label>
                   <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -135,7 +135,7 @@ export default function AddressTab() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Nome Completo
                   </label>
                   <input
@@ -147,7 +147,7 @@ export default function AddressTab() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium mb-1">
                   Endereço
                 </label>
                 <input
@@ -158,7 +158,7 @@ export default function AddressTab() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium mb-1">
                   Complemento
                 </label>
                 <input
@@ -170,7 +170,7 @@ export default function AddressTab() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Bairro
                   </label>
                   <input
@@ -180,7 +180,7 @@ export default function AddressTab() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Cidade
                   </label>
                   <input
@@ -190,7 +190,7 @@ export default function AddressTab() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Estado
                   </label>
                   <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -204,7 +204,7 @@ export default function AddressTab() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium mb-1">
                   CEP
                 </label>
                 <input
@@ -216,7 +216,7 @@ export default function AddressTab() {
 
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="default" className="w-4 h-4 text-blue-600 rounded" />
-                <label htmlFor="default" className="text-sm text-gray-700">
+                <label htmlFor="default" className="text-sm">
                   Definir como endereço padrão
                 </label>
               </div>
@@ -225,13 +225,13 @@ export default function AddressTab() {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
                 >
                   Salvar Endereço
                 </button>
@@ -250,7 +250,7 @@ export default function AddressTab() {
           </p>
           <button
             onClick={() => setShowAddForm(true)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
           >
             Adicionar Primeiro Endereço
           </button>

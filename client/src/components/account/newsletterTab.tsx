@@ -128,10 +128,10 @@ export default function NewsletterTab() {
           <p className="text-sm text-gray-600">Suas preferências serão aplicadas imediatamente</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-primary text-white rounded-lg transition-colors">
+          <button className="px-6 py-2 bg-primary text-white rounded-lg transition-colors cursor-pointer">
             Salvar Alterações
           </button>
         </div>

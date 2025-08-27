@@ -106,7 +106,7 @@ export function LoginAuth({isOpen, toggleDialog, authPage, onAuthPageChange}: Di
                 <p className="text-sm text-gray-600">
                 Não tem uma conta?{" "}
                 <button onClick={() => onAuthPageChange?.("Register")} className="text-primary hover:underline font-medium cursor-pointer">
-                    Cadastre-se aqui
+                    Cadastrar
                 </button>
                 </p>
             </div>
@@ -165,7 +165,7 @@ export function LoginAuth({isOpen, toggleDialog, authPage, onAuthPageChange}: Di
                 <p className="text-sm text-gray-600">
                 Já possui uma conta?{" "}
                 <button onClick={() => onAuthPageChange?.("Login")} className="text-primary hover:underline font-medium cursor-pointer">
-                    Logar aqui
+                    Entrar
                 </button>
                 </p>
             </div>

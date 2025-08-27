@@ -1,4 +1,5 @@
-import { Product } from "@/types/products";
+import { Product } from "@/types/productTypes";
+import Image from "next/image";
 import { LuHeart, LuStar } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 
@@ -26,26 +27,31 @@ export default function ProductCard({
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 relative w-ful transition-shadow cursor-pointer">
+    <div className="bg-white rounded-lg p-4 relative w-full transition-shadow cursor-pointer">
 
-      {/* Selo de desconto */}
       <div className="absolute top-10 left-10 bg-primary-100 text-primary-500 text-[10px] font-bold px-2 py-1 rounded-full z-10">
         {discount}
       </div>
 
-      {/* Ícone de favorito */}
-      <button className="absolute top-10 right-10 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10">
+      <button className="absolute top-10 right-10 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 cursor-pointer">
         <LuHeart className="w-4 h-4 text-gray-800" />
       </button>
 
       {/* Imagem do produto */}
       <div className="relative mb-4">
-        <div className="w-full h-68 bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden" style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="w-full h-68 bg-gray-100 rounded-lg overflow-hidden relative">
+          <Image
+            src={image}
+            width={100}
+            height={100}
+            alt="Imagem de fundo"
+            className="w-full h-full object-cover transform transition-transform duration-500 ease-in-out hover:scale-110"
+          />
         </div>
       </div>
 
       {/* Botão Adicionar */}
-      <button className="w-full bg-primary text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-500 cursor-pointer">
+      <button className="w-full bg-primary text-white py-3 rounded-lg font-regular flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-500 cursor-pointer">
         <PiBasketLight className="w-5 h-5" />
         Adicionar
       </button>

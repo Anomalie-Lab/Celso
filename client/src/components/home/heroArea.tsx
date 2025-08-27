@@ -34,7 +34,7 @@ export default function HeroArea() {
 
 
 return (
-    <div className="relative h-[720px] w-full overflow-hidden cursor-pointer">
+    <div className="relative h-[700px] w-full overflow-hidden cursor-pointer">
       <Carousel 
         setApi={setApi} 
         className="h-full w-full"
@@ -50,8 +50,9 @@ return (
                 <Image
                   src={image}
                   alt={`Hero banner ${index + 1}`}
-                  fill
-                  className="object-cover object-center"
+                  width={1080}
+                  height={1080}
+                  className="w-full h-full object-cover object-center"
                   onError={(e) => {
                     console.error('Erro ao carregar imagem:', image);
                     e.currentTarget.style.display = 'none';
@@ -61,8 +62,8 @@ return (
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-4 z-20" />
-        <CarouselNext className="right-4 z-20" />
+        <CarouselPrevious className="left-4 z-20 cursor-pointer bg-transparent text-white hover:bg-white hover:text-black hover:border-none" />
+        <CarouselNext className="right-4 z-20 cursor-pointer bg-transparent text-white hover:bg-white hover:text-black hover:border-none" />
       </Carousel>
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
         {images.map((_, index) => (

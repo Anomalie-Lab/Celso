@@ -1,15 +1,18 @@
+"use client"
+import { useRouter } from "next/navigation";
 import { LuInfo } from "react-icons/lu";
 
 export default function Newsletter() {
+  const router = useRouter();
   return (
     <section className="bg-secondary py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
           <div className="space-y-4">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white">
+            <h2 className="text-3xl font-bold text-white">
               RECEBA NOVIDADES E PROMOÇÕES
             </h2>
-            <p className="text-white text-md leading-relaxed">
+            <p className="text-white text-sm leading-relaxed">
               Cadastre-se e receba promoções exclusivas e saiba tudo antes de todo mundo !
             </p>
           </div>
@@ -26,14 +29,14 @@ export default function Newsletter() {
                 className="w-full px-4 py-3 bg-gray-700 text-white placeholder-gray-400 rounded-lg border border-gray-600 focus:outline-none transition-colors"
               />
             </div>
-            <button className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold  transition-colors cursor-pointer">
+            <button className="w-full bg-primary text-white py-3 px-6 rounded-lg font-regular  transition-colors cursor-pointer">
               Cadastre-se
             </button>
             <p className="text-gray-400 text-sm text-center">
               Ao se cadastrar você aceita nossa{" "}
-              <a href="#" className="text-white underline hover:text-primary-500 transition-colors">
+              <button onClick={() => router.push('/politica-privacidade')} className="text-white underline hover:text-primary-500 transition-colors cursor-pointer">
                 Política de Privacidade e Segurança
-              </a>
+              </button>
               .
             </p>
           </div>

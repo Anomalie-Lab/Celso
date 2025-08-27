@@ -18,7 +18,7 @@ const useSocket = () => {
         socket.disconnect();
       };
     }
-  }, [user?.id]);
+  }, [user?.id, setNotifications]);
 
   return null;
 };

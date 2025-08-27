@@ -42,3 +42,11 @@ export const SchemaContact = yup.object({
   phone: yup.string().required("Telefone é obrigatório").min(11, "Telefone inválido"),
   txt_message: yup.string().required("Mensagem é obrigatória"),
 });
+
+export interface FormDataForgotPassword {
+  email: string;
+}
+
+export const SchemaForgotPassword = yup.object({
+  email: yup.string().email("Email inválido").required("Email é obrigatório"),
+});

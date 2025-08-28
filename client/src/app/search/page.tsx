@@ -16,6 +16,7 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const [categories, setCategories] = useState<string[]>([]);
   const [discount, setDiscount] = useState<string[]>([]);
+  const [quantity,setQuantity] = useState<number>(0);
   const [filters, setFilters] = useState({
     category: "",
     discount: "",
@@ -98,6 +99,7 @@ function SearchContent() {
       });
     }
     setTotalPage(Math.ceil(filteredProduct.length / maxPerPage));
+    setQuantity(filteredProduct.length)
     setResult(filteredProduct);
   }, [q, filters, router]);
 
@@ -106,9 +108,11 @@ function SearchContent() {
   }, [fetchProduct]);
 
   return (
-    <main className="flex  w-full justify-center items-center mt-10">
-      <div className="flex flex-col w-full px-2 lg:px-24">
+    <main className="flex flex-col w-full justify-center items-center mt-10">
+      
+      <div className="flex flex-col w-full px-2 lg:px-24 justify-between items-center">
         {/* Filtros */}
+       
         <div className="flex w-full px-2 ">
           {showFilter && (
             <section className=" w-60  hidden 2xl:block mt-2">
@@ -130,12 +134,16 @@ function SearchContent() {
 
           {/* Produtos */}
           <section className="flex-1 ">
-            <div className="flex items-start justify-start gap-5 pl-9">
-              <button onClick={() => setShowFilter(!showFilter)} className="bg-[#F9F9F9] px-3 py-2 rounded-sm text-sm hidden lg:flex items-center justify-center gap-2 cursor-pointer">
-                Filtros
-                <IoFilterOutline />
-              </button>
-              <Order sortOption={filters.sort} setSortOption={(value) => setFilters((prev) => ({ ...prev, sort: value }))} />
+            <div className =  "flex justify-between px-9 items-center">
+              <div className="flex items-start justify-start gap-5 ">
+                <button onClick={() => setShowFilter(!showFilter)} className="bg-[#F9F9F9] px-3 py-2 rounded-sm text-sm hidden lg:flex items-center justify-center gap-2 cursor-pointer">
+                  Filtros
+                  <IoFilterOutline />
+                </button>
+                <Order sortOption={filters.sort} setSortOption={(value) => setFilters((prev) => ({ ...prev, sort: value }))} />
+              </div>
+              <p className="underline underline-offset-4">{quantity} resultados para <span className="text-primary">{q}</span></p>
+             
             </div>
 
             <div className="grid gap-4  grid-cols-2  md:grid-cols-3 xl:grid-cols-4 px-4">
@@ -143,7 +151,7 @@ function SearchContent() {
                 <ProductCard key={product.id} data={product} />
               ))}
 
-              {result.length === 0 && q && <p className="px-6">Nenhum produto encontrado </p>}
+              {result.length === 0 && q && <p className="px-9">Nenhum produto encontrado </p>}
             </div>
             {result.length > 0 && (
               <Pagination>

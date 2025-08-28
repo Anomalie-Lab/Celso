@@ -68,7 +68,24 @@ export class AccountController {
     return res.status(HttpStatus.OK).json(data);
   }
 
-  // Orders read-only
+  @Get('stats')
+  @ApiOperation({summary: 'Get User Statistics', description: 'Get user account statistics including orders, wishlist, addresses count and recent activities'})
+  @ApiResponse({status: 200, description: 'User statistics retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserStats(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserStats(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Get('activities')
+  @ApiOperation({summary: 'Get User Recent Activities', description: 'Get user recent activities including orders, wishlist additions, address changes'})
+  @ApiResponse({status: 200, description: 'User activities retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserActivities(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserActivities(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
   @Get('orders/:id')
   @isPublic()
   @ApiOperation({summary: 'Get order by ID'})

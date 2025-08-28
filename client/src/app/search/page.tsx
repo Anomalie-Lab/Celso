@@ -2,14 +2,7 @@
 import { FilterSearch } from "@/components/search/filters";
 import { AccordionSearch } from "@/components/ui/accordion";
 import { Order } from "@/components/ui/dropdown-menu";
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import ProductCard from "@/components/ui/productCard";
 import { priceRanges } from "@/data/pricesFilter";
 import { Product } from "@/types/productTypes";
@@ -37,17 +30,9 @@ function SearchContent() {
   const maxPerPage = 20;
 
   const handleFilterChange = (type: "discount" | "price" | "category" | "sort", value: string) => {
-    setFilters((prev) => ({ ...prev, [type]: value }));
+    setFilters((prev) => ({ ...prev, [type]: prev[type] === value ? "" : value }));
   };
 
-  const clearFilter = () => {
-    setFilters({
-      category: "",
-      sort: "",
-      discount: "",
-      price: "",
-    });
-  };
   function parseDiscount(discount: string): number {
     return Number(discount.replace("% OFF", "").trim()) || 0;
   }
@@ -62,11 +47,13 @@ function SearchContent() {
     let filteredProduct = searchProducts(q);
 
     setCategories([...new Set(filteredProduct.map((product) => product.category))]);
-    setDiscount([...new Set(filteredProduct.map((product) => product.discount))]);
+    setDiscount([...new Set(filteredProduct.map((product) => product.discount))].sort((a, b) => parseDiscount(a) - parseDiscount(b)));
 
     if (filters.category) filteredProduct = filteredProduct.filter((p) => p.category === filters.category);
 
-    if (filters.discount) filteredProduct = filteredProduct.filter((p) => p.discount === filters.discount);
+    if (filters.discount) {
+      filteredProduct = filteredProduct.filter((p) => p.discount === filters.discount);
+    }
 
     // ordenação
     switch (filters.sort) {
@@ -119,18 +106,18 @@ function SearchContent() {
   }, [fetchProduct]);
 
   return (
-    <main className="flex  w-full justify-center items-center">
+    <main className="flex  w-full justify-center items-center mt-10">
       <div className="flex flex-col w-full px-2 lg:px-24">
         {/* Filtros */}
-        <div className="flex w-full px-2">
+        <div className="flex w-full px-2 ">
           {showFilter && (
-            <section className=" w-60  hidden 2xl:block">
+            <section className=" w-60  hidden 2xl:block mt-2">
               <div>
                 <AccordionSearch nameFilter="Categorias" defaultOpen={true}>
                   <FilterSearch filteredCategory={categories} selectedCategory={filters.category} onChangeCategory={(value) => handleFilterChange("category", value)} />
                 </AccordionSearch>
 
-                <AccordionSearch nameFilter="Descontos">
+                <AccordionSearch nameFilter="Descontos" defaultOpen={true}>
                   <FilterSearch filteredDiscount={discount} selectedDiscount={filters.discount} onChangeDiscount={(value) => handleFilterChange("discount", value)} />
                 </AccordionSearch>
 
@@ -138,60 +125,41 @@ function SearchContent() {
                   <FilterSearch filteredPrices={priceRanges} selectedPrice={filters.price} onChangePrice={(value) => handleFilterChange("price", value)} />
                 </AccordionSearch>
               </div>
-              {showFilter && (
-                <button onClick={clearFilter} className="bg-secondary rounded-sm px-4 text-white py-1 text-sm cursor-pointer">
-                  Limpar filtro
-                </button>
-              )}
             </section>
           )}
 
           {/* Produtos */}
           <section className="flex-1 ">
-            <div className="flex flex-row-reverse justify-between px-9">
-              <h1 className="text-lg  mb-4">
-                <span>Resultados da pesquisa para &lsquo;{q}&rsquo;</span>
-              </h1>
-              <div className="flex items-center justify-center gap-5">
-                <button onClick={() => setShowFilter(!showFilter)} className="bg-secondary px-2 text-white py-1 rounded-sm hidden lg:flex items-center justify-center gap-2 cursor-pointer">
-                  Filtros
-                  <IoFilterOutline />
-                </button>
-                <Order sortOption={filters.sort} setSortOption={(value) => setFilters((prev) => ({ ...prev, sort: value }))} />
-              </div>
+            <div className="flex items-start justify-start gap-5 pl-9">
+              <button onClick={() => setShowFilter(!showFilter)} className="bg-[#F9F9F9] px-3 py-2 rounded-sm text-sm hidden lg:flex items-center justify-center gap-2 cursor-pointer">
+                Filtros
+                <IoFilterOutline />
+              </button>
+              <Order sortOption={filters.sort} setSortOption={(value) => setFilters((prev) => ({ ...prev, sort: value }))} />
             </div>
+
             <div className="grid gap-4  grid-cols-2  md:grid-cols-3 xl:grid-cols-4 px-4">
               {result.slice(page * maxPerPage, (page + 1) * maxPerPage).map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}
 
-              {result.length === 0 && q && <p className="px-5">Nenhum produto encontrado </p>}
+              {result.length === 0 && q && <p className="px-6">Nenhum produto encontrado </p>}
             </div>
             {result.length > 0 && (
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious 
-                      onClick={() => setPage(Math.max(0, page - 1))}
-                      className={page === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                    />
+                    <PaginationPrevious onClick={() => setPage(Math.max(0, page - 1))} className={page === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"} />
                   </PaginationItem>
                   {Array.from({ length: totalPage }, (_, i) => (
                     <PaginationItem key={i}>
-                      <PaginationLink
-                        onClick={() => setPage(i)}
-                        isActive={page === i}
-                        className="cursor-pointer"
-                      >
+                      <PaginationLink onClick={() => setPage(i)} isActive={page === i} className="cursor-pointer">
                         {i + 1}
                       </PaginationLink>
                     </PaginationItem>
                   ))}
                   <PaginationItem>
-                    <PaginationNext 
-                      onClick={() => setPage(Math.min(totalPage - 1, page + 1))}
-                      className={page === totalPage - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                    />
+                    <PaginationNext onClick={() => setPage(Math.min(totalPage - 1, page + 1))} className={page === totalPage - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"} />
                   </PaginationItem>
                 </PaginationContent>
               </Pagination>

@@ -20,7 +20,7 @@ function AccordionTrigger({ className, children, ...props }: React.ComponentProp
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md pb-4 text-left text-sm font-medium transition-all outline-none  focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}
@@ -49,8 +49,8 @@ function AccordionSearch({ nameFilter, children, defaultOpen }: AccordionProps) 
   return (
     <Accordion type="single" collapsible defaultValue={defaultOpen ? "item-1" : undefined}>
       <AccordionItem value="item-1">
-        <AccordionTrigger>{nameFilter}</AccordionTrigger>
-        <AccordionContent>{children}</AccordionContent>
+        <AccordionTrigger className="font-medium text-xl">{nameFilter}</AccordionTrigger>
+        <AccordionContent className="font-medium text-sm">{children}</AccordionContent>
       </AccordionItem>
     </Accordion>
   );

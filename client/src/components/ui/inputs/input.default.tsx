@@ -1,10 +1,10 @@
-export const InputDefault = ({ label, type, required, value, error, ...rest }: InputDefaultProps) => {
+export const InputDefault = ({ label, type = "text", required = false, value, error, className, ...rest }: InputDefaultProps) => {
   return (
-    <div className="relative w-full mx-auto my-12">
-      <input id="input" required={required} type={type} className="peer w-full bg-transparent border-b-2 border-gray-300 focus:outline-none text-lg py-1" {...rest} />
+    <div className={`relative w-full mx-auto my-12 ${className}`}>
+      <input id="input" required={required} type={type} className="peer w-full z-50 bg-transparent border-b-2 border-gray-300 focus:outline-none text-lg py-1" {...rest} />
       <label
         htmlFor="input"
-        className={`
+        className={` -z-10
     absolute left-0 transition-all duration-300
     ${error ? "text-red-500" : "text-gray-400"}
     ${value ? "-top-5 text-gray-800 text-sm" : "top-1 text-base text-gray-400"}

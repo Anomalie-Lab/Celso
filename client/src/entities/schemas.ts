@@ -40,7 +40,7 @@ export const SchemaEditAccount = yup.object({
     .min(3, "Nome deve ter pelo menos 3 caracteres")
     .max(100, "Nome deve ter no máximo 100 caracteres")
     .matches(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
-  
+
   username: yup
     .string()
     .required("required")
@@ -48,21 +48,13 @@ export const SchemaEditAccount = yup.object({
     .max(30, "Username deve ter no máximo 30 caracteres")
     .matches(/^[a-zA-Z0-9_]+$/, "Username deve conter apenas letras, números e underscore")
     .lowercase(),
-  
-  email: yup
-    .string()
-    .required("required")
-    .email("Email inválido")
-    .max(100, "Email deve ter no máximo 100 caracteres")
-    .lowercase(),
-  
+
+  email: yup.string().required("required").email("Email inválido").max(100, "Email deve ter no máximo 100 caracteres").lowercase(),
+
   phone: yup
     .string()
     .required("required")
-    .matches(
-      /^(\+55\s?)?(\(?\d{2}\)?\s?)?(\d{4,5}-?\d{4})$/,
-      "Telefone deve estar no formato: (11) 99999-9999 ou 11999999999"
-    )
+    .matches(/^(\+55\s?)?(\(?\d{2}\)?\s?)?(\d{4,5}-?\d{4})$/, "Telefone deve estar no formato: (11) 99999-9999 ou 11999999999")
     .transform((value) => {
       if (!value) return undefined;
       const numbers = value.replace(/\D/g, "");
@@ -74,7 +66,7 @@ export const SchemaEditAccount = yup.object({
       }
       return value;
     }),
-  
+
   birthdate: yup
     .string()
     .required("required")
@@ -83,7 +75,7 @@ export const SchemaEditAccount = yup.object({
       const date = new Date(value);
       const today = new Date();
       const minDate = new Date("1900-01-01");
-      
+
       return date >= minDate && date <= today;
     })
     .test("age-limit", "Você deve ter pelo menos 18 anos", (value) => {
@@ -92,7 +84,7 @@ export const SchemaEditAccount = yup.object({
       const today = new Date();
       const age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
-      
+
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
         return age - 1 >= 18;
       }
@@ -102,40 +94,18 @@ export const SchemaEditAccount = yup.object({
 
 export type FormDataAddress = yup.InferType<typeof SchemaAddress>;
 export const SchemaAddress = yup.object({
-  street: yup
-    .string()
-    .required("required")
-    .min(3, "Rua deve ter pelo menos 3 caracteres")
-    .max(100, "Rua deve ter no máximo 100 caracteres"),
-  
-  number: yup
-    .string()
-    .required("required")
-    .max(10, "Número deve ter no máximo 10 caracteres"),
-  
-  complement: yup
-    .string()
-    .optional()
-    .max(50, "Complemento deve ter no máximo 50 caracteres"),
-  
-  neighborhood: yup
-    .string()
-    .required("required")
-    .min(3, "Bairro deve ter pelo menos 3 caracteres")
-    .max(50, "Bairro deve ter no máximo 50 caracteres"),
-  
-  city: yup
-    .string()
-    .required("required")
-    .min(2, "Cidade deve ter pelo menos 2 caracteres")
-    .max(50, "Cidade deve ter no máximo 50 caracteres"),
-  
-  state: yup
-    .string()
-    .required("required")
-    .length(2, "Estado deve ter exatamente 2 caracteres")
-    .uppercase(),
-  
+  street: yup.string().required("required").min(3, "Rua deve ter pelo menos 3 caracteres").max(100, "Rua deve ter no máximo 100 caracteres"),
+
+  number: yup.string().required("required").max(10, "Número deve ter no máximo 10 caracteres"),
+
+  complement: yup.string().optional().nullable().max(50, "Complemento deve ter no máximo 50 caracteres"),
+
+  neighborhood: yup.string().required("required").min(3, "Bairro deve ter pelo menos 3 caracteres").max(50, "Bairro deve ter no máximo 50 caracteres"),
+
+  city: yup.string().required("required").min(2, "Cidade deve ter pelo menos 2 caracteres").max(50, "Cidade deve ter no máximo 50 caracteres"),
+
+  state: yup.string().required("required").length(2, "Estado deve ter exatamente 2 caracteres").uppercase(),
+
   zip_code: yup
     .string()
     .required("required")
@@ -148,9 +118,6 @@ export const SchemaAddress = yup.object({
       }
       return value;
     }),
-  
-  is_default: yup
-    .boolean()
-    .optional()
-    .default(false),
+
+  primary: yup.boolean().optional().nullable().default(false),
 });

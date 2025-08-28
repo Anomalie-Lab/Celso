@@ -4,7 +4,7 @@ import { ProductFormData, ProductWithRelations } from '@/types/database'
 export const productService = {
   async getAll(): Promise<ProductWithRelations[]> {
     try {
-      const response = await api.get('/products')
+      const response = await api.get('/admin/products')
       return response.data
     } catch (error) {
       console.error('Error fetching products:', error)
@@ -14,7 +14,7 @@ export const productService = {
 
   async getById(id: number): Promise<ProductWithRelations | null> {
     try {
-      const response = await api.get(`/products/${id}`)
+      const response = await api.get(`/products/${id}`) // Mantém rota pública para detalhes
       return response.data
     } catch (error) {
       console.error('Error fetching product:', error)
@@ -24,7 +24,7 @@ export const productService = {
 
   async create(data: ProductFormData): Promise<ProductWithRelations> {
     try {
-      const response = await api.post('/products', data)
+      const response = await api.post('/admin/products', data)
       return response.data
     } catch (error) {
       console.error('Error creating product:', error)
@@ -34,7 +34,7 @@ export const productService = {
 
   async update(id: number, data: ProductFormData): Promise<ProductWithRelations> {
     try {
-      const response = await api.put(`/products/${id}`, data)
+      const response = await api.put(`/admin/products/${id}`, data)
       return response.data
     } catch (error) {
       console.error('Error updating product:', error)
@@ -44,7 +44,7 @@ export const productService = {
 
   async delete(id: number): Promise<void> {
     try {
-      await api.delete(`/products/${id}`)
+      await api.delete(`/admin/products/${id}`)
     } catch (error) {
       console.error('Error deleting product:', error)
       throw new Error('Falha ao excluir produto')
@@ -53,7 +53,7 @@ export const productService = {
 
   async updateStock(id: number, stock: number): Promise<ProductWithRelations> {
     try {
-      const response = await api.patch(`/products/${id}/stock`, { stock })
+      const response = await api.patch(`/admin/products/${id}/stock`, { stock })
       return response.data
     } catch (error) {
       console.error('Error updating stock:', error)
@@ -63,7 +63,7 @@ export const productService = {
 
   async search(query: string): Promise<ProductWithRelations[]> {
     try {
-      const response = await api.get(`/products/search?q=${encodeURIComponent(query)}`)
+      const response = await api.get(`/products/search?q=${encodeURIComponent(query)}`) // Mantém rota pública para busca
       return response.data
     } catch (error) {
       console.error('Error searching products:', error)

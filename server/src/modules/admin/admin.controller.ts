@@ -1,5 +1,6 @@
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Res, UsePipes, ValidationPipe, Query} from '@nestjs/common';
 import {AdminService} from './admin.service';
+import {CreateProductDto, UpdateProductDto} from 'src/dtos/products.dto';
 import {ApiBody, ApiOperation, ApiResponse, ApiTags, ApiParam, ApiQuery} from '@nestjs/swagger';
 import {isAdmin} from 'src/decorators/admin.decorator';
 
@@ -72,5 +73,61 @@ export class AdminController {
   async getUserById(@Param('id') id: string, @Res() res) {
     const user = await this.adminService.getUserById(+id);
     return res.status(HttpStatus.OK).json(user);
+  }
+
+  @Get('products')
+  @isAdmin()
+  @ApiOperation({summary: 'Get all products (Admin)'})
+  @ApiResponse({status: 200, description: 'Products retrieved successfully'})
+  async getAllProducts(@Res() res) {
+    const products = await this.adminService.getAllProducts();
+    return res.status(HttpStatus.OK).json(products);
+  }
+
+  @Post('products')
+  @isAdmin()
+  @ApiOperation({summary: 'Create a new product'})
+  @ApiBody({type: CreateProductDto})
+  @ApiResponse({status: 201, description: 'Product created successfully'})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async createProduct(@Body() createProductDto: CreateProductDto, @Res() res) {
+    const product = await this.adminService.createProduct(createProductDto);
+    return res.status(HttpStatus.CREATED).json(product);
+  }
+
+  @Put('products/:id')
+  @isAdmin()
+  @ApiOperation({summary: 'Update product'})
+  @ApiParam({name: 'id', description: 'Product ID'})
+  @ApiBody({type: UpdateProductDto})
+  @ApiResponse({status: 200, description: 'Product updated successfully'})
+  @ApiResponse({status: 404, description: 'Product not found'})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto, @Res() res) {
+    const product = await this.adminService.updateProduct(+id, updateProductDto);
+    return res.status(HttpStatus.OK).json(product);
+  }
+
+  @Delete('products/:id')
+  @isAdmin()
+  @ApiOperation({summary: 'Delete product'})
+  @ApiParam({name: 'id', description: 'Product ID'})
+  @ApiResponse({status: 200, description: 'Product deleted successfully'})
+  @ApiResponse({status: 404, description: 'Product not found'})
+  async deleteProduct(@Param('id') id: string, @Res() res) {
+    await this.adminService.deleteProduct(+id);
+    return res.status(HttpStatus.OK).json({message: 'Product deleted successfully'});
+  }
+
+  @Patch('products/:id/stock')
+  @isAdmin()
+  @ApiOperation({summary: 'Update product stock'})
+  @ApiParam({name: 'id', description: 'Product ID'})
+  @ApiBody({schema: {properties: {stock: {type: 'number'}}}})
+  @ApiResponse({status: 200, description: 'Stock updated successfully'})
+  @ApiResponse({status: 404, description: 'Product not found'})
+  async updateProductStock(@Param('id') id: string, @Body('stock') stock: number, @Res() res) {
+    const product = await this.adminService.updateProductStock(+id, stock);
+    return res.status(HttpStatus.OK).json(product);
   }
 }

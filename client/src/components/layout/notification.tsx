@@ -105,13 +105,13 @@ export default function NotificationComponent() {
             animate={{ opacity: 1, y: 30 }}
             exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.2 }}
-            className="absolute -right-8 mt-2 w-full sm:w-[450px] bg-primary dark:bg-secondary backdrop-blur-md border border-secondary rounded-lg shadow-xl p-4 z-50"
+            className="absolute -right-8 mt-2 w-full sm:w-[450px] bg-white border border-gray-200 rounded-lg shadow-xl p-4 z-50"
           >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold">Notificações</h3>
+              <h3 className="text-sm font-semibold text-gray-900">Notificações</h3>
               <button
                 onClick={() => setShowNotifications(false)}
-                className="text-textColor hover:text-brand500 transition-colors"
+                className="text-gray-500 hover:text-primary transition-colors"
               >
                 <X size={16} />
               </button>
@@ -119,13 +119,13 @@ export default function NotificationComponent() {
             
             <div className="space-y-3 max-h-[70vh] overflow-y-scroll">
               {notifications.length === 0 ? (
-                <p className="text-sm text-textColor text-center py-2">Nenhuma notificação</p>
+                <p className="text-sm text-gray-500 text-center py-2">Nenhuma notificação</p>
               ) : (
                 <AnimatePresence>
                   {notifications.map((notification: Account.NotificationI, index: number) => {
                     const meta = notificationMeta[notification.type as keyof typeof notificationMeta] || {
                       icon: Info,
-                      color: "#6b7280", // gray-500
+                      color: "#3C9984", // primary-500
                     };
                     const Icon = meta.icon;
                     const formattedDate = notification.created_at 
@@ -142,30 +142,30 @@ export default function NotificationComponent() {
                       >
                         <div 
                           onClick={() => handleReadNotification(notification.id.toString())} 
-                          className="relative p-2 space-x-3 flex rounded-md hover:bg-background transition-all duration-200 cursor-pointer whitespace-normal mb-3"
+                          className="relative p-3 flex rounded-lg hover:bg-primary-50 transition-all duration-200 cursor-pointer whitespace-normal mb-3 border border-gray-100"
                         >
                           <div 
-                            style={{ background: meta.color + "20" }} 
-                            className="flex items-center gap-2 mb-1 justify-center max-h-8 min-w-8 rounded-full"
+                            style={{ background: meta.color + "15" }} 
+                            className="flex items-center gap-2 mb-1 justify-center max-h-10 min-w-10 rounded-full mr-3"
                           >
-                            <Icon className="w-4 h-4" style={{ color: meta.color }} />
+                            <Icon className="w-5 h-5" style={{ color: meta.color }} />
                           </div>
                           
                           <div className="flex-1">
                             <div className="flex gap-3 items-center">
                               {notification.read_at === null && (
-                                <span className="bg-brand500 rounded-full w-2 h-2 animate-pulse block" />
+                                <span className="bg-primary rounded-full w-2 h-2 animate-pulse block" />
                               )}
-                              <p className="text-sm font-medium">{notification.title}</p>
+                              <p className="text-sm font-medium text-gray-900">{notification.title}</p>
                             </div>
                             
                             <p 
-                              className="text-xs text-textColor mt-1" 
+                              className="text-xs text-gray-600 mt-1" 
                               dangerouslySetInnerHTML={{ __html: notification.message }} 
                             />
                             
                             {deletingNotification === notification.id.toString() ? (
-                              <span className="flex items-center gap-2 text-brand500 text-sm absolute right-2 top-2">
+                              <span className="flex items-center gap-2 text-primary text-sm absolute right-2 top-2">
                                 <Loader className="w-4 h-4 animate-spin" />
                               </span>
                             ) : (
@@ -176,21 +176,21 @@ export default function NotificationComponent() {
                                     e.stopPropagation();
                                     handleDeleteNotification(notification.id.toString());
                                   }} 
-                                  className="absolute right-2 top-2 hover:text-brand600 duration-300 text-textColor"
+                                  className="absolute right-2 top-2 hover:text-primary duration-300 text-gray-400"
                                 >
                                   <X className="w-4 h-4" />
                                 </button>
                               )
                             )}
                             
-                            <p className="text-xs text-textColor/70 text-end mt-3 mr-1">
+                            <p className="text-xs text-gray-400 text-end mt-3 mr-1">
                               {formattedDate}
                             </p>
                           </div>
                         </div>
                         
                         {index !== notifications.length - 1 && (
-                          <span className="block w-full bg-white/10 h-[1px]" />
+                          <span className="block w-full bg-gray-100 h-[1px]" />
                         )}
                       </motion.div>
                     );

@@ -12,7 +12,7 @@ import { ModalAuth } from "../auth/modal.auth";
 import WishListDrawer from "../home/wishListDrawer";
 import SearchDrawer from "../home/searchDrawer";
 import Notification from "./notification";
-
+import { useUser } from "@/hooks/user.hook";
 type AuthPage = "Login" | "Register" | "ForgotPass";
 
 export default function Header() {
@@ -26,7 +26,8 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+  const { user } = useUser();
+  
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -158,7 +159,7 @@ export default function Header() {
                 <PiBasketLight className="w-5 h-5 text-gray-600" />
                 <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
               </button>
-              <Notification />
+              {user && <Notification />}
               {/* Mobile Menu
                             <button 
                                 onClick={toggleMenu}

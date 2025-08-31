@@ -4,13 +4,17 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Account } from "@/api/account.api";
 import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import AddressForm from "./addressForm";
+import AddressForm from "@/components/account/addressForm";
 import { Button } from "@/components/ui/button";
 
 export default function AddressesTab() {
   const queryClient = useQueryClient();
 
-  const { data: addresses, isLoading } = useQuery({
+  const {
+    data: addresses,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["user-addresses"],
     queryFn: Account.getAddresses,
   });
@@ -27,6 +31,7 @@ export default function AddressesTab() {
   };
 
   const handleSuccess = () => {
+    refetch();
     queryClient.invalidateQueries({ queryKey: ["user-addresses"] });
   };
 
@@ -48,43 +53,45 @@ export default function AddressesTab() {
         {addresses?.length > 0 && (
           <AddressForm mode="create" onSuccess={handleSuccess}>
             <Button className="flex items-center gap-2">Adicionar Endereço</Button>
-          </AddressForm>  
+          </AddressForm>
         )}
       </div>
 
       {addresses && addresses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {addresses.map((address: any) => (
-            <div key={address.id} className="bg-white p-6 rounded-lg border border-gray-100">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-800">
-                    {address.street}, {address.number}
-                  </h3>
-                  {address.primary && <span className="px-2 py-1 text-xs bg-primary text-white rounded-full">Padrão</span>}
-                </div>
-                <div className="flex items-center gap-2">
-                  <AddressForm mode="edit" address={address} onSuccess={handleSuccess}>
-                    <Button variant="outline" size="sm">
-                      Editar
+          {addresses
+            .sort((a: any, b: any) => (a.primary ? -1 : b.primary ? 1 : 0))
+            .map((address: any) => (
+              <div key={address.id} className="bg-white p-6 rounded-lg border border-gray-100 relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-gray-800">
+                      {address.street}, {address.number}
+                    </h3>
+                    {address.primary && <span className="px-2 py-1 text-xs bg-primary text-white rounded-full absolute bottom-5 right-5">Padrão</span>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <AddressForm mode="edit" address={address} onSuccess={handleSuccess}>
+                      <Button variant="outline" size="sm">
+                        Editar
+                      </Button>
+                    </AddressForm>
+                    <Button variant="outline" size="sm" onClick={() => handleDeleteAddress(address.id)} className="text-red-600 hover:text-red-700">
+                      <Trash2 className="w-4 h-4" />
                     </Button>
-                  </AddressForm>
-                  <Button variant="outline" size="sm" onClick={() => handleDeleteAddress(address.id)} className="text-red-600 hover:text-red-700">
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-sm text-gray-600">
+                  {address.complement && <p>{address.complement}</p>}
+                  <p>{address.neighborhood}</p>
+                  <p>
+                    {address.city} - {address.state}
+                  </p>
+                  <p>{address.zip_code}</p>
                 </div>
               </div>
-
-              <div className="space-y-2 text-sm text-gray-600">
-                {address.complement && <p>{address.complement}</p>}
-                <p>{address.neighborhood}</p>
-                <p>
-                  {address.city} - {address.state}
-                </p>
-                <p>{address.zip_code}</p>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       ) : (
         <div className="text-center py-12">

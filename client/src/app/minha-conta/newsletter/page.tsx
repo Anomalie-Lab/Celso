@@ -3,7 +3,7 @@
 import { LuMail, LuBell, LuGift, LuTag, LuShield } from "react-icons/lu";
 import { useState } from "react";
 
-export default function NewsletterTab() {
+export default function NewsletterPage() {
   const [preferences, setPreferences] = useState({
     promotional: true,
     orderUpdates: true,

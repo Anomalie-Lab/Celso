@@ -49,7 +49,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
       city: "",
       state: "",
       zip_code: "",
-      is_default: false,
+      primary: false,
     },
   });
 
@@ -111,7 +111,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
         city: address.city || "",
         state: address.state || "",
         zip_code: address.zip_code || "",
-        is_default: Boolean(address.is_default),
+        primary: Boolean(address.primary),
       });
     } else {
       reset({
@@ -122,7 +122,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
         city: "",
         state: "",
         zip_code: "",
-        is_default: false,
+        primary: false,
       });
     }
   }, [address, mode, reset]);
@@ -183,12 +183,12 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
 
   const renderCepField = () => (
     <div className="relative">
-      <InputDefault 
-        label="CEP" 
-        required 
-        value={watch("zip_code")} 
-        {...register("zip_code")} 
-        error={errors.zip_code?.message as string} 
+      <InputDefault
+        label="CEP"
+        required
+        value={watch("zip_code")}
+        {...register("zip_code")}
+        error={errors.zip_code?.message as string}
         onChange={(e) => {
           const formatted = formatCep(e.target.value);
           setValue("zip_code", formatted);
@@ -205,7 +205,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
   );
 
   const renderFormFields = () => (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {renderCepField()}
         <InputDefault label="Estado" required value={watch("state")} {...register("state")} error={errors.state?.message as string} maxLength={2} />
@@ -216,16 +216,16 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
         <InputDefault label="Bairro" required value={watch("neighborhood")} {...register("neighborhood")} error={errors.neighborhood?.message as string} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <InputDefault label="Rua" required value={watch("street")} {...register("street")} error={errors.street?.message as string} className="md:col-span-2" />
         <InputDefault label="Número" required value={watch("number")} {...register("number")} error={errors.number?.message as string} />
       </div>
 
       <InputDefault label="Complemento" value={watch("complement") || ""} {...register("complement")} error={errors.complement?.message as string} />
 
-      <div className="flex items-center space-x-2">
-        <input type="checkbox" id="is_default" {...register("is_default")} className="rounded border-gray-300 text-primary focus:ring-primary" />
-        <label htmlFor="is_default" className="text-sm text-gray-700">
+      <div className="flex items-center space-x-2 mt-8">
+        <input type="checkbox" id="primary" {...register("primary")} className="rounded border-gray-300 text-primary focus:ring-primary" />
+        <label htmlFor="primary" className="text-sm text-gray-700">
           Definir como endereço padrão
         </label>
       </div>

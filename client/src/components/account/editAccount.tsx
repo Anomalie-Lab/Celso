@@ -87,7 +87,7 @@ const EditAccount = () => {
             <DialogTitle>Editar Perfil</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-4">
+            <div className="space-y-12">
               <InputDefault label="Nome Completo" required value={watch("fullname")} {...register("fullname")} error={errors.fullname?.message as string} />
               <InputDefault label="Username" required value={watch("username")} {...register("username")} error={errors.username?.message as string} />
               <InputDefault label="Email" type="email" required value={watch("email")} {...register("email")} error={errors.email?.message as string} />

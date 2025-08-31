@@ -1,7 +1,7 @@
 "use client"
 import { LuPackage, LuTruck, LuEye, LuDownload } from "react-icons/lu";
 
-export default function OrdersTab() {
+export default function OrdersPage() {
   const orders = [
     {
       id: "12345",

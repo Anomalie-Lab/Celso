@@ -7,6 +7,20 @@ import { toast } from "sonner";
 import AddressForm from "@/components/account/addressForm";
 import { Button } from "@/components/ui/button";
 
+interface Address {
+  id: number;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zip_code: string;
+  primary: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function AddressesTab() {
   const queryClient = useQueryClient();
 
@@ -60,8 +74,8 @@ export default function AddressesTab() {
       {addresses && addresses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {addresses
-            .sort((a: any, b: any) => (a.primary ? -1 : b.primary ? 1 : 0))
-            .map((address: any) => (
+            .sort((a: Address, b: Address) => (a.primary ? -1 : b.primary ? 1 : 0))
+            .map((address: Address) => (
               <div key={address.id} className="bg-white p-6 rounded-lg border border-gray-100 relative">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-2">

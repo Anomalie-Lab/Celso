@@ -35,6 +35,10 @@ export class AccountService {
     return await this.accountRepository.deleteAddress({user_id, id});
   }
 
+  async getUserOrders(userId: number) {
+    return await this.accountRepository.getUserOrders(userId);
+  }
+
   async getUserStats(userId: number) {
     return await this.accountRepository.getUserStats(userId);
   }

@@ -1,93 +1,98 @@
-"use client"
+"use client";
 
-import { LuUser, LuMail, LuPhone, LuCalendar, LuMapPin, LuPackage, LuHeart } from "react-icons/lu";
 import { useQuery } from "@tanstack/react-query";
+import { LuUser, LuMail, LuPhone, LuCalendar, LuMapPin, LuPackage, LuHeart, LuLoader } from "react-icons/lu";
 import { Account } from "@/api/account.api";
 import { useUser } from "@/hooks/user.hook";
-import { Loader2 } from "lucide-react";
 import EditAccount from "@/components/account/editAccount";
 
-export default function ResumeTab() {
+interface Activity {
+  type: string;
+  action: string;
+  created_at: string;
+}
+
+export default function MinhaConta() {
   const { user } = useUser();
 
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['user-stats'],
+    queryKey: ["user-stats"],
     queryFn: Account.getUserStats,
-    enabled: !!user,
   });
 
   const { data: activities, isLoading: activitiesLoading } = useQuery({
-    queryKey: ['user-activities'],
+    queryKey: ["user-activities"],
     queryFn: Account.getUserActivities,
-    enabled: !!user,
   });
 
-  const formatDate = (dateString: string | Date) => {
-    return new Date(dateString).toLocaleDateString('pt-BR');
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("pt-BR");
   };
 
   const formatPhone = (phone: string) => {
-    return phone?.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3') || 'Não informado';
+    return phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
   };
 
   const getTimeAgo = (dateString: string) => {
     const now = new Date();
     const date = new Date(dateString);
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 24) {
-      return `Há ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
-    }
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `Há ${diffInDays} ${diffInDays === 1 ? 'dia' : 'dias'}`;
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInDays === 0) return "Hoje";
+    if (diffInDays === 1) return "Ontem";
+    if (diffInDays < 7) return `${diffInDays} dias atrás`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} semanas atrás`;
+    if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} meses atrás`;
+    return `${Math.floor(diffInDays / 365)} anos atrás`;
   };
 
   if (!user) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500">Faça login para ver suas informações</p>
+        <LuLoader className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
-  const statsData = [
-    { label: "Pedidos Realizados", value: stats?.orders_count?.toString() || "0", color: "blue" },
-    { label: "Produtos Favoritos", value: stats?.wishlist_count?.toString() || "0", color: "pink" },
-    { label: "Endereços Cadastrados", value: stats?.addresses_count?.toString() || "0", color: "green" },
-    { label: "Pontos Acumulados", value: stats?.points?.toLocaleString('pt-BR') || "0", color: "purple" }
-  ];
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Resumo da Conta</h1>
-          <p className="text-gray-600">Bem-vindo de volta, {user.fullname}!</p>
-        </div>
-        <EditAccount />
-      </div>
-
-      {statsLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {statsData.map((stat, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg border border-gray-100">
-              <div className="text-2xl font-bold text-gray-800 mb-1">{stat.value}</div>
-              <div className="text-sm text-gray-600">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
       <div className="bg-white rounded-lg border border-gray-100">
         <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800">Informações Pessoais</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-800">Resumo da Conta</h2>
+            <EditAccount />
+          </div>
         </div>
         <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-800">
+                {statsLoading ? "..." : stats?.orders_count || 0}
+              </div>
+              <div className="text-sm text-gray-500">Pedidos</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-800">
+                {statsLoading ? "..." : stats?.wishlist_count || 0}
+              </div>
+              <div className="text-sm text-gray-500">Lista de Desejos</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-800">
+                {statsLoading ? "..." : stats?.addresses_count || 0}
+              </div>
+              <div className="text-sm text-gray-500">Endereços</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-800">
+                {statsLoading ? "..." : stats?.points || 0}
+              </div>
+              <div className="text-sm text-gray-500">Pontos</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <LuUser className="w-5 h-5 text-gray-400" />
@@ -137,7 +142,7 @@ export default function ResumeTab() {
                 <LuUser className="w-5 h-5 text-gray-400" />
                 <div>
                   <div className="text-sm text-gray-500">Membro Desde</div>
-                  <div className="font-medium text-gray-800">{formatDate(user.created_at)}</div>
+                  <div className="font-medium text-gray-800">{formatDate(user.created_at.toString())}</div>
                 </div>
               </div>
             </div>
@@ -152,11 +157,11 @@ export default function ResumeTab() {
         <div className="p-6">
           {activitiesLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              <LuLoader className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : activities && activities.length > 0 ? (
             <div className="space-y-4">
-              {activities.map((activity: any, index: number) => {
+              {activities.map((activity: Activity, index: number) => {
                 const getIcon = (type: string) => {
                   switch (type) {
                     case 'order':
@@ -171,7 +176,7 @@ export default function ResumeTab() {
                 };
                 
                 const Icon = getIcon(activity.type);
-                
+
                 return (
                   <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                     <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center">

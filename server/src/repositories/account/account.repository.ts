@@ -170,4 +170,30 @@ export class AccountRepository {
 
     return order;
   }
+
+  async getUserOrders(userId: number) {
+    return await this.prisma.transaction.findMany({
+      where: { user_id: userId },
+      orderBy: { created_at: 'desc' },
+      include: {
+        invoices: {
+          include: {
+            items: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    title: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        histories: {
+          orderBy: { created_at: 'asc' },
+        },
+      },
+    });
+  }
 }

@@ -8,7 +8,7 @@ async function isLogged() {
   return Boolean(cookieStore.get(process.env.NEXT_PUBLIC_SESSION_COOKIE || "authToken")?.value);
 }
 
-let routeHistory: any = [];
+const routeHistory: string[] = [];
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();

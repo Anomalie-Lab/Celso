@@ -31,7 +31,9 @@ export class AccountController {
   @ApiResponse({status: 404, description: 'User address not found.'})
   @ApiResponse({status: 500, description: 'Internal server error.'})
   async getAddress(@User() user: Account.UserI, @Res() res) {
+    console.log(user.id);
     const data = await this.accountService.getAddress(user.id);
+    console.log(data);
     return res.status(HttpStatus.OK).json(data);
   }
 
@@ -65,6 +67,15 @@ export class AccountController {
   @ApiResponse({status: 500, description: 'Internal server error.'})
   async deleteAddress(@Param('id') id: number, @User() user: Account.UserI, @Res() res) {
     const data = await this.accountService.deleteAddress(user.id, id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Get('orders')
+  @ApiOperation({summary: 'Get User Orders', description: 'Get user orders with details including products and history'})
+  @ApiResponse({status: 200, description: 'User orders retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserOrders(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserOrders(user.id);
     return res.status(HttpStatus.OK).json(data);
   }
 

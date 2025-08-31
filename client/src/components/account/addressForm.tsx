@@ -27,6 +27,17 @@ interface ViaCepResponse {
   erro?: boolean;
 }
 
+interface AddressFormData {
+  street: string;
+  number: string;
+  complement: string | null | undefined;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zip_code: string;
+  primary: boolean | null;
+}
+
 const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

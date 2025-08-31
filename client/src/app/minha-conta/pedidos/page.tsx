@@ -1,45 +1,133 @@
 "use client"
-import { LuPackage, LuTruck, LuEye, LuDownload } from "react-icons/lu";
+
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { LuPackage, LuTruck, LuEye, LuDownload, LuCheck, LuClock, LuLoader } from "react-icons/lu";
+import { Account } from "@/api/account.api";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
+type OrderStatus = "PENDING" | "APPROVED" | "SHIPPED" | "COMPLETED" | "CANCELLED";
+
+interface Order {
+  id: number;
+  total_amount: number;
+  status: OrderStatus;
+  created_at: string;
+  invoices: Array<{
+    id: number;
+    total_amount: number;
+    items: Array<{
+      id: number;
+      quantity: number;
+      price: number;
+      product: {
+        id: number;
+        title: string;
+      };
+    }>;
+  }>;
+  histories: Array<{
+    id: number;
+    status: OrderStatus;
+    created_at: string;
+  }>;
+}
 
 export default function OrdersPage() {
-  const orders = [
-    {
-      id: "12345",
-      date: "15/12/2023",
-      status: "Entregue",
-      statusColor: "green",
-      total: "R$ 156,80",
-      items: 3,
-      tracking: "BR123456789BR"
-    },
-    {
-      id: "12344",
-      date: "10/12/2023",
-      status: "Em Transporte",
-      statusColor: "blue",
-      total: "R$ 89,90",
-      items: 2,
-      tracking: "BR987654321BR"
-    },
-    {
-      id: "12343",
-      date: "05/12/2023",
-      status: "Processando",
-      statusColor: "yellow",
-      total: "R$ 234,50",
-      items: 4,
-      tracking: null
-    },
-    {
-      id: "12342",
-      date: "01/12/2023",
-      status: "Entregue",
-      statusColor: "green",
-      total: "R$ 67,80",
-      items: 1,
-      tracking: "BR456789123BR"
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | "ALL">("ALL");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const { data: orders, isLoading, error } = useQuery({
+    queryKey: ["user-orders"],
+    queryFn: Account.getUserOrders,
+  });
+
+  const getStatusInfo = (status: OrderStatus) => {
+    switch (status) {
+      case "PENDING":
+        return {
+          label: "Processando",
+          color: "bg-yellow-100 text-yellow-800",
+          icon: LuClock,
+        };
+      case "APPROVED":
+        return {
+          label: "Aprovado",
+          color: "bg-blue-100 text-blue-800",
+          icon: LuCheck,
+        };
+      case "SHIPPED":
+        return {
+          label: "Em Transporte",
+          color: "bg-purple-100 text-purple-800",
+          icon: LuTruck,
+        };
+      case "COMPLETED":
+        return {
+          label: "Entregue",
+          color: "bg-green-100 text-green-800",
+          icon: LuCheck,
+        };
+      case "CANCELLED":
+        return {
+          label: "Cancelado",
+          color: "bg-red-100 text-red-800",
+          icon: LuPackage,
+        };
+      default:
+        return {
+          label: "Desconhecido",
+          color: "bg-gray-100 text-gray-800",
+          icon: LuPackage,
+        };
     }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("pt-BR");
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
+
+  const filteredOrders = orders?.filter((order: Order) => {
+    if (selectedStatus === "ALL") return true;
+    return order.status === selectedStatus;
+  }) || [];
+
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedOrders = filteredOrders.slice(startIndex, startIndex + itemsPerPage);
+
+  const statusFilters = [
+    { value: "ALL" as const, label: "Todos" },
+    { value: "PENDING" as const, label: "Processando" },
+    { value: "APPROVED" as const, label: "Aprovado" },
+    { value: "SHIPPED" as const, label: "Em Transporte" },
+    { value: "COMPLETED" as const, label: "Entregues" },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <LuLoader className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">Erro ao carregar pedidos</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -51,89 +139,205 @@ export default function OrdersPage() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium cursor-pointer">
-          Todos
-        </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
-          Processando
-        </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
-          Em Transporte
-        </button>
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 cursor-pointer">
-          Entregues
-        </button>
+        {statusFilters.map((filter) => {
+          const isActive = selectedStatus === filter.value;
+          return (
+            <button
+              key={filter.value}
+              onClick={() => {
+                setSelectedStatus(filter.value);
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="space-y-4">
-        {orders.map((order) => (
-          <div key={order.id} className="bg-white rounded-lg border border-gray-100">
-            <div className="p-6 px-10">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <LuPackage className="w-5 h-5 text-gray-400" />
-                    <span className="font-semibold text-gray-800">Pedido #{order.id}</span>
-                  </div>
-                  <span className="text-sm text-gray-500">{order.date}</span>
-                </div>
-                {/* <div className="flex items-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.statusColor)}`}>
-                    {order.status}
-                  </span>
-                  {getStatusIcon(order.status)}
-                </div> */}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                  <div className="text-sm text-gray-500">Total</div>
-                  <div className="font-semibold text-gray-800">{order.total}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500">Itens</div>
-                  <div className="font-semibold text-gray-800">{order.items} produto(s)</div>
-                </div>
-                {order.tracking && (
-                  <div>
-                    <div className="text-sm text-gray-500">Rastreamento</div>
-                    <div className="font-semibold text-gray-800">{order.tracking}</div>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg cursor-pointer">
-                  <LuEye className="w-4 h-4" />
-                  Ver Detalhes
-                </button>
-                {order.tracking && (
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                    <LuTruck className="w-4 h-4" />
-                    Rastrear
-                  </button>
-                )}
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                  <LuDownload className="w-4 h-4" />
-                  Nota Fiscal
-                </button>
-              </div>
-            </div>
+      {paginatedOrders.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-gray-400 mb-4">
+            <LuPackage className="w-16 h-16 mx-auto" />
           </div>
-        ))}
-      </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhum pedido encontrado</h3>
+          <p className="text-gray-500">
+            {selectedStatus === "ALL" 
+              ? "Você ainda não fez nenhum pedido" 
+              : `Nenhum pedido com status "${getStatusInfo(selectedStatus as OrderStatus).label}"`
+            }
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {paginatedOrders.map((order: Order) => {
+            const statusInfo = getStatusInfo(order.status);
+            const StatusIcon = statusInfo.icon;
+            const totalItems = order.invoices.reduce((acc, invoice) => 
+              acc + invoice.items.reduce((sum, item) => sum + item.quantity, 0), 0
+            );
 
-      <div className="flex items-center justify-center gap-2">
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-          Anterior
-        </button>
-        <button className="px-3 py-2 bg-primary text-white rounded-lg cursor-pointer">1</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">2</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">3</button>
-        <button className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-          Próxima
-        </button>
-      </div>
+            return (
+              <div key={order.id} className="bg-white rounded-lg border border-gray-100">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <LuPackage className="w-5 h-5 text-gray-400" />
+                        <span className="font-semibold text-gray-800">Pedido #{order.id}</span>
+                      </div>
+                      <span className="text-sm text-gray-500">{formatDate(order.created_at)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
+                        {statusInfo.label}
+                      </span>
+                      <StatusIcon className="w-4 h-4" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <div className="text-sm text-gray-500">Total</div>
+                      <div className="font-semibold text-gray-800">{formatCurrency(order.total_amount)}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Itens</div>
+                      <div className="font-semibold text-gray-800">{totalItems} produto(s)</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Status</div>
+                      <div className="font-semibold text-gray-800">{statusInfo.label}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                        >
+                          <LuEye className="w-4 h-4 mr-2" />
+                          Ver Detalhes
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                          <DialogTitle>Detalhes do Pedido #{order.id}</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <div className="text-sm text-gray-500">Data do Pedido</div>
+                              <div className="font-medium">{formatDate(order.created_at)}</div>
+                            </div>
+                            <div>
+                              <div className="text-sm text-gray-500">Status</div>
+                              <div className="font-medium">{statusInfo.label}</div>
+                            </div>
+                            <div>
+                              <div className="text-sm text-gray-500">Total</div>
+                              <div className="font-medium">{formatCurrency(order.total_amount)}</div>
+                            </div>
+                            <div>
+                              <div className="text-sm text-gray-500">Itens</div>
+                              <div className="font-medium">{totalItems} produto(s)</div>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <div className="text-sm text-gray-500 mb-2">Produtos</div>
+                            <div className="space-y-2">
+                              {order.invoices.map((invoice) =>
+                                invoice.items.map((item) => (
+                                  <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                      <div className="font-medium">{item.product.title}</div>
+                                      <div className="text-sm text-gray-500">
+                                        Quantidade: {item.quantity} x {formatCurrency(item.price)}
+                                      </div>
+                                    </div>
+                                    <div className="font-medium">
+                                      {formatCurrency(item.quantity * item.price)}
+                                    </div>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-sm text-gray-500 mb-2">Histórico</div>
+                            <div className="space-y-2">
+                              {order.histories.map((history) => {
+                                const historyStatusInfo = getStatusInfo(history.status);
+                                const HistoryIcon = historyStatusInfo.icon;
+                                return (
+                                  <div key={history.id} className="flex items-center gap-3 p-2">
+                                    <HistoryIcon className="w-4 h-4 text-gray-400" />
+                                    <div className="flex-1">
+                                      <div className="text-sm font-medium">{historyStatusInfo.label}</div>
+                                      <div className="text-xs text-gray-500">{formatDate(history.created_at)}</div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Button variant="outline" size="sm">
+                      <LuDownload className="w-4 h-4 mr-2" />
+                      Nota Fiscal
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </Button>
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <Button
+              key={page}
+              variant={currentPage === page ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </Button>
+          ))}
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Próxima
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

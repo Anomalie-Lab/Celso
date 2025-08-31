@@ -1,5 +1,25 @@
 import { api } from '@/lib/axios.lib';
 
+interface UpdateUserData {
+  fullname?: string;
+  username?: string;
+  birthdate?: string;
+  gender?: string;
+  national_id?: string;
+  country_id?: number;
+}
+
+interface AddressData {
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zip_code: string;
+  primary: boolean;
+}
+
 export const Account = {
   async getUserStats() {
     const response = await api.get('/account/stats');
@@ -11,7 +31,12 @@ export const Account = {
     return response.data;
   },
 
-  async updateUser(data: any) {
+  async getUserOrders() {
+    const response = await api.get('/account/orders');
+    return response.data;
+  },
+
+  async updateUser(data: UpdateUserData) {
     const response = await api.patch('/account/edit', data);
     return response.data;
   },
@@ -21,12 +46,12 @@ export const Account = {
     return response.data;
   },
 
-  async createAddress(data: any) {
+  async createAddress(data: AddressData) {
     const response = await api.post('/account/address', data);
     return response.data;
   },
 
-  async updateAddress(id: number, data: any) {
+  async updateAddress(id: number, data: AddressData) {
     const response = await api.put(`/account/address/${id}`, data);
     return response.data;
   },

@@ -47,9 +47,9 @@ interface AccordionProps {
 }
 function AccordionSearch({ nameFilter, children, defaultOpen }: AccordionProps) {
   return (
-    <Accordion type="single" collapsible defaultValue={defaultOpen ? "item-1" : undefined}>
+    <Accordion className="border-b border-gray-100" type="single" collapsible defaultValue={defaultOpen ? "item-1" : undefined}>
       <AccordionItem value="item-1">
-        <AccordionTrigger className="font-medium text-xl">{nameFilter}</AccordionTrigger>
+        <AccordionTrigger className="font-semibold text-sm text-gray-700">{nameFilter}</AccordionTrigger>
         <AccordionContent className="font-medium text-sm capitalize">{children}</AccordionContent>
       </AccordionItem>
     </Accordion>

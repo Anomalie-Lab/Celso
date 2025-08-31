@@ -46,7 +46,7 @@ export default function Newsletter() {
         <div className="border-t border-gray-600 mb-8"></div>
 
         <div className="flex items-center space-x-3">
-          <div className="flex-shrink-0 mt-1">
+          <div className="flex-shrink-0">
             <LuInfo className="w-5 h-5 text-primary" />
           </div>
           <div className="text-gray-400 text-sm leading-relaxed">

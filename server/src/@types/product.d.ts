@@ -15,6 +15,7 @@ declare namespace Product {
     sizes?: any | null;
     stock: number;
     views: number;
+    images?: any | null;
     added_to_cart: number;
     added_to_wishlist: number;
     updated_at: Date;
@@ -85,6 +86,7 @@ declare namespace Product {
     categories?: any;
     sizes?: any;
     stock?: number;
+    images?: any;
   }
 
   interface UpdateProductData {

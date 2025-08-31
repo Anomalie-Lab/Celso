@@ -21,21 +21,35 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
+import { X, Plus } from "lucide-react"
 import { ProductFormData, ProductWithRelations } from "@/types/database"
 import { useState, useEffect } from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 
 const productSchema = z.object({
   title: z.string().min(1, "Título é obrigatório"),
-  summary: z.string().min(1, "Resumo é obrigatório"),
+  summary: z.string().optional(),
   description: z.string().min(1, "Descrição é obrigatória"),
-  brand: z.string().min(1, "Marca é obrigatória"),
+  brand: z.string().optional(),
   price: z.number().min(0, "Preço deve ser maior que 0"),
-  last_price: z.number().min(0, "Preço anterior deve ser maior que 0"),
+  last_price: z.number().optional(),
   installments: z.number().min(1, "Parcelas deve ser maior que 0"),
   blur: z.string().optional(),
   stock: z.number().min(0, "Estoque deve ser maior ou igual a 0"),
+  category: z.string().optional(),
+  image: z.string().optional(),
+  active: z.boolean().default(true),
 })
+
+const categories = [
+  "MEDICAMENTOS",
+  "EQUIPAMENTOS", 
+  "CONSUMIVEIS",
+  "SUPLEMENTOS",
+  "COSMETICOS",
+  "HIGIENE"
+]
 
 interface ProductFormProps {
   isOpen: boolean
@@ -46,16 +60,19 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: ProductFormProps) {
-  const [categories, setCategories] = useState<string[]>([])
+  const [categoriesList, setCategoriesList] = useState<string[]>([])
   const [sizes, setSizes] = useState<string[]>([])
   const [flags, setFlags] = useState<string[]>([])
   const [details, setDetails] = useState<string[]>([])
   const [images, setImages] = useState<string[]>([])
+  const [specifications, setSpecifications] = useState<Record<string, string>>({})
   const [categoryInput, setCategoryInput] = useState("")
   const [sizeInput, setSizeInput] = useState("")
   const [flagInput, setFlagInput] = useState("")
   const [detailInput, setDetailInput] = useState("")
   const [imageInput, setImageInput] = useState("")
+  const [specKey, setSpecKey] = useState("")
+  const [specValue, setSpecValue] = useState("")
 
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
@@ -69,16 +86,20 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
       installments: product?.installments || 12,
       blur: product?.blur || "",
       stock: product?.stock || 0,
+      category: product?.category || "",
+      image: product?.image || "",
+      active: product?.active ?? true,
     },
   })
 
   // Update states when product changes
   useEffect(() => {
-    setCategories(product?.categories ? (product.categories as string[]) : [])
+    setCategoriesList(product?.categories ? (product.categories as string[]) : [])
     setSizes(product?.sizes ? (product.sizes as string[]) : [])
     setFlags(product?.flags ? (product.flags as string[]) : [])
     setDetails(product?.details ? (product.details as string[]) : [])
     setImages(product?.images ? (product.images as string[]) : [])
+    setSpecifications(product?.specifications ? (product.specifications as Record<string, string>) : {})
     
     // Reset form with product data
     form.reset({
@@ -91,30 +112,34 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
       installments: product?.installments || 12,
       blur: product?.blur || "",
       stock: product?.stock || 0,
+      category: product?.category || "",
+      image: product?.image || "",
+      active: product?.active ?? true,
     })
   }, [product, form])
 
   const handleSubmit = (data: z.infer<typeof productSchema>) => {
     const formData: ProductFormData = {
       ...data,
-      categories: categories.length > 0 ? categories : undefined,
+      categories: categoriesList.length > 0 ? categoriesList : undefined,
       sizes: sizes.length > 0 ? sizes : undefined,
       flags: flags.length > 0 ? flags : undefined,
       details: details.length > 0 ? details : undefined,
       images: images.length > 0 ? images : undefined,
+      specifications: Object.keys(specifications).length > 0 ? specifications : undefined,
     } as ProductFormData
     onSubmit(formData)
   }
 
   const addCategory = () => {
-    if (categoryInput.trim() && !categories.includes(categoryInput.trim())) {
-      setCategories([...categories, categoryInput.trim()])
+    if (categoryInput.trim() && !categoriesList.includes(categoryInput.trim())) {
+      setCategoriesList([...categoriesList, categoryInput.trim()])
       setCategoryInput("")
     }
   }
 
   const removeCategory = (category: string) => {
-    setCategories(categories.filter(c => c !== category))
+    setCategoriesList(categoriesList.filter(c => c !== category))
   }
 
   const addSize = () => {
@@ -159,6 +184,20 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
 
   const removeImage = (image: string) => {
     setImages(images.filter(i => i !== image))
+  }
+
+  const addSpecification = () => {
+    if (specKey.trim() && specValue.trim() && !specifications[specKey.trim()]) {
+      setSpecifications({ ...specifications, [specKey.trim()]: specValue.trim() })
+      setSpecKey("")
+      setSpecValue("")
+    }
+  }
+
+  const removeSpecification = (key: string) => {
+    const newSpecs = { ...specifications }
+    delete newSpecs[key]
+    setSpecifications(newSpecs)
   }
 
   return (
@@ -320,6 +359,68 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
               )}
             />
 
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoria</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione uma categoria" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>
+                            {cat}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Imagem Principal</FormLabel>
+                    <FormControl>
+                      <Input placeholder="URL da imagem principal" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="active"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Produto Ativo</FormLabel>
+                    <div className="text-sm text-muted-foreground">
+                      Define se o produto está disponível para venda
+                    </div>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {/* Categories */}
             <div className="space-y-2">
               <Label>Categorias</Label>
@@ -335,7 +436,7 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
                 </Button>
               </div>
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
+                {categoriesList.map((category) => (
                   <Badge key={category} variant="secondary" className="flex items-center gap-1">
                     {category}
                     <X 
@@ -449,6 +550,40 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
                     <X 
                       className="h-3 w-3 cursor-pointer flex-shrink-0" 
                       onClick={() => removeImage(image)}
+                    />
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Specifications */}
+            <div className="space-y-2">
+              <Label>Especificações</Label>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Chave (ex: Cor)"
+                  value={specKey}
+                  onChange={(e) => setSpecKey(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSpecification())}
+                />
+                <Input
+                  placeholder="Valor (ex: Azul)"
+                  value={specValue}
+                  onChange={(e) => setSpecValue(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSpecification())}
+                />
+                <Button type="button" onClick={addSpecification} variant="outline">
+                  Adicionar Especificação
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(specifications).map(([key, value]) => (
+                  <Badge key={key} variant="secondary" className="flex items-center gap-1">
+                    <span>{key}:</span>
+                    <span>{value}</span>
+                    <X 
+                      className="h-3 w-3 cursor-pointer flex-shrink-0" 
+                      onClick={() => removeSpecification(key)}
                     />
                   </Badge>
                 ))}

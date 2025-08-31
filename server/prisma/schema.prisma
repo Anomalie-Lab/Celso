@@ -114,6 +114,7 @@ model Product {
   details           Json?
   flags             Json?
   categories        Json?
+  images            Json?
   sizes             Json?
   stock             Int      @default(0)
   views             Int      @default(0)

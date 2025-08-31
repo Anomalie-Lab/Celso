@@ -12,6 +12,7 @@ declare namespace Product {
     blur?: string | null;
     details?: any | null;
     flags?: any | null;
+    images?: any | null;
     categories?: any | null;
     sizes?: any | null;
     stock: number;

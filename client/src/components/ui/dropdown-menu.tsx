@@ -165,7 +165,7 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
 function Order({ sortOption, setSortOption }: Ui.Order) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="px-2 py-1  cursor-pointer bg-secondary rounded-sm text-white  outline-none">
+      <DropdownMenuTrigger className="px-3 py-2  cursor-pointer bg-gray-100 rounded-lg  outline-none text-sm font-regular">
         {" "}
         {sortOption === "" ? "Ordenar por" : sortOption === "relevancia" ? "Relevância" : sortOption === "descont" ? "Maior desconto" : sortOption === "rating" ? "Maior avaliação" : sortOption === "minPrice" ? "Menor Preço" : sortOption === "maxPrice" ? "Maior Preço" : "Ordenar por"}
       </DropdownMenuTrigger>

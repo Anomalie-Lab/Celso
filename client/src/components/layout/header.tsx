@@ -98,16 +98,16 @@ export default function Header() {
         <div className="">
           <div className="flex items-center justify-between px-24">
             <div className="hidden lg:flex items-center space-x-8">
-              <button onClick={() => router.push("/produtos")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Autoclave")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Autoclave
               </button>
-              <button onClick={() => router.push("/categorias")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Estética")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Estética
               </button>
-              <button onClick={() => router.push("/sobre-nos")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Micropigmentação")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Micropigmentação
               </button>
-              <button onClick={() => router.push("/fale-conosco")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Macas")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Macas
               </button>
             </div>

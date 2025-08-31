@@ -3,7 +3,7 @@
     {
       "id": 1,
       "discount": "50% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MI",
       "rating": 4.2,
       "reviews": 53,
       "description": "Suplemento natural para controle de peso e saciedade",
@@ -12,12 +12,12 @@
       "color": "white",
       "additionalInfo": "contém o autêntico Cactin",
       "image": "/images/productImg.webp",
-      "category": "Ômega 3"
+      "category": "Micropigmentação"
     },
     {
       "id": 2,
       "discount": "50% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black ME",
       "rating": 4.5,
       "reviews": 42,
       "description": "Controle natural do apetite e saciedade",
@@ -26,12 +26,25 @@
       "color": "black",
       "additionalInfo": "MENOS FOME MAIS SACIEDADE",
       "image": "/images/productImg.webp",
-      "category": "Ômega 3"
+      "category": "Estética"
     },
     {
       "id": 3,
       "discount": "5% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MA",
+      "rating": 4.1,
+      "reviews": 38,
+      "description": "Suplemento para controle glicêmico e metabolismo, utilizado para prevenção e tratamento de diabetes, e para melhorar a saúde cardiovascular.",
+      "currentPrice": "R$ 32,50",
+      "originalPrice": "R$ 34,21",
+      "color": "white",
+      "image": "/images/productImg.webp",
+      "category": "Macas"
+    },
+    {
+      "id": 4,
+      "discount": "5% OFF",
+      "productName": "Diuretik Red MAUTO",
       "rating": 4.1,
       "reviews": 38,
       "description": "Suplemento para controle glicêmico e metabolismo",
@@ -39,12 +52,12 @@
       "originalPrice": "R$ 34,21",
       "color": "white",
       "image": "/images/productImg.webp",
-      "category": "Ômega 3"
+      "category": "Autoclave"
     },
     {
       "id": 4,
       "discount": "5% OFF",
-      "productName": "Ioimbina",
+      "productName": "Ioimbina MA",
       "rating": 3.8,
       "reviews": 25,
       "description": "Suplemento para performance e energia",
@@ -52,12 +65,12 @@
       "originalPrice": "R$ 30,42",
       "color": "white",
       "image": "/images/productImg.webp",
-      "category": "performance"
+      "category": "Macas"
     },
     {
       "id": 5,
       "discount": "90% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MI",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -65,12 +78,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diabetes"
+      "category": "Micropigmentação"
     },
     {
       "id": 6,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black ME",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -78,12 +91,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diabetes"
+      "category": "Estética"
     },
     {
       "id": 7,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MAUTO",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -91,12 +104,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diabetes"
+      "category": "Autoclave"
     },
     {
       "id": 8,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MA",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -104,12 +117,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "Macas"
     },
     {
       "id": 9,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MI",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -117,12 +130,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "Micropigmentação"
     },
     {
       "id": 10,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black ME",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -130,12 +143,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "Estética"
     },
     {
       "id": 11,
       "discount": "10% OFF",
-      "productName": "Diuretik Black",
+      "productName": "Diuretik Black MAUTO",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -143,12 +156,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "diuretico"
+      "category": "Autoclave"
     },
     {
       "id": 12,
       "discount": "10% OFF",
-      "productName": "vitamina 3b",
+      "productName": "vitamina 3b MI",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -156,12 +169,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "vitaminas"
+      "category": "Micropigmentação"
     },
     {
       "id": 13,
       "discount": "10% OFF",
-      "productName": "vitamina 3b",
+      "productName": "vitamina 3b MA",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -169,12 +182,12 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "vitaminas"
+      "category": "Macas"
     },
     {
       "id": 14,
       "discount": "50% OFF",
-      "productName": "vitamina 3b",
+      "productName": "vitamina 3b ME",
       "rating": 4.3,
       "reviews": 47,
       "description": "Ação diurética natural para redução de inchaço",
@@ -182,7 +195,7 @@
       "originalPrice": "R$ 58,67",
       "color": "black",
       "image": "/images/productImg.webp",
-      "category": "vitaminas"
+      "category": "Estética"
     },
     {
       "id": 15,
@@ -291,34 +304,24 @@
   ],
   "categories": [
     {
-      "id": "emagrecimento",
-      "name": "Emagrecimento",
+      "id": "Estética",
+      "name": "Estética",
       "description": "Produtos para controle de peso e saciedade"
     },
     {
-      "id": "performance",
-      "name": "Performance",
+      "id": "Micropigmentação",
+      "name": "Micropigmentação",
+      "description": "Suplementos para controle glicêmico"
+    },
+    {
+      "id": "Macas",
+      "name": "Macas",
       "description": "Suplementos para energia e performance"
     },
     {
-      "id": "diabetes",
-      "name": "Diuréticos",
+      "id": "Autoclave",
+      "name": "Autoclave",
       "description": "Produtos para redução de inchaço"
-    },
-    {
-      "id": "nutracêuticos",
-      "name": "Nutracêuticos",
-      "description": "Suplementos naturais para saúde"
-    },
-    {
-      "id": "vitaminas",
-      "name": "Vitaminas",
-      "description": "Suplementos vitamínicos"
-    },
-    {
-      "id": "omega",
-      "name": "Ômega 3",
-      "description": "Ácidos graxos essenciais"
     }
   ]
 }

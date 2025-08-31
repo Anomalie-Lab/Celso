@@ -4,14 +4,10 @@ import {AccountRepository} from '../../repositories/account/account.repository';
 import {LoginUser} from '../../services/cookies.service';
 import {CreateUpdateAddressDto, UpdateUserDto} from '../../dtos/account.dto';
 import {HandleErrorsUserConflict} from 'src/utils/handle-errors-database.util';
-import {PrismaService} from '../../services/prisma.service';
 
 @Injectable()
 export class AccountService {
-  constructor(
-    private readonly accountRepository: AccountRepository,
-    private readonly prisma: PrismaService
-  ) {}
+  constructor(private readonly accountRepository: AccountRepository) {}
 
   async edit(res: ExpressResponse, dto: UpdateUserDto, id: number) {
     try {
@@ -39,26 +35,31 @@ export class AccountService {
     return await this.accountRepository.deleteAddress({user_id, id});
   }
 
+  async getUserOrders(userId: number) {
+    return await this.accountRepository.getUserOrders(userId);
+  }
+
+  async getUserStats(userId: number) {
+    return await this.accountRepository.getUserStats(userId);
+  }
+
+  async getUserActivities(userId: number) {
+    return await this.accountRepository.getUserActivities(userId);
+  }
+
   async getOrderById(id: number) {
-    const o = await this.prisma.transaction.findUnique({
-      where: {id},
-      include: {
-        user: {select: {id: true, fullname: true, email: true}},
-        invoices: {include: {items: {include: {product: true}}}},
-        histories: {orderBy: {created_at: 'asc'}},
-      },
-    });
-    if (!o) throw new NotFoundException('Order not found');
+    const order = await this.accountRepository.getOrderById(id);
+    if (!order) throw new NotFoundException('Order not found');
 
     return {
-      id: o.id,
-      user: o.user,
-      invoices: o.invoices,
-      histories: o.histories,
-      total_amount: Number(o.invoices[0]?.total_amount ?? 0),
-      status: o.histories[o.histories.length - 1]?.status ?? 'PENDING',
+      id: order.id,
+      user: order.user,
+      invoices: order.invoices,
+      histories: order.histories,
+      total_amount: Number(order.invoices[0]?.total_amount ?? 0),
+      status: order.histories[order.histories.length - 1]?.status ?? 'PENDING',
       payment_method: 'PIX',
-      created_at: o.created_at,
+      created_at: order.created_at,
     };
   }
 }

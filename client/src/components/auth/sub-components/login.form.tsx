@@ -7,22 +7,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useUser } from "@/hooks/user.hook";
 import { Auth } from "@/api/auth.api";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormDataLogin, SchemaLogin } from "@/entities/schemas";
 
 interface LoginFormProps {
   onAuthPageChange: (page: "Login" | "Register" | "ForgotPass") => void
+  onClose: () => void | undefined
 }
 
-export const LoginForm = ({ onAuthPageChange }: LoginFormProps) => {
+export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({ 
     resolver: yupResolver(SchemaLogin) 
   });
   const [isLoading, setIsLoading] = useState(false);
   const { setUser } = useUser();
-  const router = useRouter();
-  
+
   const onSubmit = async (data: FormDataLogin) => {
     try {
       setIsLoading(true);
@@ -32,7 +31,7 @@ export const LoginForm = ({ onAuthPageChange }: LoginFormProps) => {
         toast.success("Login realizado com sucesso!", {
           description: "Bem-vindo de volta!",
         });
-        router.push('/');
+        onClose();
       }
     } catch (error: unknown) {
       console.log(error);

@@ -296,11 +296,6 @@
       "description": "Produtos para controle de peso e saciedade"
     },
     {
-      "id": "diabetes",
-      "name": "Diabetes",
-      "description": "Suplementos para controle glicêmico"
-    },
-    {
       "id": "performance",
       "name": "Performance",
       "description": "Suplementos para energia e performance"

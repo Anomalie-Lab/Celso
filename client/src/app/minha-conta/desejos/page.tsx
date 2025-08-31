@@ -5,7 +5,7 @@ import Image from "next/image";
 import { LuHeart, LuTrash2 } from "react-icons/lu";
 import { PiBasket } from "react-icons/pi";
 
-export default function WishesTab() {
+export default function WishesPage() {
   const products = getProducts().slice(0, 6);
 
   return (

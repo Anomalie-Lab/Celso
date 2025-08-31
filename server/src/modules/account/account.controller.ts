@@ -31,7 +31,9 @@ export class AccountController {
   @ApiResponse({status: 404, description: 'User address not found.'})
   @ApiResponse({status: 500, description: 'Internal server error.'})
   async getAddress(@User() user: Account.UserI, @Res() res) {
+    console.log(user.id);
     const data = await this.accountService.getAddress(user.id);
+    console.log(data);
     return res.status(HttpStatus.OK).json(data);
   }
 
@@ -68,7 +70,33 @@ export class AccountController {
     return res.status(HttpStatus.OK).json(data);
   }
 
-  // Orders read-only
+  @Get('orders')
+  @ApiOperation({summary: 'Get User Orders', description: 'Get user orders with details including products and history'})
+  @ApiResponse({status: 200, description: 'User orders retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserOrders(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserOrders(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Get('stats')
+  @ApiOperation({summary: 'Get User Statistics', description: 'Get user account statistics including orders, wishlist, addresses count and recent activities'})
+  @ApiResponse({status: 200, description: 'User statistics retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserStats(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserStats(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Get('activities')
+  @ApiOperation({summary: 'Get User Recent Activities', description: 'Get user recent activities including orders, wishlist additions, address changes'})
+  @ApiResponse({status: 200, description: 'User activities retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserActivities(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserActivities(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
   @Get('orders/:id')
   @isPublic()
   @ApiOperation({summary: 'Get order by ID'})

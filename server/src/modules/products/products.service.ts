@@ -1,56 +1,29 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../services/prisma.service';
+import { ProductsRepository } from '../../repositories/products/products.repository';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly productsRepository: ProductsRepository) {}
 
   async findOne(id: number) {
-    const product = await this.prisma.product.findUnique({
-      where: { id },
-      include: {
-        comments: {
-          include: {
-            user: { select: { id: true, fullname: true, avatar: true } },
-          },
-        },
-      },
-    });
-
+    const product = await this.productsRepository.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
-
     return product;
   }
 
   async search(query: string) {
-    return this.prisma.product.findMany({
-      where: {
-        OR: [
-          { title: { contains: query } },
-          { brand: { contains: query } },
-          { description: { contains: query } },
-        ],
-      },
-      orderBy: { created_at: 'desc' },
-    });
+    return await this.productsRepository.search(query);
   }
 
   async findDiscountedProducts() {
-    return this.prisma.product.findMany({
-      where: {
-        last_price: { gt: 0 },
-        price: { lt: this.prisma.product.fields.last_price },
-        stock: { gt: 0 },
-      },
-      orderBy: { created_at: 'desc' },
-      take: 10,
-    });
+    return await this.productsRepository.findDiscountedProducts();
   }
 
   async findBestSellers() {
-    return this.prisma.product.findMany({
-      orderBy: { created_at: 'desc' },
-      take: 10,
-    });
+    return await this.productsRepository.findBestSellers();
+  }
+
+  async findAll() {
+    return await this.productsRepository.findAll();
   }
 }

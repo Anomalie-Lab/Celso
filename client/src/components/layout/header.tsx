@@ -27,7 +27,7 @@ export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user } = useUser();
-  
+
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -65,7 +65,6 @@ export default function Header() {
     } else {
       setIsScrolled(false);
     }
-    console.log(isScrolled);
     setLastScrollY(currentScrollY);
   }, [lastScrollY, isScrolled]);
 

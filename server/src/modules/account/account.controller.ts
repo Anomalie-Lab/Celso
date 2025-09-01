@@ -1,5 +1,6 @@
 import {CreateUpdateAddressDto, UpdateUserDto} from './../../dtos/account.dto';
 import {AddToCartDto, UpdateCartItemDto} from './../../dtos/cart.dto';
+import {AddToWishlistDto} from './../../dtos/wishlist.dto';
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Res, UsePipes, ValidationPipe} from '@nestjs/common';
 import {AccountService} from './account.service';
 import {User} from '../../decorators/user.decorator';
@@ -143,6 +144,45 @@ export class AccountController {
   @ApiResponse({status: 403, description: 'Authentication required.'})
   async clearCart(@User() user: Account.UserI, @Res() res) {
     const data = await this.accountService.clearCart(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  // Wishlist endpoints
+  @Get('wishlist')
+  @ApiOperation({summary: 'Get User Wishlist', description: 'Get user wishlist with all items'})
+  @ApiResponse({status: 200, description: 'User wishlist retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserWishlist(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserWishlist(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Post('wishlist')
+  @ApiOperation({summary: 'Add Item to Wishlist', description: 'Add a product to user wishlist'})
+  @ApiResponse({status: 200, description: 'Item added to wishlist successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  @ApiBody({type: AddToWishlistDto})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async addToWishlist(@Body() dto: AddToWishlistDto, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.addToWishlist(user.id, dto.product_id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Delete('wishlist/:id')
+  @ApiOperation({summary: 'Remove Wishlist Item', description: 'Remove an item from user wishlist'})
+  @ApiResponse({status: 200, description: 'Wishlist item removed successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async removeFromWishlist(@Param('id') id: number, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.removeFromWishlist(user.id, id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Delete('wishlist')
+  @ApiOperation({summary: 'Clear Wishlist', description: 'Remove all items from user wishlist'})
+  @ApiResponse({status: 200, description: 'Wishlist cleared successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async clearWishlist(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.clearWishlist(user.id);
     return res.status(HttpStatus.OK).json(data);
   }
 

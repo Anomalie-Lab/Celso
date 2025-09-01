@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { LiaUserSolid } from "react-icons/lia";
-import { LuSearch, LuHeart, LuX, LuShoppingCart  } from "react-icons/lu";
+import { LuSearch, LuHeart, LuX, LuShoppingCart } from "react-icons/lu";
 import { CiDeliveryTruck, CiDiscount1 } from "react-icons/ci";
 import { TbPointFilled } from "react-icons/tb";
 import Cart from "../home/cartDrawer";
@@ -13,6 +13,8 @@ import SearchDrawer from "../home/searchDrawer";
 import Notification from "./notification";
 import { useUser } from "@/hooks/user.hook";
 import { useCart } from "@/hooks/cart.hook";
+import { useWishlist } from "@/hooks/wishlist.hook";
+import Link from "next/link";
 type AuthPage = "Login" | "Register" | "ForgotPass";
 
 export default function Header() {
@@ -28,6 +30,7 @@ export default function Header() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user } = useUser();
   const { cartItemsCount } = useCart();
+  const { wishlistItemsCount } = useWishlist();
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -126,43 +129,50 @@ export default function Header() {
               <div className="hidden md:flex items-center gap-2 p-2 rounded-full transition-colors  group">
                 <LiaUserSolid className="text-2xl text-gray-600 group-hover:text-primary transition-colors" />
                 <div className="text-xs">
-                  <div className="text-gray-900 font-medium">Minha Conta</div>
-                  <div className="text-gray-500">
-                                         <button
-                       onClick={() => {
-                         toggleDialog();
-                         toggleAuthPage("Login");
-                       }}
-                       className="hover:text-primary transition-colors cursor-pointer"
-                     >
-                       Entrar
-                     </button>
+                  {user && <div className="text-gray-900 font-medium">Olá, {user.fullname.split(" ")[0]}</div>}
+                  {user ? (
+                    <Link href="/minha-conta" className="text-gray-500 font-medium hover:text-primary transition-colors">
+                      Minha Conta
+                    </Link>
+                  ) : (
+                    <div className="text-gray-900 font-medium">Minha Conta</div>
+                  )}
+                  <div className={`text-gray-500 ${user ? "hidden" : ""}`}>
+                    <button
+                      onClick={() => {
+                        toggleDialog();
+                        toggleAuthPage("Login");
+                      }}
+                      className="hover:text-primary transition-colors cursor-pointer"
+                    >
+                      Entrar
+                    </button>
                     <span className="ml-1 mr-1">/</span>
-                                         <button
-                       onClick={() => {
-                         toggleDialog();
-                         toggleAuthPage("Register");
-                       }}
-                       className="hover:text-primary transition-colors cursor-pointer"
-                     >
-                       {" "}
-                       Cadastrar
-                     </button>
+                    <button
+                      onClick={() => {
+                        toggleDialog();
+                        toggleAuthPage("Register");
+                      }}
+                      className="hover:text-primary transition-colors cursor-pointer"
+                    >
+                      {" "}
+                      Cadastrar
+                    </button>
                   </div>
                 </div>
               </div>
               <button onClick={toggleWishList} className="p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer">
                 <LuHeart className="w-5 h-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                {wishlistItemsCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">{wishlistItemsCount}</span>}
               </button>
               <button onClick={toggleDrawer} className="p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer">
-                <LuShoppingCart  className="w-5 h-5 text-gray-600" />
+                <LuShoppingCart className="w-5 h-5 text-gray-600" />
                 {cartItemsCount > 0 && (
-                  <span 
+                  <span
                     key={cartItemsCount}
                     className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center animate-pulse"
                     style={{
-                      animation: 'cartCountPulse 0.6s ease-in-out'
+                      animation: "cartCountPulse 0.6s ease-in-out",
                     }}
                   >
                     {cartItemsCount}

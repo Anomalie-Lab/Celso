@@ -344,7 +344,7 @@ export class AccountRepository {
   async removeFromCart(userId: number, itemId: number) {
     const item = await this.prisma.cartItem.findFirst({
       where: {
-        id: itemId,
+        id: +itemId,
         cart: { user_id: userId },
       },
     });
@@ -354,7 +354,7 @@ export class AccountRepository {
     }
 
     return await this.prisma.cartItem.delete({
-      where: { id: itemId },
+      where: { id: +itemId },
     });
   }
 
@@ -372,5 +372,163 @@ export class AccountRepository {
     });
 
     return { message: 'Cart cleared successfully' };
+  }
+
+  async getUserWishlist(userId: number) {
+    let wishlist = await this.prisma.wishlist.findFirst({
+      where: { user_id: userId },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                title: true,
+                price: true,
+                images: true,
+                stock: true,
+                brand: true,
+                categories: true,
+                flags: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!wishlist) {
+      wishlist = await this.prisma.wishlist.create({
+        data: { user_id: userId },
+        include: {
+          items: {
+            include: {
+              product: {
+                select: {
+                  id: true,
+                  title: true,
+                  price: true,
+                  images: true,
+                  stock: true,
+                  brand: true,
+                  categories: true,
+                  flags: true
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    return wishlist;
+  }
+
+  async addToWishlist(userId: number, productId: number) {
+    let wishlist = await this.prisma.wishlist.findFirst({
+      where: { user_id: userId }
+    });
+
+    if (!wishlist) {
+      wishlist = await this.prisma.wishlist.create({
+        data: { user_id: userId }
+      });
+    }
+
+    const existingItem = await this.prisma.wishlistItem.findFirst({
+      where: {
+        wishlist_id: wishlist.id,
+        product_id: productId
+      }
+    });
+
+    if (existingItem) {
+      throw new Error('Produto já está na lista de desejos');
+    }
+
+    const wishlistItem = await this.prisma.wishlistItem.create({
+      data: {
+        wishlist_id: wishlist.id,
+        product_id: productId
+      },
+      include: {
+        product: {
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            images: true,
+            stock: true,
+            brand: true,
+            categories: true,
+            flags: true
+          }
+        }
+      }
+    });
+
+    await this.prisma.product.update({
+      where: { id: productId },
+      data: {
+        added_to_wishlist: {
+          increment: 1
+        }
+      }
+    });
+
+    return wishlistItem;
+  }
+
+  async removeFromWishlist(userId: number, itemId: number) {
+    const wishlist = await this.prisma.wishlist.findFirst({
+      where: { user_id: userId },
+      include: { items: true }
+    });
+
+    if (!wishlist) {
+      throw new Error('Lista de desejos não encontrada');
+    }
+
+    const item = await this.prisma.wishlistItem.findFirst({
+      where: {
+        id: itemId,
+        wishlist_id: wishlist.id
+      },
+      include: { product: true }
+    });
+
+    if (!item) {
+      throw new Error('Item não encontrado na lista de desejos');
+    }
+
+    await this.prisma.wishlistItem.delete({
+      where: { id: itemId }
+    });
+
+    await this.prisma.product.update({
+      where: { id: item.product_id },
+      data: {
+        added_to_wishlist: {
+          decrement: 1
+        }
+      }
+    });
+
+    return { message: 'Item removido da lista de desejos' };
+  }
+
+  async clearWishlist(userId: number) {
+    const wishlist = await this.prisma.wishlist.findFirst({
+      where: { user_id: userId },
+      include: { items: true }
+    });
+
+    if (wishlist) {
+      await this.prisma.wishlistItem.deleteMany({
+        where: { wishlist_id: wishlist.id }
+      });
+    }
+
+    return { message: 'Lista de desejos limpa com sucesso' };
   }
 }

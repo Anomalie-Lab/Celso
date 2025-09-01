@@ -2,9 +2,11 @@ import Image from "next/image";
 import { LuHeart, LuStar } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useCart } from "@/hooks/cart.hook";
+import { useWishlist } from "@/hooks/wishlist.hook";
 
 export default function ProductCard({ data }: { data: Product.SimpleI }) {
   const { addToCart, isAddingToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist, isAddingToWishlist, isRemovingFromWishlist, wishlist } = useWishlist();
   const renderStars = (rating: number) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -26,7 +28,6 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
   };
 
   const getProductImage = () => {
-    // Usa images[0] ou fallback
     return data.images?.[0] || '/placeholder-product.jpg';
   };
 
@@ -68,8 +69,26 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
         </div>
       )}
 
-      <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 cursor-pointer shadow-sm">
-        <LuHeart className="w-4 h-4 text-gray-800" />
+      <button 
+        onClick={() => {
+          if (isInWishlist(data.id)) {
+            // Encontrar o item da wishlist para remover
+            const wishlistItem = wishlist?.items?.find((item: any) => item.product.id === data.id);
+            if (wishlistItem) {
+              removeFromWishlist(wishlistItem.id);
+            }
+          } else {
+            addToWishlist({ product_id: data.id });
+          }
+        }}
+        disabled={isAddingToWishlist || isRemovingFromWishlist}
+        className={`absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 shadow-sm ${isInWishlist(data.id) ? 'text-red-500' : 'text-gray-800'} ${(isAddingToWishlist || isRemovingFromWishlist) ? 'opacity-50' : ''}`}
+      >
+        {(isAddingToWishlist || isRemovingFromWishlist) ? (
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+        ) : (
+          <LuHeart className={`w-4 h-4 ${isInWishlist(data.id) ? 'fill-current' : ''}`} />
+        )}
       </button>
 
       <div className="relative mb-4">
@@ -93,7 +112,11 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
         disabled={isAddingToCart}
         className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <PiBasketLight className="w-5 h-5" />
+        {isAddingToCart ? (
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+        ) : (
+          <PiBasketLight className="w-5 h-5" />
+        )}
         {isAddingToCart ? 'Adicionando...' : 'Adicionar'}
       </button>
 

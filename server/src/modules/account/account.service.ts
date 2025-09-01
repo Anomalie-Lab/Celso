@@ -83,4 +83,20 @@ export class AccountService {
   async clearCart(userId: number) {
     return await this.accountRepository.clearCart(userId);
   }
+
+  async getUserWishlist(userId: number) {
+    return await this.accountRepository.getUserWishlist(userId);
+  }
+
+  async addToWishlist(userId: number, productId: number) {
+    return await this.accountRepository.addToWishlist(userId, productId);
+  }
+
+  async removeFromWishlist(userId: number, itemId: number) {
+    return await this.accountRepository.removeFromWishlist(userId, itemId);
+  }
+
+  async clearWishlist(userId: number) {
+    return await this.accountRepository.clearWishlist(userId);
+  }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { Account } from "@/api/account.api";
 import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -33,14 +34,19 @@ export default function AddressesTab() {
     queryFn: Account.getAddresses,
   });
 
+  const [deletingAddressId, setDeletingAddressId] = useState<number | null>(null);
+
   const handleDeleteAddress = async (id: number) => {
     try {
+      setDeletingAddressId(id);
       await Account.deleteAddress(id);
       toast.success("Endereço excluído com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["user-addresses"] });
     } catch (error) {
       console.error(error);
       toast.error("Erro ao excluir endereço");
+    } finally {
+      setDeletingAddressId(null);
     }
   };
 
@@ -90,8 +96,18 @@ export default function AddressesTab() {
                         Editar
                       </Button>
                     </AddressForm>
-                    <Button variant="outline" size="sm" onClick={() => handleDeleteAddress(address.id)} className="text-red-600 hover:text-red-700 cursor-pointer">
-                      <Trash2 className="w-4 h-4" />
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleDeleteAddress(address.id)} 
+                      disabled={deletingAddressId === address.id}
+                      className="text-red-600 hover:text-red-700 cursor-pointer"
+                    >
+                      {deletingAddressId === address.id ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
                     </Button>
                   </div>
                 </div>

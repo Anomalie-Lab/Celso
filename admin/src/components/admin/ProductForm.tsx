@@ -37,9 +37,11 @@ const productSchema = z.object({
   installments: z.number().min(1, "Parcelas deve ser maior que 0"),
   blur: z.string().optional(),
   stock: z.number().min(0, "Estoque deve ser maior ou igual a 0"),
-  category: z.string().optional(),
-  image: z.string().optional(),
-  active: z.boolean().default(true),
+  categories: z.array(z.string()).optional(),
+  images: z.array(z.string()).optional(),
+  flags: z.array(z.string()).optional(),
+  sizes: z.array(z.string()).optional(),
+  details: z.array(z.string()).optional(),
 })
 
 const categories = [
@@ -86,9 +88,11 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
       installments: product?.installments || 12,
       blur: product?.blur || "",
       stock: product?.stock || 0,
-      category: product?.category || "",
-      image: product?.image || "",
-      active: product?.active ?? true,
+      categories: product?.categories || [],
+      images: product?.images || [],
+      flags: product?.flags || [],
+      sizes: product?.sizes || [],
+      details: product?.details || [],
     },
   })
 
@@ -99,7 +103,6 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
     setFlags(product?.flags ? (product.flags as string[]) : [])
     setDetails(product?.details ? (product.details as string[]) : [])
     setImages(product?.images ? (product.images as string[]) : [])
-    setSpecifications(product?.specifications ? (product.specifications as Record<string, string>) : {})
     
     // Reset form with product data
     form.reset({
@@ -112,9 +115,11 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
       installments: product?.installments || 12,
       blur: product?.blur || "",
       stock: product?.stock || 0,
-      category: product?.category || "",
-      image: product?.image || "",
-      active: product?.active ?? true,
+      categories: product?.categories || [],
+      images: product?.images || [],
+      flags: product?.flags || [],
+      sizes: product?.sizes || [],
+      details: product?.details || [],
     })
   }, [product, form])
 
@@ -362,24 +367,13 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="category"
+                name="brand"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Categoria</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione uma categoria" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat} value={cat}>
-                            {cat}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Marca</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Marca do produto" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -387,12 +381,12 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
 
               <FormField
                 control={form.control}
-                name="image"
+                name="blur"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Imagem Principal</FormLabel>
+                    <FormLabel>Blur (Opcional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="URL da imagem principal" {...field} />
+                      <Input placeholder="Texto de blur" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -400,26 +394,13 @@ export function ProductForm({ isOpen, onClose, onSubmit, product, isLoading }: P
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="active"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Produto Ativo</FormLabel>
-                    <div className="text-sm text-muted-foreground">
-                      Define se o produto está disponível para venda
-                    </div>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div className="space-y-2">
+              <Label>Produto Ativo</Label>
+              <div className="flex items-center space-x-2">
+                <Switch id="active" />
+                <Label htmlFor="active">Define se o produto está disponível para venda</Label>
+              </div>
+            </div>
 
             {/* Categories */}
             <div className="space-y-2">

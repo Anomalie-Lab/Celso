@@ -81,11 +81,19 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-2">
                         <button onClick={() => handleQuantityChange(item.id, item.quantity, -1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50">
-                          <LuMinus className="w-3 h-3" />
+                          {isUpdatingCart ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
+                          ) : (
+                            <LuMinus className="w-3 h-3" />
+                          )}
                         </button>
                         <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
                         <button onClick={() => handleQuantityChange(item.id, item.quantity, 1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50">
-                          <LuPlus className="w-3 h-3" />
+                          {isUpdatingCart ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
+                          ) : (
+                            <LuPlus className="w-3 h-3" />
+                          )}
                         </button>
                       </div>
                       <div className="text-right">
@@ -95,7 +103,11 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                     </div>
                   </div>
                   <button onClick={() => removeFromCart(item.id)} disabled={isRemovingFromCart} className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50">
-                    <LuTrash2 className="w-4 h-4" />
+                    {isRemovingFromCart ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
+                    ) : (
+                      <LuTrash2 className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               ))}

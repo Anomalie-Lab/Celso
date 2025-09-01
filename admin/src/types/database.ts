@@ -58,7 +58,7 @@ export interface Product {
   views: number
   added_to_cart: number
   added_to_wishlist: number
-  details?: any
+  details?: string[]
   flags?: string[]
   categories?: string[]
   sizes?: string[]

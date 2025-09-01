@@ -7,6 +7,7 @@ import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import AddressForm from "@/components/account/addressForm";
 import { Button } from "@/components/ui/button";
+import { AddressesSkeleton } from "@/components/ui/addressesSkeleton";
 
 interface Address {
   id: number;
@@ -56,11 +57,7 @@ export default function AddressesTab() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <AddressesSkeleton />;
   }
 
   return (

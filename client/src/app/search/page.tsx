@@ -10,6 +10,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState, useCallback } from "react";
 import { IoFilterOutline, IoGridOutline, IoListOutline } from "react-icons/io5";
 import { Slider } from "@/components/ui/slider";
+import { SearchSkeleton } from "@/components/ui/searchSkeleton";
 
 function SearchContent() {
   const router = useRouter();
@@ -33,6 +34,7 @@ function SearchContent() {
   const [page, setPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [isLoading, setIsLoading] = useState(true);
   const maxPerPage = 12;
 
 
@@ -70,6 +72,7 @@ function SearchContent() {
   const fetchProduct = useCallback(() => {
     if (!q) return router.push("/");
 
+    setIsLoading(true);
     let filteredProduct = searchProducts(q);
 
     setCategories([...new Set(filteredProduct.map((product) => product.category))]);
@@ -128,11 +131,16 @@ function SearchContent() {
     setTotalPage(Math.ceil(filteredProduct.length / maxPerPage));
     setQuantity(filteredProduct.length);
     setResult(filteredProduct);
+    setIsLoading(false);
   }, [q, filters, router]);
 
   useEffect(() => {
     fetchProduct();
   }, [fetchProduct]);
+
+  if (isLoading) {
+    return <SearchSkeleton />;
+  }
 
   return (
     <main className="flex flex-col w-full min-h-screen bg-white">

@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import ProductCard from "../ui/productCard";
 import { Products } from "@/api/products.api";
 import { Loader2 } from "lucide-react";
+import { ProductsAreaSkeleton } from "@/components/ui/productsAreaSkeleton";
 
 interface ProductsAreaProps {
   titleArea: string;
@@ -37,14 +38,7 @@ export default function ProductsArea({ titleArea, type }: ProductsAreaProps) {
   const { data: products = [], isLoading, error } = useQuery<Product.SimpleI[]>({ queryKey: getQueryKey(), queryFn: getQueryFn() });
 
   if (isLoading) {
-    return (
-      <div className="w-full px-24">
-        <h1 className="text-center text-2xl font-semibold mt-12 mb-8">{titleArea}</h1>
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </div>
-    );
+    return <ProductsAreaSkeleton titleArea={titleArea} />;
   }
 
   if (error) {

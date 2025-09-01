@@ -5,6 +5,7 @@ import { LuUser, LuMail, LuPhone, LuCalendar, LuMapPin, LuPackage, LuHeart, LuLo
 import { Account } from "@/api/account.api";
 import { useUser } from "@/hooks/user.hook";
 import EditAccount from "@/components/account/editAccount";
+import { AccountSkeleton } from "@/components/ui/accountSkeleton";
 
 interface Activity {
   type: string;
@@ -48,11 +49,7 @@ export default function MinhaConta() {
   };
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <LuLoader className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <AccountSkeleton />;
   }
 
   return (

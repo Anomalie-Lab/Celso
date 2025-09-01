@@ -9,6 +9,7 @@ import { useWishlist } from '@/hooks/wishlist.hook';
 import { useCart } from '@/hooks/cart.hook';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { WishlistDrawerSkeleton } from '@/components/ui/wishlistDrawerSkeleton';
 
 interface WishListProps {
     isOpen: boolean
@@ -66,9 +67,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                 
                 <div className="flex-1 p-6 overflow-y-auto drawer-content">
                     {isLoading ? (
-                        <div className="flex items-center justify-center h-full">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                        </div>
+                        <WishlistDrawerSkeleton />
                     ) : !wishlist?.items || wishlist.items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-center">
                             <LuHeart className="w-16 h-16 text-gray-400 mb-4" />

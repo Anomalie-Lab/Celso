@@ -8,6 +8,7 @@ import { useCart } from "@/hooks/cart.hook";
 import { useShipping } from "@/hooks/shipping.hook";
 import Image from "next/image";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { CartDrawerSkeleton } from "@/components/ui/cartDrawerSkeleton";
 
 interface CartProps {
   isOpen: boolean;
@@ -39,9 +40,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   if (isLoading) {
     return (
       <Drawer open={isOpen} onClose={toggleDrawer} size={450} direction="right" className="!bg-white drawer-panel" overlayClassName="drawer-overlay">
-        <div className="h-full flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
+        <CartDrawerSkeleton />
       </Drawer>
     );
   }

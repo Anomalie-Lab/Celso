@@ -19,7 +19,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.variable} antialiased`}>
         <Providers>
-          <Toaster />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              classNames: {
+                toast: "!bg-white",
+                success: "!border-l-8 !border-primary", 
+                error: "!border-l-8 !border-red-500", 
+                warning: "!border-l-8 !border-yellow-500"
+              },
+            }}
+          />
           <Header />
           <div className="pt-32">{children}</div>
           <Footer />

@@ -12,6 +12,7 @@ interface SortOption {
 interface FiltersProps {
   filteredCategory?: string[];
   filteredPrices?: PriceRange[];
+  filteredDiscount?: string[];
   selectedPrice?: string;
   selectedCategory?: string;
   selectedCategories?: string[];

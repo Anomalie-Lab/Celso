@@ -14,6 +14,7 @@ import { formatCep, unformatCep } from "@/lib/utils";
 
 interface AddressFormProps {
   mode: "create" | "edit";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   address?: any;
   children?: React.ReactNode;
   onSuccess?: () => void;
@@ -27,16 +28,6 @@ interface ViaCepResponse {
   erro?: boolean;
 }
 
-interface AddressFormData {
-  street: string;
-  number: string;
-  complement: string | null | undefined;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  primary: boolean | null;
-}
 
 const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +41,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     formState: { errors },
     reset,
     setValue,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<any>({
     resolver: yupResolver(SchemaAddress),
     defaultValues: {
@@ -138,6 +130,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     }
   }, [address, mode, reset]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
@@ -148,6 +141,9 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
           description: "Seu endereço foi adicionado.",
         });
       } else {
+        if (!address?.id) {
+          throw new Error("ID do endereço não encontrado");
+        }
         await Account.updateAddress(address.id, data);
         toast.success("Endereço atualizado com sucesso!", {
           description: "Seu endereço foi atualizado.",

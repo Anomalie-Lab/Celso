@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, X, Loader, Info, Megaphone, AlertTriangle, CheckCircle, Gift, Star } from "lucide-react";
+import { X, Loader, Info, Megaphone, AlertTriangle, CheckCircle, Gift, Star } from "lucide-react";
 import { LuBell } from "react-icons/lu";
 import { useUser } from "@/hooks/user.hook";
 import useNotification from "@/hooks/notifications.hook";

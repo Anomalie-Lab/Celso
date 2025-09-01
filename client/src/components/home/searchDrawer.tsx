@@ -115,7 +115,8 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                             
                             {filteredProducts.length > 0 ? (
                                 <div className="space-y-4">
-                                    {filteredProducts.map((product) => (
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    {filteredProducts.map((product: any) => (
                                         <div key={product.id} className="border border-gray-200 rounded-lg p-4">
                                             <ProductCard data={product} />
                                         </div>

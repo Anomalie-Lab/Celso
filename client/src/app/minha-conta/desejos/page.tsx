@@ -8,9 +8,10 @@ import { PiBasketLight } from "react-icons/pi";
 import { toast } from "sonner";
 import { useState } from "react";
 import { WishlistSkeleton } from "@/components/ui/wishlistSkeleton";
+import { WishlistItem } from "@/api/wishlist.api";
 
 export default function WishesPage() {
-  const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, clearWishlist, isRemovingFromWishlist, isClearingWishlist } = useWishlist();
+  const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, isRemovingFromWishlist } = useWishlist();
   const { addToCart, isAddingToCart } = useCart();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
@@ -25,7 +26,7 @@ export default function WishesPage() {
     if (selectedItems.length === wishlistItemsCount) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(wishlist?.items?.map((item: any) => item.id) || []);
+      setSelectedItems(wishlist?.items?.map((item: WishlistItem) => item.id) || []);
     }
   };
 
@@ -102,7 +103,7 @@ export default function WishesPage() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wishlist?.items?.map((item: any) => (
+        {wishlist?.items?.map((item: WishlistItem) => (
           <div key={item.id} className="bg-white rounded-lg border border-gray-100 overflow-hidden">
             <div className="relative h-48 bg-gray-100">
               <Image

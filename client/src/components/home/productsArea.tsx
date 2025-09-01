@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import ProductCard from "../ui/productCard";
 import { Products } from "@/api/products.api";
-import { Loader2 } from "lucide-react";
 import { ProductsAreaSkeleton } from "@/components/ui/productsAreaSkeleton";
 
 interface ProductsAreaProps {

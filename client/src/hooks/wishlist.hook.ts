@@ -1,60 +1,47 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { Wishlist, AddToWishlistData } from '@/api/wishlist.api';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Wishlist } from "@/api/wishlist.api";
+import { toast } from "sonner";
 
 export const useWishlist = () => {
   const queryClient = useQueryClient();
 
-  const { data: wishlist, isLoading, error } = useQuery({
-    queryKey: ['wishlist'],
+  const { data: wishlist, isLoading } = useQuery({
+    queryKey: ["wishlist"],
     queryFn: Wishlist.getWishlist,
-    staleTime: 1000 * 60 * 5,
   });
 
   const addToWishlistMutation = useMutation({
-    mutationFn: (data: AddToWishlistData) => Wishlist.addToWishlist(data),
+    mutationFn: Wishlist.addToWishlist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast.success('Produto adicionado aos favoritos!');
+      queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      toast.success("Produto adicionado à lista de desejos!");
     },
-    onError: (error: any) => {
-      toast.error('Erro ao adicionar produto aos favoritos');
+    onError: () => {
+      toast.error("Erro ao adicionar produto à lista de desejos");
     },
   });
 
   const removeFromWishlistMutation = useMutation({
-    mutationFn: (itemId: number) => Wishlist.removeFromWishlist(itemId),
+    mutationFn: Wishlist.removeFromWishlist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast.success('Produto removido dos favoritos!');
+      queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      toast.success("Produto removido da lista de desejos!");
     },
-    onError: (error: any) => {
-      toast.error('Erro ao remover produto dos favoritos');
+    onError: () => {
+      toast.error("Erro ao remover produto da lista de desejos");
     },
   });
 
   const clearWishlistMutation = useMutation({
     mutationFn: Wishlist.clearWishlist,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlist'] });
-      toast.success('Lista de desejos limpa!');
+      queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      toast.success("Lista de desejos limpa!");
     },
-    onError: (error: any) => {
-      toast.error('Erro ao limpar lista de desejos');
+    onError: () => {
+      toast.error("Erro ao limpar lista de desejos");
     },
   });
-
-  const addToWishlist = (data: AddToWishlistData) => {
-    addToWishlistMutation.mutate(data);
-  };
-
-  const removeFromWishlist = (itemId: number) => {
-    removeFromWishlistMutation.mutate(itemId);
-  };
-
-  const clearWishlist = () => {
-    clearWishlistMutation.mutate();
-  };
 
   const wishlistItemsCount = wishlist?.items?.length || 0;
 
@@ -65,12 +52,11 @@ export const useWishlist = () => {
   return {
     wishlist,
     isLoading,
-    error,
     wishlistItemsCount,
-    addToWishlist,
-    removeFromWishlist,
-    clearWishlist,
     isInWishlist,
+    addToWishlist: addToWishlistMutation.mutate,
+    removeFromWishlist: removeFromWishlistMutation.mutate,
+    clearWishlist: clearWishlistMutation.mutate,
     isAddingToWishlist: addToWishlistMutation.isPending,
     isRemovingFromWishlist: removeFromWishlistMutation.isPending,
     isClearingWishlist: clearWishlistMutation.isPending,

@@ -6,15 +6,15 @@ export interface AddToWishlistData {
 
 export interface WishlistItem {
   id: number;
+  wishlist_id: number;
+  product_id: number;
   product: {
     id: number;
     title: string;
     price: number;
-    images: any;
-    stock: number;
+    last_price: number;
+    images: string[];
     brand: string;
-    categories: any;
-    flags: any;
   };
   created_at: string;
 }
@@ -28,23 +28,21 @@ export interface Wishlist {
 }
 
 export const Wishlist = {
-  async getWishlist() {
-    const response = await api.get('/account/wishlist');
+  getWishlist: async (): Promise<Wishlist> => {
+    const response = await api.get("/account/wishlist");
     return response.data;
   },
 
-  async addToWishlist(data: AddToWishlistData) {
-    const response = await api.post('/account/wishlist', data);
+  addToWishlist: async (data: AddToWishlistData): Promise<Wishlist> => {
+    const response = await api.post("/account/wishlist", data);
     return response.data;
   },
 
-  async removeFromWishlist(itemId: number) {
-    const response = await api.delete(`/account/wishlist/${itemId}`);
-    return response.data;
+  removeFromWishlist: async (itemId: number): Promise<void> => {
+    await api.delete(`/account/wishlist/${itemId}`);
   },
 
-  async clearWishlist() {
-    const response = await api.delete('/account/wishlist');
-    return response.data;
+  clearWishlist: async (): Promise<void> => {
+    await api.delete("/account/wishlist");
   },
 };

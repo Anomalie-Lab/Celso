@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { LuHeart, LuStar } from "react-icons/lu";
+import { LuHeart } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useCart } from "@/hooks/cart.hook";
 import { useWishlist } from "@/hooks/wishlist.hook";
@@ -7,18 +7,18 @@ import { useWishlist } from "@/hooks/wishlist.hook";
 export default function ProductCard({ data }: { data: Product.SimpleI }) {
   const { addToCart, isAddingToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist, isAddingToWishlist, isRemovingFromWishlist, wishlist } = useWishlist();
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <LuStar 
-          key={i} 
-          className={`w-3 h-3 ${i <= rating ? 'text-yellow-400 fill-current' : 'text-yellow-400 fill-current opacity-50'}`} 
-        />
-      );
-    }
-    return stars;
-  };
+  // const renderStars = (rating: number) => {
+  //   const stars = [];
+  //   for (let i = 1; i <= 5; i++) {
+  //     stars.push(
+  //       <LuStar 
+  //         key={i} 
+  //         className={`w-3 h-3 ${i <= rating ? 'text-yellow-400 fill-current' : 'text-yellow-400 fill-current opacity-50'}`} 
+  //       />
+  //     );
+  //   }
+  //   return stars;
+  // };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -72,7 +72,7 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
       <button 
         onClick={() => {
           if (isInWishlist(data.id)) {
-            // Encontrar o item da wishlist para remover
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const wishlistItem = wishlist?.items?.find((item: any) => item.product.id === data.id);
             if (wishlistItem) {
               removeFromWishlist(wishlistItem.id);

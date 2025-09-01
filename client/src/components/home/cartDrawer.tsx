@@ -1,14 +1,15 @@
 "use client";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin, LuTruck } from "react-icons/lu";
+import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useDrawer } from "@/hooks/useDrawer";
 import { useCart } from "@/hooks/cart.hook";
 import { useShipping } from "@/hooks/shipping.hook";
 import Image from "next/image";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { CartDrawerSkeleton } from "@/components/ui/cartDrawerSkeleton";
+import { CartItem } from "@/api/cart.api";
 
 interface CartProps {
   isOpen: boolean;
@@ -17,9 +18,9 @@ interface CartProps {
 
 export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   useDrawer(isOpen);
-  const { cart, isLoading, cartTotal, cartItemsCount, updateCartItem, removeFromCart, clearCart, isUpdatingCart, isRemovingFromCart } = useCart();
+  const { cart, isLoading, cartTotal, cartItemsCount, updateCartItem, removeFromCart, isUpdatingCart, isRemovingFromCart } = useCart();
 
-  const { cep, shippingInfo, isCalculatingShipping, handleCepChange, getShippingCost } = useShipping();
+  const { cep, shippingInfo, isLoading: isCalculatingShipping, handleCepChange, getShippingCost } = useShipping();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -31,7 +32,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   const handleQuantityChange = (itemId: number, currentQuantity: number, change: number) => {
     const newQuantity = currentQuantity + change;
     if (newQuantity > 0) {
-      updateCartItem(itemId, { quantity: newQuantity });
+      updateCartItem({ itemId, data: { quantity: newQuantity } });
     } else {
       removeFromCart(itemId);
     }
@@ -67,7 +68,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
             </div>
           ) : (
             <div className="space-y-4">
-              {cart.items.map((item: any) => (
+              {cart.items.map((item: CartItem) => (
                 <div key={item.id} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
                   <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     <Image src={item.product.images?.[0] || "/placeholder-product.jpg"} width={64} height={64} alt={item.product.title} className="w-full h-full object-cover" />
@@ -140,20 +141,20 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                 </div>
               )}
 
-              {shippingInfo && shippingInfo.found && (
+              {shippingInfo && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                   <div className="flex items-start gap-2">
                     <LuMapPin className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-green-800">
-                        {shippingInfo.city} - {shippingInfo.neighborhood}
+                        {shippingInfo.localidade} - {shippingInfo.bairro}
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              {shippingInfo && !shippingInfo.found && (
+              {cep.length === 8 && !shippingInfo && !isCalculatingShipping && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                   <p className="text-sm text-red-700">CEP não encontrado. Verifique e tente novamente.</p>
                 </div>
@@ -165,7 +166,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
               <span className="text-md font-semibold text-gray-800">{formatPrice(cartTotal)}</span>
             </div>
 
-            {shippingInfo && shippingInfo.found && (
+            {shippingInfo && (
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-gray-600">Frete</span>
                 <span className="text-sm font-medium text-gray-800">R$ 9,99</span>

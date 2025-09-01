@@ -10,11 +10,11 @@ declare namespace Product {
     last_price: number;
     installments: number;
     blur?: string | null;
-    details?: any | null;
-    flags?: any | null;
-    images?: any | null;
-    categories?: any | null;
-    sizes?: any | null;
+    details?: string[]  | null;
+    flags?: string[] | null;
+    images?: string[] | null;
+    categories?: string[] | null;
+    sizes?: string[] | null;
     stock: number;
     views: number;
     added_to_cart: number;
@@ -27,7 +27,7 @@ declare namespace Product {
     id: number;
     message: string;
     rating: number;
-    attachments?: any | null;
+    attachments?: string[] | null;
     user_id: number;
     product_id: number;
     created_at: Date;
@@ -42,8 +42,8 @@ declare namespace Product {
    interface CartItemI {
     id: number;
     quantity: number;
-    size: string;
-    color: string;
+    size?: string;
+    color?: string;
     cart_id: number;
     product_id: number;
     created_at: Date;

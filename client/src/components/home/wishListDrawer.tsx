@@ -3,7 +3,7 @@ import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import { LuX, LuTrash2 } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
-import { PiBasketLight, PiShareNetworkLight } from 'react-icons/pi';
+import { PiBasketLight } from 'react-icons/pi';
 import { useDrawer } from '@/hooks/useDrawer';
 import { useWishlist } from '@/hooks/wishlist.hook';
 import { useCart } from '@/hooks/cart.hook';
@@ -85,6 +85,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                         </div>
                     ) : (
                         <div className="space-y-4">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {wishlist.items.map((item: any) => (
                                 <div key={item.id} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
                                     <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
@@ -157,7 +158,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                             </button>
                             
                             <button 
-                                onClick={clearWishlist}
+                                onClick={() => clearWishlist()}
                                 disabled={isClearingWishlist}
                                 className="w-full border border-gray-300 text-gray-700 py-3 px-4 flex items-center justify-center gap-3 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50"
                             >

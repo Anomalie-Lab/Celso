@@ -128,26 +128,26 @@ export default function Header() {
                 <div className="text-xs">
                   <div className="text-gray-900 font-medium">Minha Conta</div>
                   <div className="text-gray-500">
-                    <button
-                      onClick={() => {
-                        toggleDialog();
-                        toggleAuthPage("Login");
-                      }}
-                      className="cursor-pointer hover:text-primary transition-colors"
-                    >
-                      Entrar
-                    </button>
+                                         <button
+                       onClick={() => {
+                         toggleDialog();
+                         toggleAuthPage("Login");
+                       }}
+                       className="hover:text-primary transition-colors cursor-pointer"
+                     >
+                       Entrar
+                     </button>
                     <span className="ml-1 mr-1">/</span>
-                    <button
-                      onClick={() => {
-                        toggleDialog();
-                        toggleAuthPage("Register");
-                      }}
-                      className="cursor-pointer hover:text-primary transition-colors"
-                    >
-                      {" "}
-                      Cadastrar
-                    </button>
+                                         <button
+                       onClick={() => {
+                         toggleDialog();
+                         toggleAuthPage("Register");
+                       }}
+                       className="hover:text-primary transition-colors cursor-pointer"
+                     >
+                       {" "}
+                       Cadastrar
+                     </button>
                   </div>
                 </div>
               </div>

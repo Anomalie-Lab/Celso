@@ -90,7 +90,7 @@ export default function AddressesTab() {
                         Editar
                       </Button>
                     </AddressForm>
-                    <Button variant="outline" size="sm" onClick={() => handleDeleteAddress(address.id)} className="text-red-600 hover:text-red-700">
+                    <Button variant="outline" size="sm" onClick={() => handleDeleteAddress(address.id)} className="text-red-600 hover:text-red-700 cursor-pointer">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

@@ -2,14 +2,14 @@
 import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { ContactFormData, SchemaContact } from "@/entities/schemas";
+import { FormDataContact, SchemaContact } from "@/entities/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 
 export default function ContactUs() {
-  const { register, handleSubmit, formState } = useForm<ContactFormData>({ resolver: yupResolver(SchemaContact) });
+  const { register, handleSubmit, formState } = useForm<FormDataContact>({ resolver: yupResolver(SchemaContact) });
 
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = (data: FormDataContact) => {
     console.log(data);
   };
   return (

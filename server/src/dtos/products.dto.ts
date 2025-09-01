@@ -61,6 +61,11 @@ export class CreateProductDto {
   @IsNumber()
   @Min(0)
   stock: number;
+
+  @ApiProperty({description: 'Product images', required: false})
+  @IsOptional()
+  @IsArray()
+  images?: string[];
 }
 
 export class UpdateProductDto {

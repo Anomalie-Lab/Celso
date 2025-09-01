@@ -1,0 +1,35 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://suafarmacia.com.br/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /minha-conta/
+Disallow: /checkout/
+
+# Allow important pages
+Allow: /
+Allow: /search
+Allow: /sobre-nos
+Allow: /fale-conosco
+Allow: /terms
+Allow: /conditions
+Allow: /troca-devolucao
+
+# Block specific file types
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+
+# Allow images and assets
+Allow: /images/
+Allow: /favicon.ico
+Allow: /apple-touch-icon.png
+Allow: /site.webmanifest

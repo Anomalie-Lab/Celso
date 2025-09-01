@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, X, Loader, Info, Megaphone, AlertTriangle, CheckCircle, Gift, Star } from "lucide-react";
+import { X, Loader, Info, Megaphone, AlertTriangle, CheckCircle, Gift, Star } from "lucide-react";
+import { LuBell } from "react-icons/lu";
 import { useUser } from "@/hooks/user.hook";
 import useNotification from "@/hooks/notifications.hook";
 import { Notification } from "@/api/notification.api";
@@ -83,11 +84,11 @@ export default function NotificationComponent() {
   return (
     <div className="relative">
       <button 
-        className="relative transform transition-transform duration-200 hover:scale-110 mt-1.5" 
+        className="relative p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer text-gray-600" 
         onClick={() => setShowNotifications(!showNotifications)} 
         title={`${unreadCount} notificações não lidas`}
       >
-        <Bell 
+        <LuBell 
           size={20} 
           className={`transition-colors ${showNotifications ? "animate-[wiggle_1s_ease-in-out]" : ""}`} 
         />

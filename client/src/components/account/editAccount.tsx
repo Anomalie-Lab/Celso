@@ -35,7 +35,7 @@ const EditAccount = () => {
       phone: user?.phone || "",
       birthdate: user?.birthdate ? new Date(user.birthdate).toISOString().split("T")[0] : "",
     });
-  }, [user]);
+  }, [user, reset]);
 
   const onSubmit = async (data: FormDataEditAccount) => {
     try {

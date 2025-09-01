@@ -12,7 +12,7 @@ import { ModalAuth } from "../auth/modal.auth";
 import WishListDrawer from "../home/wishListDrawer";
 import SearchDrawer from "../home/searchDrawer";
 import Notification from "./notification";
-
+import { useUser } from "@/hooks/user.hook";
 type AuthPage = "Login" | "Register" | "ForgotPass";
 
 export default function Header() {
@@ -26,6 +26,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { user } = useUser();
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -64,7 +65,6 @@ export default function Header() {
     } else {
       setIsScrolled(false);
     }
-    console.log(isScrolled);
     setLastScrollY(currentScrollY);
   }, [lastScrollY, isScrolled]);
 
@@ -98,16 +98,16 @@ export default function Header() {
         <div className="">
           <div className="flex items-center justify-between px-24">
             <div className="hidden lg:flex items-center space-x-8">
-              <button onClick={() => router.push("/produtos")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Autoclave")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Autoclave
               </button>
-              <button onClick={() => router.push("/categorias")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Estética")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Estética
               </button>
-              <button onClick={() => router.push("/sobre-nos")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Micropigmentação")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Micropigmentação
               </button>
-              <button onClick={() => router.push("/fale-conosco")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
+              <button onClick={() => router.push("/search?q=Macas")} className="text-gray-700 hover:text-primary transition-colors font-medium text-sm cursor-pointer">
                 Macas
               </button>
             </div>
@@ -158,7 +158,7 @@ export default function Header() {
                 <PiBasketLight className="w-5 h-5 text-gray-600" />
                 <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
               </button>
-              <Notification />
+              {user && <Notification />}
               {/* Mobile Menu
                             <button 
                                 onClick={toggleMenu}

@@ -3,7 +3,7 @@ import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import { LuX } from "react-icons/lu";
 import { LuHeart } from "react-icons/lu";
-import { PiBasketLight } from 'react-icons/pi';
+import { PiBasketLight, PiShareNetworkLight } from 'react-icons/pi';
 import { useDrawer } from '@/hooks/useDrawer';
 
 interface WishListProps {
@@ -68,8 +68,9 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                         </button>
                         
                         <button 
-                            className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer"
+                            className="w-full border border-gray-300 text-gray-700 py-3 px-4 flex items-center justify-center gap-3 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer"
                         >
+                            <PiShareNetworkLight className="w-5 h-5 text-gray-500" />
                             Compartilhar Lista
                         </button>
                     </div>

@@ -10,7 +10,7 @@ import { LoginForm, RegisterForm, ForgotPassForm } from "./sub-components";
 interface DialogProps {
     isOpen: boolean
     authPage: "Login" | "Register" | "ForgotPass",
-    toggleDialog?: () => void
+    toggleDialog: () => void
     onAuthPageChange?: (page: "Login" | "Register" | "ForgotPass") => void
 }
 
@@ -47,11 +47,11 @@ export function ModalAuth({isOpen, toggleDialog, authPage, onAuthPageChange}: Di
         </DialogHeader>
 
         {authPage === "Login" && (
-          <LoginForm onAuthPageChange={handleAuthPageChange} />
+          <LoginForm onAuthPageChange={handleAuthPageChange} onClose={toggleDialog} />
         )}
 
         {authPage === "Register" && (
-          <RegisterForm onAuthPageChange={handleAuthPageChange} />
+          <RegisterForm onAuthPageChange={handleAuthPageChange} onClose={toggleDialog} />
         )}
 
         {authPage === "ForgotPass" && (

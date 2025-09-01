@@ -7,20 +7,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useUser } from "@/hooks/user.hook";
 import { Auth } from "@/api/auth.api";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormDataRegister, SchemaRegister } from "@/entities/schemas";
 import { AxiosError } from "axios";
 
 interface RegisterFormProps {
   onAuthPageChange: (page: "Login" | "Register" | "ForgotPass") => void
+  onClose: () => void | undefined
 }
 
-export const RegisterForm = ({ onAuthPageChange }: RegisterFormProps) => {
+export const RegisterForm = ({ onAuthPageChange, onClose }: RegisterFormProps) => {
     const { register, handleSubmit, formState } = useForm<FormDataRegister>({ mode: "onChange", resolver: yupResolver(SchemaRegister) });
     const [isLoading, setIsLoading] = useState(false);
     const { setUser } = useUser();
-    const router = useRouter();
   
     const onSubmit = async (data: FormDataRegister) => {
       try {
@@ -28,13 +27,15 @@ export const RegisterForm = ({ onAuthPageChange }: RegisterFormProps) => {
   
         const response = await Auth.register({ email: data.email, fullname: data.fullname, password: data.password, phone: data.phone });
         if (response) {
+          console.log(response);  
           setUser(response);
           toast.success("Conta criada com sucesso!", {
             description: "Bem-vindo! Sua conta foi registrada.",
           });
-          router.push("/");
+          onClose();
         }
       } catch (error: unknown) {
+        console.log(error);
         const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Verifique os dados e tente novamente.";
         toast.error("Erro ao criar conta", {
           description: errorMessage,

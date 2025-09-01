@@ -2,20 +2,17 @@ import {ApiProperty} from '@nestjs/swagger';
 import {IsString, IsOptional, IsNumber, IsBoolean} from 'class-validator';
 
 export class UpdateUserDto {
-  @IsOptional()
   @IsString()
   @ApiProperty({description: 'The full name of the user.', example: 'John Doe'})
-  fullname?: string;
+  fullname: string;
 
-  @IsOptional()
   @IsString()
   @ApiProperty({description: 'The username of the user.', example: 'johndoe123'})
-  username?: string;
+  username: string;
 
-  @IsOptional()
   @IsString()
   @ApiProperty({description: 'The email of the user', example: 'johndoe@gmail.com'})
-  email?: string;
+  email: string;
 
   @IsOptional()
   @IsString()
@@ -37,10 +34,9 @@ export class UpdateUserDto {
   @ApiProperty({description: 'The password of the user.', example: '123456'})
   password?: string;
 
-  @IsOptional()
   @IsString()
   @ApiProperty({description: 'The birthdate of the user.', example: '1990-01-01'})
-  birthdate?: string;
+  birthdate: string;
 }
 
 export class CreateUpdateAddressDto {

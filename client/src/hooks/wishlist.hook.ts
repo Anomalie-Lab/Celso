@@ -1,14 +1,65 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Wishlist } from "@/api/wishlist.api";
 import { toast } from "sonner";
+import { useUser } from "./user.hook";
+import { useState, useEffect } from "react";
+
+// Interface para item da wishlist local
+interface LocalWishlistItem {
+  id: number;
+  product_id: number;
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    images?: string[];
+  };
+}
+
+// Interface para wishlist local
+interface LocalWishlist {
+  items: LocalWishlistItem[];
+  created_at: string;
+  updated_at: string;
+}
 
 export const useWishlist = () => {
   const queryClient = useQueryClient();
+  const { user } = useUser();
+  const [localWishlist, setLocalWishlist] = useState<LocalWishlist>({ items: [], created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
 
-  const { data: wishlist, isLoading } = useQuery({
+  // Carregar wishlist local do localStorage
+  useEffect(() => {
+    if (!user) {
+      const stored = localStorage.getItem('localWishlist');
+      if (stored) {
+        try {
+          setLocalWishlist(JSON.parse(stored));
+        } catch (error) {
+          console.error('Erro ao carregar wishlist local:', error);
+          localStorage.removeItem('localWishlist');
+        }
+      }
+    }
+  }, [user]);
+
+  // Salvar wishlist local no localStorage
+  const saveLocalWishlist = (wishlist: LocalWishlist) => {
+    if (!user) {
+      localStorage.setItem('localWishlist', JSON.stringify(wishlist));
+      setLocalWishlist(wishlist);
+    }
+  };
+
+  // Buscar wishlist do servidor (apenas se usuário autenticado)
+  const { data: serverWishlist, isLoading } = useQuery({
     queryKey: ["wishlist"],
     queryFn: Wishlist.getWishlist,
+    enabled: !!user,
   });
+
+  // Usar wishlist do servidor ou local
+  const wishlist = user ? serverWishlist : localWishlist;
 
   const addToWishlistMutation = useMutation({
     mutationFn: Wishlist.addToWishlist,
@@ -43,6 +94,79 @@ export const useWishlist = () => {
     },
   });
 
+  // Função para adicionar à wishlist
+  const addToWishlist = (data: any) => {
+    if (user) {
+      // Usuário autenticado: usar API
+      addToWishlistMutation.mutate(data);
+    } else {
+      // Usuário não autenticado: usar localStorage
+      const newItem: LocalWishlistItem = {
+        id: Date.now(), // ID temporário
+        product_id: data.product_id,
+        product: {
+          id: data.product_id,
+          title: data.product?.title || 'Produto',
+          price: data.product?.price || 0,
+          images: data.product?.images || [],
+        }
+      };
+
+      // Verificar se o produto já está na wishlist
+      const exists = localWishlist.items.some(item => item.product_id === data.product_id);
+      if (exists) {
+        toast.error("Produto já está na lista de desejos!");
+        return;
+      }
+
+      const updatedWishlist = {
+        ...localWishlist,
+        items: [...localWishlist.items, newItem],
+        updated_at: new Date().toISOString()
+      };
+
+      saveLocalWishlist(updatedWishlist);
+      toast.success("Produto adicionado à lista de desejos!");
+    }
+  };
+
+  // Função para remover da wishlist
+  const removeFromWishlist = (itemId: number) => {
+    if (user) {
+      // Usuário autenticado: usar API
+      removeFromWishlistMutation.mutate(itemId);
+    } else {
+      // Usuário não autenticado: usar localStorage
+      const updatedItems = localWishlist.items.filter(item => item.id !== itemId);
+      const updatedWishlist = {
+        ...localWishlist,
+        items: updatedItems,
+        updated_at: new Date().toISOString()
+      };
+
+      saveLocalWishlist(updatedWishlist);
+      toast.success("Produto removido da lista de desejos!");
+    }
+  };
+
+  // Função para limpar wishlist
+  const clearWishlist = () => {
+    if (user) {
+      // Usuário autenticado: usar API
+      clearWishlistMutation.mutate();
+    } else {
+      // Usuário não autenticado: usar localStorage
+      const updatedWishlist = {
+        ...localWishlist,
+        items: [],
+        updated_at: new Date().toISOString()
+      };
+
+      saveLocalWishlist(updatedWishlist);
+      toast.success("Lista de desejos limpa!");
+    }
+  };
+
   const wishlistItemsCount = wishlist?.items?.length || 0;
 
   const isInWishlist = (productId: number) => {
@@ -51,14 +175,14 @@ export const useWishlist = () => {
 
   return {
     wishlist,
-    isLoading,
+    isLoading: user ? isLoading : false,
     wishlistItemsCount,
-    isInWishlist,
-    addToWishlist: addToWishlistMutation.mutate,
-    removeFromWishlist: removeFromWishlistMutation.mutate,
-    clearWishlist: clearWishlistMutation.mutate,
+    addToWishlist,
+    removeFromWishlist,
+    clearWishlist,
     isAddingToWishlist: addToWishlistMutation.isPending,
     isRemovingFromWishlist: removeFromWishlistMutation.isPending,
     isClearingWishlist: clearWishlistMutation.isPending,
+    isInWishlist,
   };
 };

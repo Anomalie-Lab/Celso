@@ -28,15 +28,29 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
         }).format(price);
     };
 
-    const handleAddToCart = (productId: number) => {
-        addToCart({ product_id: productId });
+    const handleAddToCart = (item: any) => {
+        addToCart({ 
+            product_id: item.product.id,
+            product: {
+                title: item.product.title,
+                price: item.product.price,
+                images: item.product.images
+            }
+        });
         toast.success('Produto adicionado ao carrinho!');
     };
 
     const handleAddAllToCart = () => {
         if (wishlist?.items) {
             wishlist.items.forEach(item => {
-                addToCart({ product_id: item.product.id });
+                addToCart({ 
+                    product_id: item.product.id,
+                    product: {
+                        title: item.product.title,
+                        price: item.product.price,
+                        images: item.product.images
+                    }
+                });
             });
             toast.success('Todos os produtos adicionados ao carrinho!');
         }
@@ -106,7 +120,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <button 
-                                                    onClick={() => handleAddToCart(item.product.id)}
+                                                    onClick={() => handleAddToCart(item)}
                                                     disabled={isAddingToCart}
                                                     className="text-primary hover:text-primary-600 p-1 disabled:opacity-50"
                                                 >

@@ -1,15 +1,31 @@
 "use client";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin } from "react-icons/lu";
+import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin, LuUser } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useDrawer } from "@/hooks/useDrawer";
 import { useCart } from "@/hooks/cart.hook";
 import { useShipping } from "@/hooks/shipping.hook";
+import { useUser } from "@/hooks/user.hook";
 import Image from "next/image";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { CartDrawerSkeleton } from "@/components/ui/cartDrawerSkeleton";
 import { CartItem } from "@/api/cart.api";
+
+// Interface unificada para itens do carrinho (local e servidor)
+interface UnifiedCartItem {
+  id: number;
+  product_id: number;
+  quantity: number;
+  size?: string;
+  color?: string;
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    images?: string[];
+  };
+}
 
 interface CartProps {
   isOpen: boolean;
@@ -19,7 +35,7 @@ interface CartProps {
 export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   useDrawer(isOpen);
   const { cart, isLoading, cartTotal, cartItemsCount, updateCartItem, removeFromCart, isUpdatingCart, isRemovingFromCart } = useCart();
-
+  const { user } = useUser();
   const { cep, shippingInfo, isLoading: isCalculatingShipping, handleCepChange, getShippingCost } = useShipping();
 
   const formatPrice = (price: number) => {
@@ -64,11 +80,29 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
             <div className="flex flex-col items-center justify-center h-full text-center">
               <PiBasketLight className="w-16 h-16 text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-600 mb-2">Seu carrinho está vazio</h3>
-              <p className="text-gray-500 text-sm">Adicione produtos para começar suas compras</p>
+              <p className="text-gray-500 text-sm mb-6">Adicione produtos para começar suas compras</p>
+              
+              {!user && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                  <LuUser className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-sm text-blue-800 mb-3">
+                    Faça login para salvar seus itens e continuar comprando de onde parou
+                  </p>
+                  <button 
+                    onClick={() => {
+                      // Aqui você pode abrir o modal de login
+                      toggleDrawer();
+                    }}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  >
+                    Fazer Login
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
-              {cart.items.map((item: CartItem) => (
+              {cart.items.map((item: UnifiedCartItem) => (
                 <div key={item.id} className="flex gap-4 p-4 border border-gray-200 rounded-lg">
                   <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     <Image src={item.product.images?.[0] || "/placeholder-product.jpg"} width={64} height={64} alt={item.product.title} className="w-full h-full object-cover" />
@@ -80,7 +114,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                     </p>
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-2">
-                        <button onClick={() => handleQuantityChange(item.id, item.quantity, -1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50">
+                        <button onClick={() => handleQuantityChange(item.id, item.quantity, -1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer">
                           {isUpdatingCart ? (
                             <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
                           ) : (
@@ -88,7 +122,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                           )}
                         </button>
                         <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
-                        <button onClick={() => handleQuantityChange(item.id, item.quantity, 1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50">
+                        <button onClick={() => handleQuantityChange(item.id, item.quantity, 1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer">
                           {isUpdatingCart ? (
                             <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
                           ) : (
@@ -102,7 +136,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} disabled={isRemovingFromCart} className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50">
+                  <button onClick={() => removeFromCart(item.id)} disabled={isRemovingFromCart} className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50 cursor-pointer">
                     {isRemovingFromCart ? (
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
                     ) : (

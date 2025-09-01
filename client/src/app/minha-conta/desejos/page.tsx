@@ -46,8 +46,15 @@ export default function WishesPage() {
     toast.success('Produtos removidos da lista de desejos!');
   };
 
-  const handleAddToCart = (productId: number) => {
-    addToCart({ product_id: productId });
+  const handleAddToCart = (item: WishlistItem) => {
+    addToCart({ 
+      product_id: item.product.id,
+      product: {
+        title: item.product.title,
+        price: item.product.price,
+        images: item.product.images
+      }
+    });
     toast.success('Produto adicionado ao carrinho!');
   };
 
@@ -175,7 +182,7 @@ export default function WishesPage() {
 
               <div className="flex items-center gap-2">
                 <button 
-                  onClick={() => handleAddToCart(item.product.id)}
+                  onClick={() => handleAddToCart(item)}
                   disabled={isAddingToCart}
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white rounded-lg transition-colors text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >

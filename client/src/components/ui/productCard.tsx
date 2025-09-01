@@ -78,7 +78,14 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
               removeFromWishlist(wishlistItem.id);
             }
           } else {
-            addToWishlist({ product_id: data.id });
+            addToWishlist({ 
+              product_id: data.id,
+              product: {
+                title: data.title,
+                price: data.price,
+                images: data.images
+              }
+            });
           }
         }}
         disabled={isAddingToWishlist || isRemovingFromWishlist}
@@ -108,7 +115,14 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
       </div>
 
       <button 
-        onClick={() => addToCart({ product_id: data.id })}
+        onClick={() => addToCart({ 
+          product_id: data.id,
+          product: {
+            title: data.title,
+            price: data.price,
+            images: data.images
+          }
+        })}
         disabled={isAddingToCart}
         className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >

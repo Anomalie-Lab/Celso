@@ -1,6 +1,4 @@
 "use client";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 interface PriceRange {
   label: string;
 }

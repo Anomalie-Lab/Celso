@@ -1,5 +1,4 @@
 "use client";
-
 interface PriceRange {
   label: string;
 }

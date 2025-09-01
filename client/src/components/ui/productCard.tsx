@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { LuHeart, LuStar } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
+import { useCart } from "@/hooks/cart.hook";
 
 export default function ProductCard({ data }: { data: Product.SimpleI }) {
+  const { addToCart, isAddingToCart } = useCart();
   const renderStars = (rating: number) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -54,14 +56,12 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
 
   return (
     <div className="bg-white rounded-lg p-4 relative w-full transition-shadow cursor-pointer hover:shadow-lg border border-gray-100">
-      {/* Badge de categoria */}
       {getMainCategory() && (
         <div className={`absolute top-3 left-3 text-[10px] font-bold px-2 py-1 rounded-full z-10 ${getCategoryBadge()}`}>
           {getMainCategory()}
         </div>
       )}
 
-      {/* Badge de flag (se não tiver categoria) */}
       {!getMainCategory() && data.flags?.[0] && (
         <div className="absolute top-3 left-3 bg-primary-100 text-primary-500 text-[10px] font-bold px-2 py-1 rounded-full z-10">
           {data.flags[0]}
@@ -72,7 +72,6 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
         <LuHeart className="w-4 h-4 text-gray-800" />
       </button>
 
-      {/* Imagem do produto */}
       <div className="relative mb-4">
         <div className="w-full h-48 bg-gray-100 rounded-lg overflow-hidden relative">
           <Image
@@ -89,23 +88,21 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
         </div>
       </div>
 
-      {/* Botão Adicionar */}
-      <button className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer">
+      <button 
+        onClick={() => addToCart({ product_id: data.id })}
+        disabled={isAddingToCart}
+        className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         <PiBasketLight className="w-5 h-5" />
-        Adicionar
+        {isAddingToCart ? 'Adicionando...' : 'Adicionar'}
       </button>
 
-      {/* Título do produto */}
       <h3 className="text-gray-800 font-semibold text-sm mb-2 leading-tight line-clamp-2">{data.title}</h3>
 
-      {/* Marca */}
       {data.brand && (
         <p className="text-gray-500 text-xs mb-2">{data.brand}</p>
       )}
 
-
-
-      {/* Preços */}
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <span className="text-gray-800 font-bold text-lg">{formatPrice(Number(data.price))}</span>

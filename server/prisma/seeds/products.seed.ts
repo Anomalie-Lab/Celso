@@ -290,13 +290,8 @@ const products = [
 ];
 
 export async function seedProducts() {
-  console.log('🌱 Iniciando seed de produtos...');
-
   try {
-    // Limpar produtos existentes
     await prisma.product.deleteMany();
-
-    // Criar produtos
     for (const product of products) {
       await prisma.product.create({
         data: {
@@ -314,10 +309,8 @@ export async function seedProducts() {
         }
       });
     }
-
     console.log(`✅ ${products.length} produtos criados com sucesso!`);
   } catch (error) {
-    console.error('❌ Erro ao criar produtos:', error);
     throw error;
   }
 }

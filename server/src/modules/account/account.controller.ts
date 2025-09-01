@@ -1,4 +1,5 @@
 import {CreateUpdateAddressDto, UpdateUserDto} from './../../dtos/account.dto';
+import {AddToCartDto, UpdateCartItemDto} from './../../dtos/cart.dto';
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Res, UsePipes, ValidationPipe} from '@nestjs/common';
 import {AccountService} from './account.service';
 import {User} from '../../decorators/user.decorator';
@@ -31,9 +32,7 @@ export class AccountController {
   @ApiResponse({status: 404, description: 'User address not found.'})
   @ApiResponse({status: 500, description: 'Internal server error.'})
   async getAddress(@User() user: Account.UserI, @Res() res) {
-    console.log(user.id);
     const data = await this.accountService.getAddress(user.id);
-    console.log(data);
     return res.status(HttpStatus.OK).json(data);
   }
 
@@ -94,6 +93,56 @@ export class AccountController {
   @ApiResponse({status: 403, description: 'Authentication required.'})
   async getUserActivities(@User() user: Account.UserI, @Res() res) {
     const data = await this.accountService.getUserActivities(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  // Cart endpoints
+  @Get('cart')
+  @ApiOperation({summary: 'Get User Cart', description: 'Get user cart with all items'})
+  @ApiResponse({status: 200, description: 'User cart retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getUserCart(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getUserCart(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Post('cart')
+  @ApiOperation({summary: 'Add Item to Cart', description: 'Add a product to user cart'})
+  @ApiResponse({status: 200, description: 'Item added to cart successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  @ApiBody({type: AddToCartDto})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async addToCart(@Body() dto: AddToCartDto, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.addToCart(user.id, dto);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Put('cart/:id')
+  @ApiOperation({summary: 'Update Cart Item', description: 'Update quantity of a cart item'})
+  @ApiResponse({status: 200, description: 'Cart item updated successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  @ApiBody({type: UpdateCartItemDto})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async updateCartItem(@Body() dto: UpdateCartItemDto, @Param('id') id: number, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.updateCartItem(user.id, id, dto);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Delete('cart/:id')
+  @ApiOperation({summary: 'Remove Cart Item', description: 'Remove an item from user cart'})
+  @ApiResponse({status: 200, description: 'Cart item removed successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async removeFromCart(@Param('id') id: number, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.removeFromCart(user.id, id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Delete('cart')
+  @ApiOperation({summary: 'Clear Cart', description: 'Remove all items from user cart'})
+  @ApiResponse({status: 200, description: 'Cart cleared successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async clearCart(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.clearCart(user.id);
     return res.status(HttpStatus.OK).json(data);
   }
 

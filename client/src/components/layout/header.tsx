@@ -3,8 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { LiaUserSolid } from "react-icons/lia";
-import { LuSearch, LuHeart, LuX } from "react-icons/lu";
-import { PiBasketLight } from "react-icons/pi";
+import { LuSearch, LuHeart, LuX, LuShoppingCart  } from "react-icons/lu";
 import { CiDeliveryTruck, CiDiscount1 } from "react-icons/ci";
 import { TbPointFilled } from "react-icons/tb";
 import Cart from "../home/cartDrawer";
@@ -13,6 +12,7 @@ import WishListDrawer from "../home/wishListDrawer";
 import SearchDrawer from "../home/searchDrawer";
 import Notification from "./notification";
 import { useUser } from "@/hooks/user.hook";
+import { useCart } from "@/hooks/cart.hook";
 type AuthPage = "Login" | "Register" | "ForgotPass";
 
 export default function Header() {
@@ -27,6 +27,7 @@ export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user } = useUser();
+  const { cartItemsCount } = useCart();
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -155,21 +156,20 @@ export default function Header() {
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
               </button>
               <button onClick={toggleDrawer} className="p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer">
-                <PiBasketLight className="w-5 h-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                <LuShoppingCart  className="w-5 h-5 text-gray-600" />
+                {cartItemsCount > 0 && (
+                  <span 
+                    key={cartItemsCount}
+                    className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center animate-pulse"
+                    style={{
+                      animation: 'cartCountPulse 0.6s ease-in-out'
+                    }}
+                  >
+                    {cartItemsCount}
+                  </span>
+                )}
               </button>
               {user && <Notification />}
-              {/* Mobile Menu
-                            <button 
-                                onClick={toggleMenu}
-                                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                            >
-                                {isMenuOpen ? (
-                                    <LuX className="w-5 h-5 text-gray-600" />
-                                ) : (
-                                    <LuMenu className="w-5 h-5 text-gray-600" />
-                                )}
-                            </button> */}
             </div>
           </div>
         </div>

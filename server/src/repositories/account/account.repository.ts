@@ -196,4 +196,181 @@ export class AccountRepository {
       },
     });
   }
+
+  // Cart methods
+  async getUserCart(userId: number) {
+    const cart = await this.prisma.cart.findFirst({
+      where: { user_id: userId },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                title: true,
+                price: true,
+                images: true,
+                stock: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!cart) {
+      return await this.prisma.cart.create({
+        data: { user_id: userId },
+        include: {
+          items: {
+            include: {
+              product: {
+                select: {
+                  id: true,
+                  title: true,
+                  price: true,
+                  images: true,
+                  stock: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    return cart;
+  }
+
+  async addToCart(userId: number, dto: any) {
+    const { product_id, quantity = 1, size = 'M', color = 'Default' } = dto;
+
+    let cart = await this.prisma.cart.findFirst({
+      where: { user_id: userId },
+    });
+
+    if (!cart) {
+      cart = await this.prisma.cart.create({
+        data: { user_id: userId },
+      });
+    }
+
+    const existingItem = await this.prisma.cartItem.findFirst({
+      where: {
+        cart_id: cart.id,
+        product_id: product_id,
+        size: size,
+        color: color,
+      },
+    });
+
+    if (existingItem) {
+      return await this.prisma.cartItem.update({
+        where: { id: existingItem.id },
+        data: { quantity: existingItem.quantity + quantity },
+        include: {
+          product: {
+            select: {
+              id: true,
+              title: true,
+              price: true,
+              images: true,
+              stock: true,
+            },
+          },
+        },
+      });
+    }
+
+    return await this.prisma.cartItem.create({
+      data: {
+        cart_id: cart.id,
+        product_id: product_id,
+        quantity: quantity,
+        size: size,
+        color: color,
+      },
+      include: {
+        product: {
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            images: true,
+            stock: true,
+          },
+        },
+      },
+    });
+  }
+
+  async updateCartItem(userId: number, itemId: number, dto: any) {
+    const { quantity } = dto;
+
+    const item = await this.prisma.cartItem.findFirst({
+      where: {
+        id: itemId,
+        cart: { user_id: userId },
+      },
+    });
+
+    if (!item) {
+      throw new Error('Cart item not found');
+    }
+
+    if (quantity <= 0) {
+      return await this.prisma.cartItem.delete({
+        where: { id: itemId },
+      });
+    }
+
+    return await this.prisma.cartItem.update({
+      where: { id: itemId },
+      data: { quantity },
+      include: {
+        product: {
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            images: true,
+            stock: true,
+          },
+        },
+      },
+    });
+  }
+
+  async removeFromCart(userId: number, itemId: number) {
+    const item = await this.prisma.cartItem.findFirst({
+      where: {
+        id: itemId,
+        cart: { user_id: userId },
+      },
+    });
+
+    if (!item) {
+      throw new Error('Cart item not found');
+    }
+
+    return await this.prisma.cartItem.delete({
+      where: { id: itemId },
+    });
+  }
+
+  async clearCart(userId: number) {
+    const cart = await this.prisma.cart.findFirst({
+      where: { user_id: userId },
+    });
+
+    if (!cart) {
+      return { message: 'Cart is already empty' };
+    }
+
+    await this.prisma.cartItem.deleteMany({
+      where: { cart_id: cart.id },
+    });
+
+    return { message: 'Cart cleared successfully' };
+  }
 }

@@ -8,7 +8,7 @@ import { Account } from "@/api/account.api";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { LucidePlus, LucideEdit, Loader2 } from "lucide-react";
-import { FormDataAddress, SchemaAddress } from "@/entities/schemas";
+import { SchemaAddress } from "@/entities/schemas";
 import { InputDefault } from "../ui/inputs/input.default";
 import { formatCep, unformatCep } from "@/lib/utils";
 

@@ -114,6 +114,7 @@ export const useCart = () => {
   });
 
   // Função para adicionar ao carrinho
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addToCart = (data: any) => {
     if (user) {
       // Usuário autenticado: usar API

@@ -99,6 +99,7 @@ export const useWishlist = () => {
   });
 
   // Função para adicionar à wishlist
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addToWishlist = (data: any) => {
     if (user) {
       // Usuário autenticado: usar API

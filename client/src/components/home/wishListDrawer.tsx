@@ -27,6 +27,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
         }).format(price);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleAddToCart = (item: any) => {
         addToCart({ 
             product_id: item.product.id,

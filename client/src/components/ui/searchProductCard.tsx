@@ -78,6 +78,7 @@ export default function SearchProductCard({ data }: { data: Product.SimpleI }) {
           <button 
             onClick={() => {
               if (isInWishlist(data.id)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const wishlistItem = wishlist?.items?.find((item: any) => item.product.id === data.id);
                 if (wishlistItem) {
                   removeFromWishlist(wishlistItem.id);

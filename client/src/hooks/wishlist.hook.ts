@@ -27,6 +27,10 @@ export const useWishlist = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const [localWishlist, setLocalWishlist] = useState<LocalWishlist>({ items: [], created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
+  
+  // Estados de loading individuais para cada item
+  const [addingItems, setAddingItems] = useState<{ [key: number]: boolean }>({});
+  const [removingItems, setRemovingItems] = useState<{ [key: number]: boolean }>({});
 
   // Carregar wishlist local do localStorage
   useEffect(() => {
@@ -101,32 +105,38 @@ export const useWishlist = () => {
       addToWishlistMutation.mutate(data);
     } else {
       // Usuário não autenticado: usar localStorage
-      const newItem: LocalWishlistItem = {
-        id: Date.now(), // ID temporário
-        product_id: data.product_id,
-        product: {
-          id: data.product_id,
-          title: data.product?.title || 'Produto',
-          price: data.product?.price || 0,
-          images: data.product?.images || [],
+      setAddingItems(prev => ({ ...prev, [data.product_id]: true }));
+      
+      setTimeout(() => {
+        const newItem: LocalWishlistItem = {
+          id: Date.now(), // ID temporário
+          product_id: data.product_id,
+          product: {
+            id: data.product_id,
+            title: data.product?.title || 'Produto',
+            price: data.product?.price || 0,
+            images: data.product?.images || [],
+          }
+        };
+
+        // Verificar se o produto já está na wishlist
+        const exists = localWishlist.items.some(item => item.product_id === data.product_id);
+        if (exists) {
+          toast.error("Produto já está na lista de desejos!");
+          setAddingItems(prev => ({ ...prev, [data.product_id]: false }));
+          return;
         }
-      };
 
-      // Verificar se o produto já está na wishlist
-      const exists = localWishlist.items.some(item => item.product_id === data.product_id);
-      if (exists) {
-        toast.error("Produto já está na lista de desejos!");
-        return;
-      }
+        const updatedWishlist = {
+          ...localWishlist,
+          items: [...localWishlist.items, newItem],
+          updated_at: new Date().toISOString()
+        };
 
-      const updatedWishlist = {
-        ...localWishlist,
-        items: [...localWishlist.items, newItem],
-        updated_at: new Date().toISOString()
-      };
-
-      saveLocalWishlist(updatedWishlist);
-      toast.success("Produto adicionado à lista de desejos!");
+        saveLocalWishlist(updatedWishlist);
+        setAddingItems(prev => ({ ...prev, [data.product_id]: false }));
+        toast.success("Produto adicionado à lista de desejos!");
+      }, 300);
     }
   };
 
@@ -137,15 +147,20 @@ export const useWishlist = () => {
       removeFromWishlistMutation.mutate(itemId);
     } else {
       // Usuário não autenticado: usar localStorage
-      const updatedItems = localWishlist.items.filter(item => item.id !== itemId);
-      const updatedWishlist = {
-        ...localWishlist,
-        items: updatedItems,
-        updated_at: new Date().toISOString()
-      };
+      setRemovingItems(prev => ({ ...prev, [itemId]: true }));
+      
+      setTimeout(() => {
+        const updatedItems = localWishlist.items.filter(item => item.id !== itemId);
+        const updatedWishlist = {
+          ...localWishlist,
+          items: updatedItems,
+          updated_at: new Date().toISOString()
+        };
 
-      saveLocalWishlist(updatedWishlist);
-      toast.success("Produto removido da lista de desejos!");
+        saveLocalWishlist(updatedWishlist);
+        setRemovingItems(prev => ({ ...prev, [itemId]: false }));
+        toast.success("Produto removido da lista de desejos!");
+      }, 300);
     }
   };
 
@@ -173,6 +188,10 @@ export const useWishlist = () => {
     return wishlist?.items?.some(item => item.product.id === productId) || false;
   };
 
+  // Funções para verificar loading de itens específicos
+  const isItemAdding = (productId: number) => addingItems[productId] || false;
+  const isItemRemoving = (itemId: number) => removingItems[itemId] || false;
+
   return {
     wishlist,
     isLoading: user ? isLoading : false,
@@ -184,5 +203,7 @@ export const useWishlist = () => {
     isRemovingFromWishlist: removeFromWishlistMutation.isPending,
     isClearingWishlist: clearWishlistMutation.isPending,
     isInWishlist,
+    isItemAdding,
+    isItemRemoving,
   };
 };

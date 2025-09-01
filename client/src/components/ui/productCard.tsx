@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { LuHeart } from "react-icons/lu";
+import { LuHeart, LuLoader } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useCart } from "@/hooks/cart.hook";
 import { useWishlist } from "@/hooks/wishlist.hook";
 
 export default function ProductCard({ data }: { data: Product.SimpleI }) {
   const { addToCart, isAddingToCart } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist, isAddingToWishlist, isRemovingFromWishlist, wishlist } = useWishlist();
+  const { addToWishlist, removeFromWishlist, isInWishlist, isItemAdding, isItemRemoving, wishlist } = useWishlist();
   // const renderStars = (rating: number) => {
   //   const stars = [];
   //   for (let i = 1; i <= 5; i++) {
@@ -88,11 +88,11 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
             });
           }
         }}
-        disabled={isAddingToWishlist || isRemovingFromWishlist}
-        className={`absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 shadow-sm ${isInWishlist(data.id) ? 'text-red-500' : 'text-gray-800'} ${(isAddingToWishlist || isRemovingFromWishlist) ? 'opacity-50' : ''}`}
+        disabled={isItemAdding(data.id) || isItemRemoving(data.id)}
+        className={`absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 shadow-sm ${isInWishlist(data.id) ? 'text-red-500' : 'text-gray-800'} ${(isItemAdding(data.id) || isItemRemoving(data.id)) ? 'opacity-50' : ''}`}
       >
-        {(isAddingToWishlist || isRemovingFromWishlist) ? (
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+        {(isItemAdding(data.id) || isItemRemoving(data.id)) ? (
+          <LuLoader className="w-4 h-4 animate-spin" />
         ) : (
           <LuHeart className={`w-4 h-4 ${isInWishlist(data.id) ? 'fill-current' : ''}`} />
         )}
@@ -127,7 +127,7 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
         className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isAddingToCart ? (
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+          <LuLoader className="w-5 h-5 animate-spin" />
         ) : (
           <PiBasketLight className="w-5 h-5" />
         )}

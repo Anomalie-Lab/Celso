@@ -8,10 +8,22 @@ import { PiBasketLight } from "react-icons/pi";
 import { toast } from "sonner";
 import { useState } from "react";
 import { WishlistSkeleton } from "@/components/ui/wishlistSkeleton";
-import { WishlistItem } from "@/api/wishlist.api";
+// Interface unificada para itens da wishlist (local e servidor)
+interface UnifiedWishlistItem {
+  id: number;
+  product_id: number;
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    images?: string[];
+    brand?: string;
+    last_price?: number;
+  };
+}
 
 export default function WishesPage() {
-  const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, isRemovingFromWishlist } = useWishlist();
+  const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, isItemRemoving } = useWishlist();
   const { addToCart, isAddingToCart } = useCart();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
@@ -26,7 +38,7 @@ export default function WishesPage() {
     if (selectedItems.length === wishlistItemsCount) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(wishlist?.items?.map((item: WishlistItem) => item.id) || []);
+      setSelectedItems(wishlist?.items?.map((item: UnifiedWishlistItem) => item.id) || []);
     }
   };
 
@@ -46,7 +58,7 @@ export default function WishesPage() {
     toast.success('Produtos removidos da lista de desejos!');
   };
 
-  const handleAddToCart = (item: WishlistItem) => {
+  const handleAddToCart = (item: UnifiedWishlistItem) => {
     addToCart({ 
       product_id: item.product.id,
       product: {
@@ -95,10 +107,10 @@ export default function WishesPage() {
           <div className="flex items-center gap-2">
             <button 
               onClick={handleRemoveSelected}
-              disabled={selectedItems.length === 0 || isRemovingFromWishlist}
+              disabled={selectedItems.length === 0 || selectedItems.some(id => isItemRemoving(id))}
               className="px-4 py-3 border border-gray-300 rounded-lg transition-colors text-sm flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isRemovingFromWishlist ? (
+              {selectedItems.some(id => isItemRemoving(id)) ? (
                 <LuLoader className="w-4 h-4 animate-spin" />
               ) : (
                 <LuTrash2 className="w-4 h-4 text-gray-500" />
@@ -110,7 +122,7 @@ export default function WishesPage() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wishlist?.items?.map((item: WishlistItem) => (
+        {wishlist?.items?.map((item: UnifiedWishlistItem) => (
           <div key={item.id} className="bg-white rounded-lg border border-gray-100 overflow-hidden">
             <div className="relative h-48 bg-gray-100">
               <Image
@@ -127,10 +139,10 @@ export default function WishesPage() {
               <div className="absolute top-3 right-3">
                 <button 
                   onClick={() => handleRemoveFromWishlist(item.id)}
-                  disabled={isRemovingFromWishlist}
+                  disabled={isItemRemoving(item.id)}
                   className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50"
                 >
-                  {isRemovingFromWishlist ? (
+                  {isItemRemoving(item.id) ? (
                     <LuLoader className="w-4 h-4 animate-spin" />
                   ) : (
                     <LuHeart className="w-4 h-4 text-red-500 fill-current" />
@@ -154,10 +166,10 @@ export default function WishesPage() {
                 </h3>
                 <button 
                   onClick={() => handleRemoveFromWishlist(item.id)}
-                  disabled={isRemovingFromWishlist}
+                  disabled={isItemRemoving(item.id)}
                   className="w-6 h-6 text-gray-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
                 >
-                  {isRemovingFromWishlist ? (
+                  {isItemRemoving(item.id) ? (
                     <LuLoader className="w-4 h-4 animate-spin" />
                   ) : (
                     <LuTrash2 className="w-4 h-4" />

@@ -30,6 +30,10 @@ export const useCart = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const [localCart, setLocalCart] = useState<LocalCart>({ items: [], created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
+  
+  // Estados de loading individuais para cada item
+  const [loadingItems, setLoadingItems] = useState<{ [key: number]: boolean }>({});
+  const [removingItems, setRemovingItems] = useState<{ [key: number]: boolean }>({});
 
   // Carregar carrinho local do localStorage
   useEffect(() => {
@@ -148,20 +152,25 @@ export const useCart = () => {
       updateCartItemMutation.mutate({ itemId, data });
     } else {
       // Usuário não autenticado: usar localStorage
-      const updatedItems = localCart.items.map(item => 
-        item.id === itemId 
-          ? { ...item, ...data, updated_at: new Date().toISOString() }
-          : item
-      );
+      setLoadingItems(prev => ({ ...prev, [itemId]: true }));
+      
+      setTimeout(() => {
+        const updatedItems = localCart.items.map(item => 
+          item.id === itemId 
+            ? { ...item, ...data, updated_at: new Date().toISOString() }
+            : item
+        );
 
-      const updatedCart = {
-        ...localCart,
-        items: updatedItems,
-        updated_at: new Date().toISOString()
-      };
+        const updatedCart = {
+          ...localCart,
+          items: updatedItems,
+          updated_at: new Date().toISOString()
+        };
 
-      saveLocalCart(updatedCart);
-      toast.success("Carrinho atualizado!");
+        saveLocalCart(updatedCart);
+        setLoadingItems(prev => ({ ...prev, [itemId]: false }));
+        toast.success("Carrinho atualizado!");
+      }, 300);
     }
   };
 
@@ -172,15 +181,20 @@ export const useCart = () => {
       removeFromCartMutation.mutate(itemId);
     } else {
       // Usuário não autenticado: usar localStorage
-      const updatedItems = localCart.items.filter(item => item.id !== itemId);
-      const updatedCart = {
-        ...localCart,
-        items: updatedItems,
-        updated_at: new Date().toISOString()
-      };
+      setRemovingItems(prev => ({ ...prev, [itemId]: true }));
+      
+      setTimeout(() => {
+        const updatedItems = localCart.items.filter(item => item.id !== itemId);
+        const updatedCart = {
+          ...localCart,
+          items: updatedItems,
+          updated_at: new Date().toISOString()
+        };
 
-      saveLocalCart(updatedCart);
-      toast.success("Produto removido do carrinho!");
+        saveLocalCart(updatedCart);
+        setRemovingItems(prev => ({ ...prev, [itemId]: false }));
+        toast.success("Produto removido do carrinho!");
+      }, 300);
     }
   };
 
@@ -210,6 +224,10 @@ export const useCart = () => {
     return count + item.quantity;
   }, 0) || 0;
 
+  // Funções para verificar loading de itens específicos
+  const isItemLoading = (itemId: number) => loadingItems[itemId] || false;
+  const isItemRemoving = (itemId: number) => removingItems[itemId] || false;
+
   return {
     cart,
     isLoading: user ? isLoading : false,
@@ -223,5 +241,7 @@ export const useCart = () => {
     isUpdatingCart: updateCartItemMutation.isPending,
     isRemovingFromCart: removeFromCartMutation.isPending,
     isClearingCart: clearCartMutation.isPending,
+    isItemLoading,
+    isItemRemoving,
   };
 };

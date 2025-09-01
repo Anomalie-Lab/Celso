@@ -1,7 +1,7 @@
 "use client";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin, LuUser } from "react-icons/lu";
+import { LuX, LuTrash2, LuPlus, LuMinus, LuMapPin, LuUser, LuLoader } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useDrawer } from "@/hooks/useDrawer";
 import { useCart } from "@/hooks/cart.hook";
@@ -10,7 +10,6 @@ import { useUser } from "@/hooks/user.hook";
 import Image from "next/image";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { CartDrawerSkeleton } from "@/components/ui/cartDrawerSkeleton";
-import { CartItem } from "@/api/cart.api";
 
 // Interface unificada para itens do carrinho (local e servidor)
 interface UnifiedCartItem {
@@ -34,7 +33,16 @@ interface CartProps {
 
 export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   useDrawer(isOpen);
-  const { cart, isLoading, cartTotal, cartItemsCount, updateCartItem, removeFromCart, isUpdatingCart, isRemovingFromCart } = useCart();
+  const { 
+    cart, 
+    isLoading, 
+    cartTotal, 
+    cartItemsCount, 
+    updateCartItem, 
+    removeFromCart, 
+    isItemLoading,
+    isItemRemoving
+  } = useCart();
   const { user } = useUser();
   const { cep, shippingInfo, isLoading: isCalculatingShipping, handleCepChange, getShippingCost } = useShipping();
 
@@ -114,17 +122,25 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                     </p>
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-2">
-                        <button onClick={() => handleQuantityChange(item.id, item.quantity, -1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer">
-                          {isUpdatingCart ? (
-                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
+                        <button 
+                          onClick={() => handleQuantityChange(item.id, item.quantity, -1)} 
+                          disabled={isItemLoading(item.id)} 
+                          className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
+                        >
+                          {isItemLoading(item.id) ? (
+                            <LuLoader className="w-3 h-3 animate-spin text-gray-600" />
                           ) : (
                             <LuMinus className="w-3 h-3" />
                           )}
                         </button>
                         <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
-                        <button onClick={() => handleQuantityChange(item.id, item.quantity, 1)} disabled={isUpdatingCart} className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer">
-                          {isUpdatingCart ? (
-                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
+                        <button 
+                          onClick={() => handleQuantityChange(item.id, item.quantity, 1)} 
+                          disabled={isItemLoading(item.id)} 
+                          className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
+                        >
+                          {isItemLoading(item.id) ? (
+                            <LuLoader className="w-3 h-3 animate-spin text-gray-600" />
                           ) : (
                             <LuPlus className="w-3 h-3" />
                           )}
@@ -136,9 +152,13 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} disabled={isRemovingFromCart} className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50 cursor-pointer">
-                    {isRemovingFromCart ? (
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
+                  <button 
+                    onClick={() => removeFromCart(item.id)} 
+                    disabled={isItemRemoving(item.id)} 
+                    className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50 cursor-pointer"
+                  >
+                    {isItemRemoving(item.id) ? (
+                      <LuLoader className="w-4 h-4 animate-spin text-red-500" />
                     ) : (
                       <LuTrash2 className="w-4 h-4" />
                     )}
@@ -170,7 +190,7 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
 
               {isCalculatingShipping && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                  <LuLoader className="w-4 h-4 animate-spin text-primary" />
                   Calculando frete...
                 </div>
               )}

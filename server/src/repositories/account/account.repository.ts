@@ -491,7 +491,7 @@ export class AccountRepository {
 
     const item = await this.prisma.wishlistItem.findFirst({
       where: {
-        id: itemId,
+        id: +itemId,
         wishlist_id: wishlist.id
       },
       include: { product: true }
@@ -502,7 +502,7 @@ export class AccountRepository {
     }
 
     await this.prisma.wishlistItem.delete({
-      where: { id: itemId }
+      where: { id: +itemId }
     });
 
     await this.prisma.product.update({

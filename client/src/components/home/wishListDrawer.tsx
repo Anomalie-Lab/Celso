@@ -1,15 +1,14 @@
-"use client"
-import Drawer from 'react-modern-drawer'
-import 'react-modern-drawer/dist/index.css'
-import { LuX, LuTrash2 } from "react-icons/lu";
-import { LuHeart } from "react-icons/lu";
-import { PiBasketLight } from 'react-icons/pi';
-import { useDrawer } from '@/hooks/useDrawer';
-import { useWishlist } from '@/hooks/wishlist.hook';
-import { useCart } from '@/hooks/cart.hook';
-import Image from 'next/image';
-import { toast } from 'sonner';
-import { WishlistDrawerSkeleton } from '@/components/ui/wishlistDrawerSkeleton';
+"use client";
+import Drawer from "react-modern-drawer";
+import "react-modern-drawer/dist/index.css";
+import { LuX, LuHeart, LuTrash2, LuLoader } from "react-icons/lu";
+import { PiBasketLight } from "react-icons/pi";
+import { useDrawer } from "@/hooks/useDrawer";
+import { useWishlist } from "@/hooks/wishlist.hook";
+import { useCart } from "@/hooks/cart.hook";
+import Image from "next/image";
+import { WishlistDrawerSkeleton } from "@/components/ui/wishlistDrawerSkeleton";
+import { toast } from "sonner";
 
 interface WishListProps {
     isOpen: boolean
@@ -18,7 +17,7 @@ interface WishListProps {
 
 export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) {
     useDrawer(isOpen);
-    const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, clearWishlist, isRemovingFromWishlist, isClearingWishlist } = useWishlist();
+    const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, isItemRemoving } = useWishlist();
     const { addToCart, isAddingToCart } = useCart();
 
     const formatPrice = (price: number) => {
@@ -122,21 +121,21 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                                                 <button 
                                                     onClick={() => handleAddToCart(item)}
                                                     disabled={isAddingToCart}
-                                                    className="text-primary hover:text-primary-600 p-1 disabled:opacity-50"
+                                                    className="text-primary hover:text-primary-600 p-1 disabled:opacity-50 cursor-pointer"
                                                 >
                                                     {isAddingToCart ? (
-                                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                                                        <LuLoader className="w-4 h-4 animate-spin text-primary" />
                                                     ) : (
                                                         <PiBasketLight className="w-4 h-4" />
                                                     )}
                                                 </button>
                                                 <button 
                                                     onClick={() => removeFromWishlist(item.id)}
-                                                    disabled={isRemovingFromWishlist}
-                                                    className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50"
+                                                    disabled={isItemRemoving(item.id)}
+                                                    className="text-gray-400 hover:text-red-500 p-1 disabled:opacity-50 cursor-pointer"
                                                 >
-                                                    {isRemovingFromWishlist ? (
-                                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
+                                                    {isItemRemoving(item.id) ? (
+                                                        <LuLoader className="w-4 h-4 animate-spin text-red-500" />
                                                     ) : (
                                                         <LuTrash2 className="w-4 h-4" />
                                                     )}
@@ -149,44 +148,26 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
                         </div>
                     )}
                 </div>
-                
+
                 {wishlist?.items && wishlist.items.length > 0 && (
-                    <div className="p-8 border-t border-gray-200 flex-shrink-0">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-sm font-semibold text-gray-800">Total de itens</span>
-                            <span className="text-md font-semibold text-gray-800">{wishlistItemsCount} itens</span>
-                        </div>
-                        
-                        <div className="space-y-3">
+                    <div className="p-6 border-t border-gray-200 flex-shrink-0">
+                        <div className="flex flex-col gap-3">
                             <button 
                                 onClick={handleAddAllToCart}
                                 disabled={isAddingToCart}
-                                className="w-full bg-primary text-white py-4 px-4 rounded-full font-medium flex items-center justify-center gap-3 hover:bg-primary/90 transition-colors cursor-pointer text-sm disabled:opacity-50"
+                                className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-3 text-sm cursor-pointer hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isAddingToCart ? (
-                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                                    <LuLoader className="w-4 h-4 animate-spin" />
                                 ) : (
-                                    <PiBasketLight className="w-5 h-5" />
+                                    <PiBasketLight className="w-4 h-4" />
                                 )}
                                 {isAddingToCart ? 'Adicionando...' : 'Adicionar Todos ao Carrinho'}
-                            </button>
-                            
-                            <button 
-                                onClick={() => clearWishlist()}
-                                disabled={isClearingWishlist}
-                                className="w-full border border-gray-300 text-gray-700 py-3 px-4 flex items-center justify-center gap-3 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50"
-                            >
-                                {isClearingWishlist ? (
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
-                                ) : (
-                                    <LuTrash2 className="w-4 h-4 text-gray-500" />
-                                )}
-                                {isClearingWishlist ? 'Limpando...' : 'Limpar Lista'}
                             </button>
                         </div>
                     </div>
                 )}
             </div>
         </Drawer>
-    )
+    );
 }

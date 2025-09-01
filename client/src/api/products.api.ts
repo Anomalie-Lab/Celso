@@ -58,7 +58,7 @@ export const Products = {
     return response.data;
   },
 
-  async getCategories(): Promise<{ id: number; name: string; slug: string }[]> {
+  async getCategories(): Promise<{ id: number; name: string; slug: string; count: number }[]> {
     const response = await api.get('/products/categories');
     return response.data;
   },

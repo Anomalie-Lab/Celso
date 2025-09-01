@@ -165,25 +165,34 @@ function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<ty
 function Order({ sortOption, setSortOption }: Ui.Order) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="px-3 py-2  cursor-pointer bg-gray-100 rounded-lg  outline-none text-sm font-regular">
-        {" "}
-        {sortOption === "" ? "Ordenar por" : sortOption === "relevancia" ? "Relevância" : sortOption === "descont" ? "Maior desconto" : sortOption === "rating" ? "Maior avaliação" : sortOption === "minPrice" ? "Menor Preço" : sortOption === "maxPrice" ? "Maior Preço" : "Ordenar por"}
+      <DropdownMenuTrigger className="px-3 py-2 cursor-pointer bg-gray-100 rounded-lg outline-none text-sm font-regular">
+        {sortOption === "" ? "Ordenar por" : 
+         sortOption === "newest" ? "Mais Recentes" : 
+         sortOption === "oldest" ? "Mais Antigos" : 
+         sortOption === "price_asc" ? "Menor Preço" : 
+         sortOption === "price_desc" ? "Maior Preço" : 
+         sortOption === "name_asc" ? "Nome A-Z" : 
+         sortOption === "name_desc" ? "Nome Z-A" : 
+         "Ordenar por"}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-[999] bg-white shadow-md min-w-[180px] rounded-md text-sm">
-        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("relevancia")}>
-          Relevância
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("newest")}>
+          Mais Recentes
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("descont")}>
-          Maior desconto
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("oldest")}>
+          Mais Antigos
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("rating")}>
-          Maior avaliação
-        </DropdownMenuItem>
-        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("minPrice")}>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("price_asc")}>
           Menor Preço
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("maxPrice")}>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("price_desc")}>
           Maior Preço
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("name_asc")}>
+          Nome A-Z
+        </DropdownMenuItem>
+        <DropdownMenuItem className="hover:opacity-70 cursor-pointer border-b border-gray-300 my-2" onClick={() => setSortOption("name_desc")}>
+          Nome Z-A
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

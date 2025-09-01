@@ -4,9 +4,9 @@ import { AccordionSearch } from "@/components/ui/accordion";
 import { Order } from "@/components/ui/dropdown-menu";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import ProductCard from "@/components/ui/productCard";
-import { Products, SearchProductsParams } from "@/api/products.api";
+import { Products } from "@/api/products.api";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { IoFilterOutline, IoGridOutline, IoListOutline } from "react-icons/io5";
 import { Slider } from "@/components/ui/slider";
 import { SearchSkeleton } from "@/components/ui/searchSkeleton";
@@ -15,11 +15,11 @@ import { Suspense } from "react";
 
 function SearchContent() {
   const searchParams = useSearchParams();
-  const [categories, setCategories] = useState<{ id: number; name: string; slug: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string; slug: string; count: number }[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [filters, setFilters] = useState({
-    category: "",
-    brand: "",
+    categories: [] as string[],
+    brands: [] as string[],
     priceRange: [0, 1000],
     sort: "",
   });
@@ -40,20 +40,9 @@ function SearchContent() {
     queryFn: Products.getBrands,
   });
 
-  const searchParamsQuery: SearchProductsParams = {
-    q,
-    category: filters.category || undefined,
-    brand: filters.brand || undefined,
-    minPrice: filters.priceRange[0],
-    maxPrice: filters.priceRange[1],
-    sort: filters.sort || undefined,
-    page,
-    limit: maxPerPage,
-  };
-
   const { data: searchData, isLoading } = useQuery({
-    queryKey: ["search-products", searchParamsQuery],
-    queryFn: () => Products.searchProducts(searchParamsQuery),
+    queryKey: ["search-products", q],
+    queryFn: () => Products.searchProducts({ q, page: 1, limit: 1000 }),
     enabled: !!q,
   });
 
@@ -69,14 +58,89 @@ function SearchContent() {
     }
   }, [brandsData]);
 
-  const handleFilterChange = (type: "category" | "brand" | "sort", value: string) => {
-    setFilters((prev) => ({ ...prev, [type]: prev[type] === value ? "" : value }));
+  const filteredProducts = useMemo(() => {
+    if (!searchData?.products) return [];
+    
+    let filtered = [...searchData.products];
+
+    if (filters.categories.length > 0) {
+      filtered = filtered.filter(product => {
+        if (!product.categories) return false;
+        const productCategories = Array.isArray(product.categories) ? product.categories : [product.categories];
+        return filters.categories.some(cat => productCategories.includes(cat));
+      });
+    }
+
+    if (filters.brands.length > 0) {
+      filtered = filtered.filter(product => 
+        product.brand && filters.brands.includes(product.brand)
+      );
+    }
+
+    filtered = filtered.filter(product => {
+      const price = Number(product.price);
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
+
+    if (filters.sort) {
+      filtered.sort((a, b) => {
+        switch (filters.sort) {
+          case "newest":
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          case "oldest":
+            return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          case "price_asc":
+            return Number(a.price) - Number(b.price);
+          case "price_desc":
+            return Number(b.price) - Number(a.price);
+          case "name_asc":
+            return a.title.localeCompare(b.title);
+          case "name_desc":
+            return b.title.localeCompare(a.title);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return filtered;
+  }, [searchData?.products, filters]);
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (page - 1) * maxPerPage;
+    const endIndex = startIndex + maxPerPage;
+    return filteredProducts.slice(startIndex, endIndex);
+  }, [filteredProducts, page, maxPerPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / maxPerPage);
+
+  const handleCategoryChange = (category: string) => {
+    setFilters(prev => ({
+      ...prev,
+      categories: prev.categories.includes(category)
+        ? prev.categories.filter(c => c !== category)
+        : [...prev.categories, category]
+    }));
+    setPage(1);
+  };
+
+  const handleBrandChange = (brand: string) => {
+    setFilters(prev => ({
+      ...prev,
+      brands: prev.brands.includes(brand)
+        ? prev.brands.filter(b => b !== brand)
+        : [...prev.brands, brand]
+    }));
+    setPage(1);
+  };
+
+  const handleSortChange = (sort: string) => {
+    setFilters(prev => ({ ...prev, sort }));
     setPage(1);
   };
 
   const handlePriceRangeChange = (value: number[]) => {
-    setFilters((prev) => ({ ...prev, priceRange: value }));
-    setPage(1);
+    setFilters(prev => ({ ...prev, priceRange: value }));
   };
 
   const formatCurrency = (value: number) => {
@@ -90,7 +154,7 @@ function SearchContent() {
 
   if (!q) {
     return (
-      <main className="flex flex-col w-full min-h-screen bg-white">
+      <div className="flex flex-col w-full min-h-screen bg-white mt-36">
         <section className="w-full bg-gradient-to-r from-gray-900/80 to-gray-800/80 py-20 px-4 lg:px-24 relative overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25"
@@ -108,7 +172,7 @@ function SearchContent() {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
@@ -116,12 +180,10 @@ function SearchContent() {
     return <SearchSkeleton />;
   }
 
-  const products = searchData?.products || [];
-  const total = searchData?.total || 0;
-  const totalPages = searchData?.totalPages || 0;
+  const total = filteredProducts.length;
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-white">
+    <main className="flex flex-col w-full min-h-screen bg-white mt-36">
        <section className="w-full bg-gradient-to-r from-gray-900/80 to-gray-800/80 py-20 px-4 lg:px-24 relative overflow-hidden">
          <div 
            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25"
@@ -162,16 +224,16 @@ function SearchContent() {
                    <AccordionSearch nameFilter="CATEGORIAS" defaultOpen={true}>
                      <FilterSearch 
                        filteredCategory={categories.map(cat => cat.name)} 
-                       selectedCategory={filters.category} 
-                       onChangeCategory={(value) => handleFilterChange("category", value)} 
+                       selectedCategories={filters.categories} 
+                       onChangeCategories={handleCategoryChange} 
                      />
                    </AccordionSearch>
 
                    <AccordionSearch nameFilter="MARCAS">
                      <FilterSearch 
                        brands={brands}
-                       selectedBrand={filters.brand}
-                       onChangeBrand={(value) => handleFilterChange("brand", value)}
+                       selectedBrands={filters.brands}
+                       onChangeBrands={handleBrandChange}
                      />
                    </AccordionSearch>
 
@@ -184,6 +246,10 @@ function SearchContent() {
                        <Slider
                          value={filters.priceRange}
                          onValueChange={handlePriceRangeChange}
+                         onValueCommit={(value) => {
+                           setFilters(prev => ({ ...prev, priceRange: value }));
+                           setPage(1);
+                         }}
                          max={1000}
                          min={0}
                          step={10}
@@ -217,7 +283,7 @@ function SearchContent() {
                    </div>
                    <Order 
                      sortOption={filters.sort} 
-                     setSortOption={(value) => handleFilterChange("sort", value)} 
+                     setSortOption={handleSortChange} 
                    />
                  </div>
                  <div className="text-sm text-gray-600">
@@ -230,12 +296,12 @@ function SearchContent() {
                    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" 
                    : "grid-cols-1"
                }`}>
-                 {products.map((product) => (
+                 {paginatedProducts.map((product) => (
                    <ProductCard key={product.id} data={product} />
                  ))}
                </div>
 
-               {products.length === 0 && q && (
+               {paginatedProducts.length === 0 && q && (
                  <div className="text-center py-12">
                    <p className="text-gray-500 text-lg">Nenhum produto encontrado para &quot;{q}&quot;</p>
                    <p className="text-gray-400 text-sm mt-2">Tente ajustar os filtros ou usar termos diferentes</p>

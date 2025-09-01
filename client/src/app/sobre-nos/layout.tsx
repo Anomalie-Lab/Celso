@@ -2,37 +2,26 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sobre Nós - SuaFarmácia",
-  description: "Conheça a SuaFarmácia, sua farmácia online de confiança. Mais de 10 anos de experiência em medicamentos, cosméticos e produtos de saúde com entrega rápida e segura.",
+  description: "Conheça a história da SuaFarmácia. Farmácia online comprometida com a saúde e bem-estar, oferecendo produtos de qualidade e atendimento diferenciado.",
   keywords: [
     "sobre nós",
-    "farmácia online",
-    "história da farmácia",
-    "missão e valores",
-    "farmácia confiável",
-    "medicamentos online"
+    "história farmácia",
+    "quem somos",
+    "missão farmácia",
+    "valores farmácia"
   ],
   openGraph: {
     title: "Sobre Nós - SuaFarmácia",
-    description: "Conheça a SuaFarmácia, sua farmácia online de confiança. Mais de 10 anos de experiência em medicamentos e produtos de saúde.",
+    description: "Conheça a história da SuaFarmácia. Farmácia online comprometida com a saúde e bem-estar.",
     url: "https://suafarmacia.com.br/sobre-nos",
     siteName: "SuaFarmácia",
-    images: [
-      {
-        url: "/images/about-og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Sobre Nós - SuaFarmácia",
-      },
-    ],
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Sobre Nós - SuaFarmácia",
-    description: "Conheça a SuaFarmácia, sua farmácia online de confiança.",
-    images: ["/images/about-twitter.jpg"],
-    creator: "@suafarmacia",
+    description: "Conheça a história da SuaFarmácia.",
   },
   alternates: {
     canonical: "/sobre-nos",
@@ -40,17 +29,10 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
 };
 
-export default function AboutLayout({
+export default function AboutUsLayout({
   children,
 }: {
   children: React.ReactNode;

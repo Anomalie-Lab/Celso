@@ -15,12 +15,12 @@ export default function PageLayout({
 }: PageLayoutProps) {
 
   return (
-    <div className="min-h-screen bg-white mt-10">
-      <div className="max-w-7xl mx-auto p-12">
+    <div className="min-h-screen bg-white mt-28">
+      <div className="max-w-7xl mx-auto p-5 md:p-12">
         <div className="flex flex-col lg:flex-row gap-12">
           <SidebarMenu title={sidebarTitle} />
           <div className="flex-1">
-            <div className="bg-white rounded-lg p-8">
+            <div className="bg-white rounded-lg p-2 md:p-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-8">
                 {title}
               </h1>

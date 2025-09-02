@@ -9,9 +9,9 @@ export default function Home() {
     <div className="h-[3400px] space-y-24 bg-background">
       <HeroArea/>
       <ConditionsLayer/>
-      <ProductsArea titleArea="Produtos mais vendidos"/>
+      <ProductsArea titleArea="Produtos mais vendidos" type="bestSellers"/>
       <BannerPromo/>
-      <ProductsArea titleArea="Mais buscados com 20% OFF"/>
+      <ProductsArea titleArea="Mais buscados com 20% OFF" type="all"/>
       <Newsletter/>
     </div>
   );

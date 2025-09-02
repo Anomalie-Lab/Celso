@@ -2,10 +2,12 @@
 import { useState, useEffect } from 'react';
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
-import { LuX, LuSearch } from "react-icons/lu";
+import { LuX, LuSearch, LuLoader, LuArrowRight } from "react-icons/lu";
 import { useDrawer } from '@/hooks/useDrawer';
-import ProductCard from '@/components/ui/productCard';
-import productsData from '@/data/products.json';
+import SearchHorizontalCard from '@/components/ui/searchHorizontalCard';
+import { Products } from '@/api/products.api';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 
 interface SearchDrawerProps {
     isOpen: boolean
@@ -17,38 +19,66 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
     
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [filteredProducts, setFilteredProducts] = useState(productsData.products);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
+    // Debounce search term
     useEffect(() => {
-        let filtered = productsData.products;
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 500);
 
-        if (searchTerm.trim()) {
-            filtered = filtered.filter(product =>
-                product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.category.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
 
-        if (selectedCategory) {
-            filtered = filtered.filter(product =>
-                product.category === selectedCategory
-            );
-        }
+    // Fetch categories
+    const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+        queryKey: ['categories'],
+        queryFn: Products.getCategories,
+        enabled: isOpen,
+    });
 
-        setFilteredProducts(filtered);
-    }, [searchTerm, selectedCategory]);
+    // Search products
+    const { data: searchData, isLoading: searchLoading } = useQuery({
+        queryKey: ['search-products', debouncedSearchTerm, selectedCategory],
+        queryFn: () => Products.searchProducts({
+            q: debouncedSearchTerm,
+            category: selectedCategory,
+            limit: 20
+        }),
+        enabled: (!!debouncedSearchTerm || !!selectedCategory) && isOpen,
+    });
 
     const handleClearFilters = () => {
         setSearchTerm('');
         setSelectedCategory('');
     };
 
+    const handleCategoryClick = (categoryName: string) => {
+        if (selectedCategory === categoryName) {
+            setSelectedCategory(''); // Desmarca se já estiver selecionada
+        } else {
+            setSelectedCategory(categoryName);
+        }
+    };
+
+    const filteredProducts = searchData?.products || [];
+    const displayedProducts = filteredProducts.slice(0, 3); // Máximo 3 produtos
+    const hasMoreProducts = filteredProducts.length > 3;
+    const isLoading = searchLoading || categoriesLoading;
+
+    // Construir URL de busca
+    const buildSearchUrl = () => {
+        const params = new URLSearchParams();
+        if (debouncedSearchTerm) params.append('q', debouncedSearchTerm);
+        if (selectedCategory) params.append('category', selectedCategory);
+        return `/search?${params.toString()}`;
+    };
+
     return (
         <Drawer
             open={isOpen}
             onClose={toggleDrawer}
-            size={450}
+            size={500}
             direction='right'
             className="!bg-white drawer-panel"
             overlayClassName="drawer-overlay"
@@ -65,7 +95,8 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                         <LuX className="w-5 h-5 text-gray-600" />
                     </button>
                 </div>
-                <div className="p-7 flex-shrink-0">
+                
+                <div className="px-7 flex-shrink-0">
                     <div className="relative">
                         <LuSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
@@ -76,66 +107,86 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                             className="w-full pl-10 pr-4 py-3 placeholder:text-gray-400 placeholder:text-sm text-sm border border-gray-300 rounded-full focus:ring-2 focus:ring-primary outline-none"
                         />
                     </div>
-                     <div className="mt-8">
-                         <div className="flex flex-wrap gap-2">
-                             <button
-                                 onClick={() => setSelectedCategory('')}
-                                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
-                                     selectedCategory === '' 
-                                         ? 'bg-primary text-white' 
-                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                 }`}
-                             >
-                                 Todos
-                             </button>
-                             {productsData.categories.map((category) => (
-                                 <button
-                                     key={category.id}
-                                     onClick={() => setSelectedCategory(category.id)}
-                                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
-                                         selectedCategory === category.id 
-                                             ? 'bg-primary text-white' 
-                                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                     }`}
-                                 >
-                                     {category.name}
-                                 </button>
-                             ))}
-                         </div>
-                     </div>
+                    
+                    <div className="mt-8">
+                        <h3 className="text-sm font-medium text-gray-700 mb-3">Categorias Populares</h3>
+                        <div className="flex flex-wrap gap-2">
+                            <button
+                                onClick={() => setSelectedCategory('')}
+                                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                                    selectedCategory === '' 
+                                        ? 'bg-primary text-white' 
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`}
+                            >
+                                Todos
+                            </button>
+                            {categories.map((category) => (
+                                <button
+                                    key={category.id}
+                                    onClick={() => handleCategoryClick(category.name)}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer capitalize ${
+                                        selectedCategory === category.name 
+                                            ? 'bg-primary text-white' 
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
+                                >
+                                    {category.name} ({category.count})
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-                <div className="flex-1 p-6 overflow-y-auto drawer-content">
-                    {searchTerm || selectedCategory ? (
+                
+                <div className="flex-1 flex flex-col justify-between p-6 overflow-hidden">
+                    {isLoading ? (
+                        <div className="flex items-center justify-center h-full">
+                            <LuLoader className="w-8 h-8 animate-spin text-primary" />
+                        </div>
+                    ) : (debouncedSearchTerm || selectedCategory) ? (
                         <>
-                            <div className="mb-4">
-                                <p className="text-sm text-gray-600">
-                                    {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
-                                </p>
+                            <div className="overflow-y-auto flex-1">
+                                <div className="mb-4">
+                                    <p className="text-sm text-gray-600">
+                                        {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
+                                    </p>
+                                </div>
+                                
+                                {filteredProducts.length > 0 ? (
+                                    <div className="space-y-3">
+                                        {displayedProducts.map((product) => (
+                                            <SearchHorizontalCard key={product.id} data={product} />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center h-full text-center">
+                                        <LuSearch className="w-16 h-16 text-gray-400 mb-4" />
+                                        <h3 className="text-lg font-medium text-gray-600 mb-2">
+                                            Nenhum produto encontrado
+                                        </h3>
+                                        <p className="text-gray-500 text-sm mb-6">
+                                            Tente ajustar os filtros ou buscar por outro termo
+                                        </p>
+                                        <button 
+                                            onClick={handleClearFilters}
+                                            className="cursor-pointer py-3 px-6 border border-gray-200 text-gray-600 rounded-full font-medium transition-colors text-sm hover:bg-gray-50"
+                                        >
+                                            Limpar Busca
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             
-                            {filteredProducts.length > 0 ? (
-                                <div className="space-y-4">
-                                    {filteredProducts.map((product) => (
-                                        <div key={product.id} className="border border-gray-200 rounded-lg p-4">
-                                            <ProductCard data={product} />
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center h-full text-center">
-                                    <LuSearch className="w-16 h-16 text-gray-400 mb-4" />
-                                    <h3 className="text-lg font-medium text-gray-600 mb-2">
-                                        Nenhum produto encontrado
-                                    </h3>
-                                    <p className="text-gray-500 text-sm mb-6">
-                                        Tente ajustar os filtros ou buscar por outro termo
-                                    </p>
-                                    <button 
-                                        onClick={handleClearFilters}
-                                        className="py-3 px-6 border border-gray-200 text-gray-600 rounded-full font-medium transition-colors text-sm hover:bg-gray-50"
+                            {hasMoreProducts && (
+                                <div className="border-t border-gray-100 pt-4 mt-4 flex-shrink-0">
+                                    <Link 
+                                        href={buildSearchUrl()}
+                                        onClick={toggleDrawer}
+                                        className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-600 transition-colors text-sm"
                                     >
-                                        Limpar Busca
-                                    </button>
+                                        Ver todos os {filteredProducts.length} produtos
+                                        <LuArrowRight className="w-4 h-4" />
+                                    </Link>
                                 </div>
                             )}
                         </>

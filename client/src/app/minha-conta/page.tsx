@@ -5,6 +5,7 @@ import { LuUser, LuMail, LuPhone, LuCalendar, LuMapPin, LuPackage, LuHeart, LuLo
 import { Account } from "@/api/account.api";
 import { useUser } from "@/hooks/user.hook";
 import EditAccount from "@/components/account/editAccount";
+import { AccountSkeleton } from "@/components/ui/accountSkeleton";
 
 interface Activity {
   type: string;
@@ -48,11 +49,7 @@ export default function MinhaConta() {
   };
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <LuLoader className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <AccountSkeleton />;
   }
 
   return (
@@ -170,14 +167,14 @@ export default function MinhaConta() {
                       return LuHeart;
                     case 'address':
                       return LuMapPin;
-                    default:
+      default:
                       return LuUser;
-                  }
-                };
+    }
+  };
                 
                 const Icon = getIcon(activity.type);
 
-                return (
+  return (
                   <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                     <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center">
                       <Icon className="w-5 h-5 text-primary" />
@@ -195,7 +192,7 @@ export default function MinhaConta() {
               Nenhuma atividade recente
             </div>
           )}
-        </div>
+          </div>
       </div>
     </div>
   );

@@ -62,4 +62,41 @@ export class AccountService {
       created_at: order.created_at,
     };
   }
+
+  // Cart methods
+  async getUserCart(userId: number) {
+    return await this.accountRepository.getUserCart(userId);
+  }
+
+  async addToCart(userId: number, dto: any) {
+    return await this.accountRepository.addToCart(userId, dto);
+  }
+
+  async updateCartItem(userId: number, itemId: number, dto: any) {
+    return await this.accountRepository.updateCartItem(userId, itemId, dto);
+  }
+
+  async removeFromCart(userId: number, itemId: number) {
+    return await this.accountRepository.removeFromCart(userId, itemId);
+  }
+
+  async clearCart(userId: number) {
+    return await this.accountRepository.clearCart(userId);
+  }
+
+  async getUserWishlist(userId: number) {
+    return await this.accountRepository.getUserWishlist(userId);
+  }
+
+  async addToWishlist(userId: number, productId: number) {
+    return await this.accountRepository.addToWishlist(userId, productId);
+  }
+
+  async removeFromWishlist(userId: number, itemId: number) {
+    return await this.accountRepository.removeFromWishlist(userId, itemId);
+  }
+
+  async clearWishlist(userId: number) {
+    return await this.accountRepository.clearWishlist(userId);
+  }
 }

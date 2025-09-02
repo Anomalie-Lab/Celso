@@ -80,7 +80,7 @@ export default function Header() {
   }, [handleScroll]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 w-full shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
       <div className="bg-black/95 text-white py-3 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-center text-sm">
           <div className="flex items-center space-x-6">

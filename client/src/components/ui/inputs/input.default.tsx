@@ -1,7 +1,7 @@
 export const InputDefault = ({ label, type = "text", required = false, value, error, className, ...rest }: InputDefaultProps) => {
   return (
-    <div className={`relative w-full mx-auto my-4 ${className}`}>
-      <input id="input" required={required} type={type} className="peer w-full z-50 bg-transparent border-b-2 border-gray-300 focus:outline-none text-lg py-1" {...rest} />
+    <div className={`relative w-full mx-auto mt-2 ${className}`}>
+      <input id="input" required={required} type={type} className="peer w-full z-50 bg-transparent border-b-2 border-gray-300 focus:outline-none text-lg " {...rest} />
       <label
         htmlFor="input"
         className={` -z-10

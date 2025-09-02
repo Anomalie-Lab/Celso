@@ -54,7 +54,8 @@ const Sidebar = () => {
   return (
     <>
       {/* Sidebar */}
-      <div className="w-80 bg-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit sticky top-8">
+      
+      <div className="w-full lg:w-80 bg-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit lg:sticky lg:top-6">
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Minha Conta</h2>
           <p className="text-sm text-gray-500">Gerencie suas informações pessoais</p>

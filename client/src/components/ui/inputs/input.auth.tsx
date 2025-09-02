@@ -7,7 +7,7 @@ export const InputAuthUi = ({ type, placeholder, className, error, ...props }: U
 
       <label
         className={`
-    absolute left-4 text-gray-200
+    absolute left-3 text-gray-200
     transition-all duration-200 text-md
     peer-placeholder-shown:top-4
     peer-placeholder-shown:text-gray-400

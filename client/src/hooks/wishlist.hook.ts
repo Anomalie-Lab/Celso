@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Wishlist } from "@/api/wishlist.api";
 import { toast } from "sonner";
 import { useUser } from "./user.hook";
+import { useAnalytics } from "./analytics.hook";
 import { useState, useEffect } from "react";
 
 // Interface para item da wishlist local
@@ -26,6 +27,7 @@ interface LocalWishlist {
 export const useWishlist = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
+  const { trackWishlistAdd } = useAnalytics();
   const [localWishlist, setLocalWishlist] = useState<LocalWishlist>({ items: [], created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
   
   // Estados de loading individuais para cada item
@@ -67,8 +69,9 @@ export const useWishlist = () => {
 
   const addToWishlistMutation = useMutation({
     mutationFn: Wishlist.addToWishlist,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      trackWishlistAdd(variables.product_id, typeof window !== 'undefined' ? window.location.pathname : '');
       toast.success("Produto adicionado à lista de desejos!");
     },
     onError: () => {
@@ -135,6 +138,10 @@ export const useWishlist = () => {
         };
 
         saveLocalWishlist(updatedWishlist);
+        
+        // Track analytics para usuário não autenticado
+        trackWishlistAdd(data.product_id, typeof window !== 'undefined' ? window.location.pathname : '');
+        
         setAddingItems(prev => ({ ...prev, [data.product_id]: false }));
         toast.success("Produto adicionado à lista de desejos!");
       }, 300);

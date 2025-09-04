@@ -7,27 +7,19 @@ export class AnalyticsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateAnalyticsDto) {
-    console.log('💾 Analytics Repository: Criando registro', data);
-    try {
-      const result = await this.prisma.productAnalytics.create({
-        data: {
-          product_id: data.product_id,
-          action: data.action,
-          source: data.source,
-          user_agent: data.user_agent,
-          referrer: data.referrer,
-          ip_address: data.ip_address,
-          session_id: data.session_id,
-          user_id: data.user_id,
-          metadata: data.metadata,
-        },
-      });
-      console.log('💾 Analytics Repository: Registro criado', result);
-      return result;
-    } catch (error) {
-      console.error('💾 Analytics Repository: Erro ao criar registro', error);
-      throw error;
-    }
+    return this.prisma.productAnalytics.create({
+      data: {
+        product_id: data.product_id,
+        action: data.action,
+        source: data.source,
+        user_agent: data.user_agent,
+        referrer: data.referrer,
+        ip_address: data.ip_address,
+        session_id: data.session_id,
+        user_id: data.user_id,
+        metadata: data.metadata,
+      },
+    });
   }
 
   async getProductAnalytics(productId: number, days: number = 30) {

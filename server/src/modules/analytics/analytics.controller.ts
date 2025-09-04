@@ -34,42 +34,32 @@ export class AnalyticsController {
     @ApiOperation({ summary: 'Registrar evento de analytics' })
     @ApiBody({ type: CreateAnalyticsDto })
     @ApiResponse({ status: 201, description: 'Evento registrado com sucesso' })
-    async trackEvent(
-        @Body() data: CreateAnalyticsDto,
-        @Req() req: Request,
-        @User() user?: any,
-    ) {
-        console.log('🎯 Analytics Controller: Recebendo evento', data);
+      async trackEvent(
+    @Body() data: CreateAnalyticsDto,
+    @Req() req: Request,
+    @User() user?: any,
+  ) {
+    // Extrair informações da requisição
+    const userAgent = req.headers['user-agent'];
+    const ipAddress = req.ip || req.connection.remoteAddress;
+    const referrer = req.headers.referer || req.headers.referrer;
 
-        // Extrair informações da requisição
-        const userAgent = req.headers['user-agent'];
-        const ipAddress = req.ip || req.connection.remoteAddress;
-        const referrer = req.headers.referer || req.headers.referrer;
+    const analyticsData = {
+      ...data,
+      user_agent: userAgent,
+      ip_address: ipAddress,
+      referrer: referrer as string,
+      user_id: user?.id,
+    };
 
-        const analyticsData = {
-            ...data,
-            user_agent: userAgent,
-            ip_address: ipAddress,
-            referrer: referrer as string,
-            user_id: user?.id,
-        };
-
-        console.log('🎯 Analytics Controller: Dados processados', analyticsData);
-
-        try {
-            const result = await this.analyticsService.trackEvent(analyticsData);
-            console.log('🎯 Analytics Controller: Evento salvo', result);
-
-            return {
-                statusCode: HttpStatus.CREATED,
-                message: 'Evento registrado com sucesso',
-                data: result,
-            };
-        } catch (error) {
-            console.error('🎯 Analytics Controller: Erro ao salvar evento', error);
-            throw error;
-        }
-    }
+    const result = await this.analyticsService.trackEvent(analyticsData);
+    
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'Evento registrado com sucesso',
+      data: result,
+    };
+  }
 
     @Get('product/:id')
     @isPublic()

@@ -66,17 +66,10 @@ export function useAnalyticsSummary(days: number = 30) {
   return useQuery({
     queryKey: ['analytics-summary', days],
     queryFn: async (): Promise<AnalyticsSummary> => {
-      console.log('📊 Admin: Buscando resumo de analytics', { days });
-      try {
-        const { data } = await api.get('/analytics/summary', {
-          params: { days }
-        });
-        console.log('📊 Admin: Resumo recebido', data.data);
-        return data.data;
-      } catch (error) {
-        console.error('📊 Admin: Erro ao buscar resumo', error);
-        throw error;
-      }
+      const { data } = await api.get('/analytics/summary', {
+        params: { days }
+      });
+      return data.data;
     },
     refetchInterval: 60000, // Atualizar a cada minuto
   });

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Cart, UpdateCartItemData } from "@/api/cart.api";
 import { toast } from "sonner";
 import { useUser } from "./user.hook";
+import { useAnalytics } from "./analytics.hook";
 import { useState, useEffect } from "react";
 
 // Interface para item do carrinho local
@@ -29,6 +30,7 @@ interface LocalCart {
 export const useCart = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
+  const { trackCartAdd } = useAnalytics();
   const [localCart, setLocalCart] = useState<LocalCart>({ items: [], created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
   
   // Estados de loading individuais para cada item
@@ -70,8 +72,13 @@ export const useCart = () => {
 
   const addToCartMutation = useMutation({
     mutationFn: Cart.addToCart,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
+      trackCartAdd(variables.product_id, typeof window !== 'undefined' ? window.location.pathname : '', {
+        quantity: variables.quantity,
+        size: variables.size,
+        color: variables.color,
+      });
       toast.success("Produto adicionado ao carrinho!");
     },
     onError: () => {
@@ -142,6 +149,14 @@ export const useCart = () => {
       };
 
       saveLocalCart(updatedCart);
+      
+      // Track analytics para usuário não autenticado
+      trackCartAdd(data.product_id, typeof window !== 'undefined' ? window.location.pathname : '', {
+        quantity: data.quantity || 1,
+        size: data.size || 'M',
+        color: data.color || 'Default',
+      });
+      
       toast.success("Produto adicionado ao carrinho!");
     }
   };

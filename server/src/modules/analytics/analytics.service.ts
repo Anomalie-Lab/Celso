@@ -7,15 +7,7 @@ export class AnalyticsService {
   constructor(private readonly analyticsRepository: AnalyticsRepository) {}
 
   async trackEvent(data: CreateAnalyticsDto) {
-    console.log('🔧 Analytics Service: Processando evento', data);
-    try {
-      const result = await this.analyticsRepository.create(data);
-      console.log('🔧 Analytics Service: Evento criado', result);
-      return result;
-    } catch (error) {
-      console.error('🔧 Analytics Service: Erro ao criar evento', error);
-      throw error;
-    }
+    return this.analyticsRepository.create(data);
   }
 
   async getProductAnalytics(productId: number, days: number = 30) {

@@ -4,6 +4,7 @@ export interface AnalyticsEvent {
   product_id: number;
   action: 'view' | 'wishlist_add' | 'cart_add' | 'purchase' | 'search';
   source?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: any;
 }
 
@@ -43,6 +44,7 @@ export interface ProductAnalytics {
   ip_address: string | null;
   session_id: string | null;
   user_id: number | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata: any;
   created_at: string;
   product: {
@@ -70,12 +72,9 @@ export interface ConversionFunnel {
 
 export const Analytics = {
   trackEvent: async (data: AnalyticsEvent): Promise<void> => {
-    console.log('📡 Analytics API: Enviando evento', data);
     try {
-      const response = await api.post('/analytics/track', data);
-      console.log('📡 Analytics API: Resposta recebida', response.data);
+      await api.post('/analytics/track', data);
     } catch (error) {
-      console.error('📡 Analytics API: Erro na requisição', error);
       throw error;
     }
   },

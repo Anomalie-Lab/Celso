@@ -10,6 +10,7 @@ import Usuarios from "./pages/admin/Usuarios";
 import Pedidos from "./pages/admin/Pedidos";
 import Notificacoes from "./pages/admin/Notificacoes";
 import EmailMarketing from "./pages/admin/EmailMarketing";
+import Analytics from "./pages/admin/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,11 @@ const App = () => (
             <Route path="/admin/email" element={
               <ProtectedRoute>
                 <EmailMarketing />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/analytics" element={
+              <ProtectedRoute>
+                <Analytics />
               </ProtectedRoute>
             } />
             

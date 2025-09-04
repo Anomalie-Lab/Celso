@@ -9,7 +9,8 @@ import {
   Settings,
   LogOut,
   ChevronDown,
-  Mail
+  Mail,
+  BarChart3
 } from "lucide-react";
 
 import {
@@ -33,6 +34,7 @@ const menuItems = [
   { title: "Produtos", url: "/admin/produtos", icon: Package },
   { title: "Usuários", url: "/admin/usuarios", icon: Users },
   { title: "Pedidos", url: "/admin/pedidos", icon: ShoppingCart },
+  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
   { title: "Notificações", url: "/admin/notificacoes", icon: Bell },
   { title: "Email Marketing", url: "/admin/email", icon: Mail },
 ];

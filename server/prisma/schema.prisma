@@ -38,6 +38,7 @@ model User {
   carts         Cart[]
   transactions  Transaction[]
   wishlists     Wishlist[]
+  analytics     ProductAnalytics[]
 
   @@map("users")
 }
@@ -117,9 +118,6 @@ model Product {
   images            Json?
   sizes             Json?
   stock             Int      @default(0)
-  views             Int      @default(0)
-  added_to_cart     Int      @default(0)
-  added_to_wishlist Int      @default(0)
 
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
@@ -128,6 +126,7 @@ model Product {
   cart_items CartItem[]
   wishlist_items WishlistItem[]
   invoices   InvoiceItem[]
+  analytics  ProductAnalytics[]
 
   @@map("products")
 }
@@ -333,4 +332,28 @@ model InvoiceItem {
   price    Decimal @db.Decimal(10, 2)
 
   created_at DateTime @default(now())
+}
+
+model ProductAnalytics {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  
+  action     String  
+  source     String? 
+  user_agent String? 
+  referrer   String? 
+  ip_address String? 
+  session_id String? 
+  user_id    Int?    
+  user       User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  
+  metadata   Json?   
+  created_at DateTime @default(now())
+
+  @@index([product_id])
+  @@index([action])
+  @@index([created_at])
+  @@index([user_id])
+  @@map("product_analytics")
 }

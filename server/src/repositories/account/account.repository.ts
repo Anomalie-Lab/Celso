@@ -467,15 +467,6 @@ export class AccountRepository {
       }
     });
 
-    await this.prisma.product.update({
-      where: { id: productId },
-      data: {
-        added_to_wishlist: {
-          increment: 1
-        }
-      }
-    });
-
     return wishlistItem;
   }
 
@@ -503,15 +494,6 @@ export class AccountRepository {
 
     await this.prisma.wishlistItem.delete({
       where: { id: +itemId }
-    });
-
-    await this.prisma.product.update({
-      where: { id: item.product_id },
-      data: {
-        added_to_wishlist: {
-          decrement: 1
-        }
-      }
     });
 
     return { message: 'Item removido da lista de desejos' };

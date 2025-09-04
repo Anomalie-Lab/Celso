@@ -14,6 +14,7 @@ import {
   Activity
 } from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
+import { AnalyticsSummary } from "@/components/admin/AnalyticsSummary";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
@@ -207,6 +208,9 @@ export default function Dashboard() {
           </Card>
         </div>
 
+        {/* Analytics Resumo */}
+        <AnalyticsSummary days={30} />
+
         {/* Actions rápidas */}
         <Card>
           <CardHeader>
@@ -232,9 +236,12 @@ export default function Dashboard() {
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Ver Pedidos
               </Button>
-              <Button variant="outline" disabled>
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/admin/analytics')}
+              >
                 <Eye className="h-4 w-4 mr-2" />
-                Relatórios
+                Analytics
               </Button>
             </div>
           </CardContent>

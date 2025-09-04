@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:9000",
 });
 
 instance.interceptors.request.use((config) => {
@@ -13,3 +13,4 @@ instance.interceptors.request.use((config) => {
 });
 
 export default instance;
+export const api = instance;

@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import ProductCard from "../ui/productCard";
 import { Products } from "@/api/products.api";
 import { ProductsAreaSkeleton } from "@/components/ui/productsAreaSkeleton";
+import { ArrowUpRight } from "lucide-react";
 
 interface ProductsAreaProps {
   titleArea: string;
@@ -60,7 +61,15 @@ export default function ProductsArea({ titleArea, type }: ProductsAreaProps) {
 
   return (
     <div className="w-full px-24">
-      <h1 className="text-center text-2xl font-semibold mt-12 mb-8">{titleArea}</h1>
+      <div className="flex items-center justify-between mb-8 mt-12">
+        <h1 className="text-left text-xl font-bold text-black/90">{titleArea}</h1>
+        <button
+          className="flex border border-gray-200 rounded-full px-7 py-3 items-center gap-2 text-gray-700 hover:text-primary-600 transition-colors font-medium text-xs cursor-pointer hover:bg-primary hover:text-white transition-colors active:scale-105"
+        >
+          Veja Todos
+          <ArrowUpRight className="w-4 h-4" />
+        </button>
+      </div>
       <div className="relative">
         <Carousel
           opts={{
@@ -81,7 +90,7 @@ export default function ProductsArea({ titleArea, type }: ProductsAreaProps) {
           <CarouselPrevious className="left-2 md:left-4" />
           <CarouselNext className="right-2 md:right-4" />
         </Carousel>
-      </div>
+      </div>                                        
     </div>
   );
 }

@@ -68,7 +68,7 @@ export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
         <div className="space-y-2">
           <InputAuthUi 
             type="email"
-            placeholder="seu@email.com"
+            placeholder="Email"
             {...register("email")}
             error={errors.email?.message}
           />
@@ -76,7 +76,7 @@ export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
         <div className="space-y-2">
           <InputAuthUi
             type="password"
-            placeholder="Sua senha"
+            placeholder="Senha"
             {...register("password")}
             error={errors.password?.message}
           />

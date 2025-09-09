@@ -93,16 +93,10 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     [setValue]
   );
 
-  const debouncedSearchCep = useCallback(
-    (() => {
-      let timeoutId: NodeJS.Timeout;
-      return (cep: string) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => searchCep(cep), 500);
-      };
-    })(),
-    [searchCep]
-  );
+  const debouncedSearchCep = useCallback((cep: string) => {
+    const timeoutId = setTimeout(() => searchCep(cep), 500);
+    return () => clearTimeout(timeoutId);
+  }, [searchCep]);
 
   useEffect(() => {
     if (address && mode === "edit") {

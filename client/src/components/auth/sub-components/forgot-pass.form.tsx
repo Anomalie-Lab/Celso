@@ -46,7 +46,7 @@ export const ForgotPassForm = ({ onAuthPageChange }: ForgotPassFormProps) => {
         <div className="space-y-2">
           <InputAuthUi 
             type="email"
-            placeholder="seu@email.com"
+            placeholder="Email"
             {...register("email")}
             error={errors.email?.message}
           />

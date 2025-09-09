@@ -696,7 +696,7 @@ const products = [
     last_price: 19.9,
     stock: 300,
     categories: ["CONSUMIVEIS", "SOLUCOES"],
-    images: ["https:/imagesunsplash.com/photo-1588776814546-3d2b65a8c8d7?w=400&h=400&fit=crop", "https:/imagesunsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop"],
+    images: ["https://images.unsplash.com/photo-1588776814546-3d2b65a8c8d7?w=400&h=400&fit=crop", "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop"],
     flags: ["PROFISSIONAL"],
     details: {
       marca: "BioSoro",

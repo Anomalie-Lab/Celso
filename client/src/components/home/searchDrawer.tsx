@@ -2,12 +2,13 @@
 import { useState, useEffect } from 'react';
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
-import { LuX, LuSearch, LuLoader, LuArrowRight } from "react-icons/lu";
+import { LuX, LuSearch, LuLoader } from "react-icons/lu";
 import { useDrawer } from '@/hooks/useDrawer';
-import SearchHorizontalCard from '@/components/ui/searchHorizontalCard';
+import SearchHorizontalCard from '@/components/search/searchHorizontalCard';
 import { Products } from '@/api/products.api';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 
 interface SearchDrawerProps {
     isOpen: boolean
@@ -20,6 +21,11 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
 
     // Debounce search term
     useEffect(() => {
@@ -47,6 +53,9 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
         }),
         enabled: (!!debouncedSearchTerm || !!selectedCategory) && isOpen,
     });
+
+    // Não renderizar o Drawer até que o componente esteja montado no cliente
+    if (!isMounted) return null;
 
     const handleClearFilters = () => {
         setSearchTerm('');
@@ -96,7 +105,7 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                     </button>
                 </div>
                 
-                <div className="px-7 flex-shrink-0">
+                <div className="px-7 flex-shrink-0 py-5">
                     <div className="relative">
                         <LuSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
@@ -113,10 +122,10 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                         <div className="flex flex-wrap gap-2">
                             <button
                                 onClick={() => setSelectedCategory('')}
-                                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                                className={`px-4 py-2 rounded-full text-xs font-medium transition-colors cursor-pointer uppercase ${
                                     selectedCategory === '' 
                                         ? 'bg-primary text-white' 
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        : 'border border-gray-200 text-gray-700 hover:bg-gray-100'
                                 }`}
                             >
                                 Todos
@@ -128,7 +137,7 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer capitalize ${
                                         selectedCategory === category.name 
                                             ? 'bg-primary text-white' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                            : 'border border-gray-200 text-gray-700 hover:bg-gray-100'
                                     }`}
                                 >
                                     {category.name} ({category.count})
@@ -138,7 +147,7 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                     </div>
                 </div>
                 
-                <div className="flex-1 flex flex-col justify-between p-6 overflow-hidden">
+                <div className="flex-1 flex flex-col justify-between p-6 overflow-hidden px-8">
                     {isLoading ? (
                         <div className="flex items-center justify-center h-full">
                             <LuLoader className="w-8 h-8 animate-spin text-primary" />
@@ -155,7 +164,9 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                                 {filteredProducts.length > 0 ? (
                                     <div className="space-y-3">
                                         {displayedProducts.map((product) => (
-                                            <SearchHorizontalCard key={product.id} data={product} />
+                                            <SearchHorizontalCard key={product.id} data={product}
+                                            toggleDrawer={toggleDrawer}
+                                            />
                                         ))}
                                     </div>
                                 ) : (
@@ -175,20 +186,20 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
                                         </button>
                                     </div>
                                 )}
-                            </div>
-                            
-                            {hasMoreProducts && (
-                                <div className="border-t border-gray-100 pt-4 mt-4 flex-shrink-0">
+                                {hasMoreProducts && (
+                                    <div className="w-full flex items-center justify-end mt-8 px-1">
                                     <Link 
                                         href={buildSearchUrl()}
                                         onClick={toggleDrawer}
-                                        className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-600 transition-colors text-sm"
+                                        className='flex items-center justify-center gap-2 text-sm
+                                        text-gray-600'
                                     >
                                         Ver todos os {filteredProducts.length} produtos
-                                        <LuArrowRight className="w-4 h-4" />
+                                        <ArrowUpRight className="w-4 h-4" />
                                     </Link>
                                 </div>
-                            )}
+                                )}
+                            </div>    
                         </>
                     ) : (
                         <div className="flex flex-col items-center justify-center h-full text-center">

@@ -45,6 +45,62 @@ export class AdminController {
     return res.status(HttpStatus.OK).json(data);
   }
 
+  @Get('orders/:id')
+  @isAdmin()
+  @ApiOperation({summary: 'Get order by ID'})
+  @ApiParam({name: 'id', description: 'Order ID'})
+  @ApiResponse({status: 200, description: 'Order retrieved successfully'})
+  @ApiResponse({status: 404, description: 'Order not found'})
+  async getOrderById(@Param('id') id: string, @Res() res) {
+    const order = await this.adminService.getOrderById(+id);
+    return res.status(HttpStatus.OK).json(order);
+  }
+
+  @Post('orders')
+  @isAdmin()
+  @ApiOperation({summary: 'Create a new order'})
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        userId: { type: 'number' },
+        invoice: { type: 'object' },
+        items: { type: 'array' }
+      }
+    }
+  })
+  @ApiResponse({status: 201, description: 'Order created successfully'})
+  async createOrder(@Body() orderData: any, @Res() res) {
+    const order = await this.adminService.createOrder(orderData.userId, orderData);
+    return res.status(HttpStatus.CREATED).json(order);
+  }
+
+  @Patch('orders/:id/status')
+  @isAdmin()
+  @ApiOperation({summary: 'Update order status'})
+  @ApiParam({name: 'id', description: 'Order ID'})
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        status: { type: 'string' },
+        statusText: { type: 'string' },
+        deliveryCompany: { type: 'string' },
+        estimatedDelivery: { type: 'string' },
+        trackingCode: { type: 'string' },
+        pickupInfo: { type: 'string' },
+        nextSteps: { type: 'string' }
+      }
+    }
+  })
+  @ApiResponse({status: 200, description: 'Order status updated successfully'})
+  @ApiResponse({status: 404, description: 'Order not found'})
+  async updateOrderStatus(@Param('id') id: string, @Body() updateData: any, @Res() res) {
+    const { status, statusText, ...additionalData } = updateData;
+    const order = await this.adminService.updateOrderStatus(+id, status, statusText, additionalData);
+    return res.status(HttpStatus.OK).json(order);
+  }
+
   @Get('users')
   @isAdmin()
   @ApiOperation({summary: 'Get all users (Admin)'})

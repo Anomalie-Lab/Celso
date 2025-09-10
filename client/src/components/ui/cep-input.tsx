@@ -46,7 +46,12 @@ export function CepInput({ onCepChange, onShippingInfo, isLoading = false, class
           ...prev,
           shippingCost,
           deliveryTime
-        } : null);
+        } : {
+          localidade: data.localidade,
+          uf: data.uf,
+          shippingCost,
+          deliveryTime
+        });
       }
     } catch (error) {
       console.error("Erro ao buscar CEP:", error);

@@ -23,8 +23,7 @@ export default function ProductPage() {
     selectedSize,
     selectedColor,
     handleQuantityChange,
-    handleColorChange,
-    handleShippingInfoChange
+    handleColorChange
   } = useProductState({ product });
 
   const {
@@ -94,7 +93,6 @@ export default function ProductPage() {
               onAddToCart={handleAddToCart}
               onWishlistToggle={handleWishlistToggle}
               onShare={handleShare}
-              onShippingInfoChange={handleShippingInfoChange}
               isAddingToCart={isAddingToCart}
               isInWishlist={isInWishlist}
               isItemAdding={isItemAdding}

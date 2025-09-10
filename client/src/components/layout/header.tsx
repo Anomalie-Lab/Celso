@@ -25,7 +25,6 @@ export default function Header() {
   const [isWishListOpen, setIsWishListOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user } = useUser();
@@ -64,13 +63,8 @@ export default function Header() {
       setIsVisible(true);
     }
 
-    if (currentScrollY > 100) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
     setLastScrollY(currentScrollY);
-  }, [lastScrollY, isScrolled]);
+  }, [lastScrollY]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -81,17 +75,17 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
-      <div className="bg-black/95 text-white py-3 px-4">
+      <div className="bg-primary text-white py-3 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-center text-sm">
           <div className="flex items-center space-x-6">
-            <div className="flex items-center gap-2 hover:text-gray-300 transition-colors cursor-pointer">
-              <CiDiscount1 className="w-4 h-4" />
+            <div className="flex items-center gap-2 transition-colors cursor-pointer">
+              <CiDiscount1 className="w-5 h-5" />
               <span className="font-medium">10% OFF</span>
-              <span className="text-gray-300">na primeira compra</span>
+              <span className="text-gray-100">na primeira compra</span>
             </div>
-            <TbPointFilled className="text-gray-400 text-xs" />
-            <div className="flex items-center gap-2 hover:text-gray-300 transition-colors cursor-pointer">
-              <CiDeliveryTruck className="w-4 h-4" />
+            <TbPointFilled className="text-gray-200 text-xs" />
+            <div className="flex items-center gap-2 transition-colors cursor-pointer">
+              <CiDeliveryTruck className="w-5 h-5" />
               <span>Frete Grátis</span>
             </div>
           </div>
@@ -127,7 +121,7 @@ export default function Header() {
                 </button>
               </div>
               <div className="hidden md:flex items-center gap-2 p-2 rounded-full transition-colors  group">
-                <LiaUserSolid className="text-2xl text-gray-600 group-hover:text-primary transition-colors" />
+                <LiaUserSolid className="text-2xl text-gray-600" />
                 <div className="text-xs">
                   {user && <div className="text-gray-900 font-medium">Olá, {user.fullname.split(" ")[0]}</div>}
                   {user ? (
@@ -189,7 +183,7 @@ export default function Header() {
           <div className="bg-white h-full w-80 max-w-full shadow-xl">
             <div className="p-6">
               <div className="flex items-center justify-between mb-8">
-                <Image src="/images/logo.png" width={120} height={40} alt="logo" />
+                <Image src="/images/logo.png" width={200} height={80} alt="logo" />
                 <button onClick={toggleMenu} className="p-2 hover:bg-gray-100 rounded-full">
                   <LuX className="w-5 h-5" />
                 </button>

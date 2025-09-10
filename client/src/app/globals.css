@@ -3,10 +3,10 @@
 @theme inline {
   --radius: 0.625rem;
   --color-background: #FFFFFF;
-  --color-primary-50: #D6E8E3;
-  --color-primary-100: #B2D5CD;
-  --color-primary-500: #3C9984;
-  --color-primary: #03624C;
+  --color-primary-50: #EAF5F7;
+  --color-primary-100: #CBE8EE;
+  --color-primary-500: #6FBFCC;
+  --color-primary: #369EB0;
   --color-secondary: #1E2939;
 }
 
@@ -18,6 +18,13 @@ body.drawer-open {
   overflow: hidden;
   position: fixed;
   width: 100%;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 40px white inset !important;
+  -webkit-text-fill-color: #000 !important;
+  background-color: white !important;
 }
 
 /* Scroll Bar Personalizada */

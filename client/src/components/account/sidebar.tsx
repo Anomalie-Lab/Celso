@@ -1,5 +1,5 @@
 "use client";
-import { LuUser, LuPackage, LuHeart, LuMapPin, LuMail, LuLogOut } from "react-icons/lu";
+import { LuPackage, LuHeart, LuMapPin, LuMail, LuLogOut } from "react-icons/lu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -7,13 +7,13 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   const menuItems = [
-    {
-      id: "resumo",
-      label: "Resumo",
-      icon: LuUser,
-      description: "Visão geral da sua conta",
-      href: "/minha-conta",
-    },
+    // {
+    //   id: "resumo",
+    //   label: "Resumo",
+    //   icon: LuUser,
+    //   description: "Visão geral da sua conta",
+    //   href: "/minha-conta",
+    // },
     {
       id: "pedidos",
       label: "Meus Pedidos",

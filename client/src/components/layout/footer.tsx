@@ -94,7 +94,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <button 
-                  onClick={() => navigate.push('/minha-conta')}
+                  onClick={() => navigate.push('/minha-conta/pedidos')}
                   className="text-gray-600 hover:text-primary transition-colors text-sm cursor-pointer"
                 >
                   Meus Dados

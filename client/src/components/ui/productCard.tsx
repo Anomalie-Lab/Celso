@@ -3,23 +3,13 @@ import { LuHeart, LuLoader } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { useCart } from "@/hooks/cart.hook";
 import { useWishlist } from "@/hooks/wishlist.hook";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProductCard({ data }: { data: Product.SimpleI }) {
+  const router = useRouter();
   const { addToCart, isAddingToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist, isItemAdding, isItemRemoving, wishlist } = useWishlist();
-  // const renderStars = (rating: number) => {
-  //   const stars = [];
-  //   for (let i = 1; i <= 5; i++) {
-  //     stars.push(
-  //       <LuStar 
-  //         key={i} 
-  //         className={`w-3 h-3 ${i <= rating ? 'text-yellow-400 fill-current' : 'text-yellow-400 fill-current opacity-50'}`} 
-  //       />
-  //     );
-  //   }
-  //   return stars;
-  // };
-
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -31,22 +21,22 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
     return data.images?.[0] || '/placeholder-product.jpg';
   };
 
-  const getCategoryBadge = () => {
-    if (data.categories && data.categories.length > 0) {
-      const categoryColors = {
-        'MEDICAMENTOS': 'bg-red-100 text-red-600',
-        'EQUIPAMENTOS': 'bg-blue-100 text-blue-600',
-        'CONSUMIVEIS': 'bg-green-100 text-green-600',
-        'SUPLEMENTOS': 'bg-purple-100 text-purple-600',
-        'COSMETICOS': 'bg-pink-100 text-pink-600',
-        'HIGIENE': 'bg-yellow-100 text-yellow-600'
-      };
+  // const getCategoryBadge = () => {
+  //   if (data.categories && data.categories.length > 0) {
+  //     const categoryColors = {
+  //       'MEDICAMENTOS': 'bg-red-100 text-red-600',
+  //       'EQUIPAMENTOS': 'bg-blue-100 text-blue-600',
+  //       'CONSUMIVEIS': 'bg-green-100 text-green-600',
+  //       'SUPLEMENTOS': 'bg-purple-100 text-purple-600',
+  //       'COSMETICOS': 'bg-pink-100 text-pink-600',
+  //       'HIGIENE': 'bg-yellow-100 text-yellow-600'
+  //     };
       
-      const mainCategory = Array.isArray(data.categories) ? data.categories[0] : data.categories;
-      return categoryColors[mainCategory as keyof typeof categoryColors] || 'bg-gray-100 text-gray-600';
-    }
-    return data.flags?.[0] ? 'bg-primary-100 text-primary-500' : '';
-  };
+  //     const mainCategory = Array.isArray(data.categories) ? data.categories[0] : data.categories;
+  //     return categoryColors[mainCategory as keyof typeof categoryColors] || 'bg-gray-100 text-gray-600';
+  //   }
+  //   return data.flags?.[0] ? 'bg-primary-100 text-primary-500' : '';
+  // };
 
   const getMainCategory = () => {
     if (data.categories && data.categories.length > 0) {
@@ -56,12 +46,7 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 relative w-full transition-shadow cursor-pointer hover:shadow-lg border border-gray-100">
-      {getMainCategory() && (
-        <div className={`absolute top-3 left-3 text-[10px] font-bold px-2 py-1 rounded-full z-10 ${getCategoryBadge()}`}>
-          {getMainCategory()}
-        </div>
-      )}
+    <div className="rounded-lg h-[470px] p-8 relative w-full transition-shadow cursor-pointer border border-gray-200 flex flex-col">
 
       {!getMainCategory() && data.flags?.[0] && (
         <div className="absolute top-3 left-3 bg-primary-100 text-primary-500 text-[10px] font-bold px-2 py-1 rounded-full z-10">
@@ -72,8 +57,7 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
       <button 
         onClick={() => {
           if (isInWishlist(data.id)) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const wishlistItem = wishlist?.items?.find((item: any) => item.product.id === data.id);
+            const wishlistItem = wishlist?.items?.find((item: { id: number; product: { id: number } }) => item.product.id === data.id);
             if (wishlistItem) {
               removeFromWishlist(wishlistItem.id);
             }
@@ -89,17 +73,17 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
           }
         }}
         disabled={isItemAdding(data.id) || isItemRemoving(data.id)}
-        className={`absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 shadow-sm ${isInWishlist(data.id) ? 'text-red-500' : 'text-gray-800'} ${(isItemAdding(data.id) || isItemRemoving(data.id)) ? 'opacity-50' : ''}`}
+        className={`absolute top-5 right-5 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10 shadow-sm active:scale-110 cursor-pointer ${isInWishlist(data.id) ? 'text-red-500' : 'text-gray-800'} ${(isItemAdding(data.id) || isItemRemoving(data.id)) ? 'opacity-50' : ''}`}
       >
         {(isItemAdding(data.id) || isItemRemoving(data.id)) ? (
-          <LuLoader className="w-4 h-4 animate-spin" />
+          <LuLoader className="w-5 h-5 animate-spin" />
         ) : (
-          <LuHeart className={`w-4 h-4 ${isInWishlist(data.id) ? 'fill-current' : ''}`} />
+          <LuHeart className={`text-gray-500 w-5 h-5 ${isInWishlist(data.id) ? 'fill-current text-red-500' : ''}`} />
         )}
       </button>
 
       <div className="relative mb-4">
-        <div className="w-full h-48 bg-gray-100 rounded-lg overflow-hidden relative">
+        <div className="w-full h-48 bg-gray-100 rounded-lg overflow-hidden relative" onClick={() => router.push(`/produto/${data.id}`)}>
           <Image
             src={getProductImage()}
             width={300}
@@ -113,43 +97,47 @@ export default function ProductCard({ data }: { data: Product.SimpleI }) {
           />
         </div>
       </div>
-
-      <button 
-        onClick={() => addToCart({ 
-          product_id: data.id,
-          product: {
-            title: data.title,
-            price: data.price,
-            images: data.images
-          }
-        })}
-        disabled={isAddingToCart}
-        className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-3 transition-colors mb-4 hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isAddingToCart ? (
-          <LuLoader className="w-5 h-5 animate-spin" />
-        ) : (
-          <PiBasketLight className="w-5 h-5" />
-        )}
-        {isAddingToCart ? 'Adicionando...' : 'Adicionar'}
-      </button>
-
-      <h3 className="text-gray-800 font-semibold text-sm mb-2 leading-tight line-clamp-2">{data.title}</h3>
-
-      {data.brand && (
-        <p className="text-gray-500 text-xs mb-2">{data.brand}</p>
-      )}
-
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <span className="text-gray-800 font-bold text-lg">{formatPrice(Number(data.price))}</span>
-          {data.last_price && Number(data.last_price) > Number(data.price) && (
-            <span className="text-gray-400 text-sm line-through">{formatPrice(Number(data.last_price))}</span>
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
+          {data.brand && (
+            <p className="text-gray-500 text-xs mb-2">{data.brand}</p>
           )}
+          <Link href={`/produto/${data.id}`} className="text-gray-800 font-semibold text-sm mb-2 leading-tight line-clamp-2 hover:underline">{data.title}</Link>
+
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-800 font-bold text-lg">{formatPrice(Number(data.price))}</span>
+              {data.last_price && Number(data.last_price) > Number(data.price) && (
+                <span className="text-gray-400 text-sm line-through">{formatPrice(Number(data.last_price))}</span>
+              )}
+            </div>
+            <p className="text-gray-500 text-xs">
+              ou {data.installments || 12}x de {formatPrice(Number(data.price) / (data.installments || 12))}
+            </p>
+          </div>
         </div>
-        <p className="text-gray-500 text-xs">
-          ou {data.installments || 12}x de {formatPrice(Number(data.price) / (data.installments || 12))}
-        </p>
+        
+        <div className="mt-6">
+          <button 
+            onClick={() => addToCart({ 
+              product_id: data.id,
+              product: {
+                title: data.title,
+                price: data.price,
+                images: data.images
+              }
+            })}
+            disabled={isAddingToCart}
+            className="w-full bg-primary text-white py-3 rounded-full font-medium flex items-center justify-center gap-3 transition-colors hover:bg-primary-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-105"
+          >
+            {isAddingToCart ? (
+              <LuLoader className="w-5 h-5 animate-spin" />
+            ) : (
+              <PiBasketLight className="w-5 h-5" />
+            )}
+            {isAddingToCart ? 'Adicionando...' : 'Adicionar'}
+          </button>
+        </div>
       </div>
     </div>
   );

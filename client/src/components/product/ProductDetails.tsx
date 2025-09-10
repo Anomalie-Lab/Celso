@@ -137,33 +137,33 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           {hasComments ? (
             <div className="space-y-6">
               {/* Resumo das Avaliações */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+              <div className="border border-gray-200 rounded-lg p-6">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-1">Avaliações dos Clientes</h4>
-                    <p className="text-sm text-gray-600">{product.comments.length} avaliação(ões)</p>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">Avaliações dos Clientes</h4>
+                    <p className="text-sm text-gray-500">{product.comments.length} avaliação(ões)</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center space-x-1 mb-2">
                       {renderStars(Math.round(product.comments.reduce((acc, comment) => acc + comment.rating, 0) / product.comments.length))}
                     </div>
-                    <p className="text-3xl font-bold text-blue-600">
+                    <p className="text-2xl font-bold text-gray-900">
                       {(product.comments.reduce((acc, comment) => acc + comment.rating, 0) / product.comments.length).toFixed(1)}
                     </p>
-                    <p className="text-sm text-gray-600 font-medium">Média geral</p>
+                    <p className="text-sm text-gray-500">Média geral</p>
                   </div>
                 </div>
               </div>
 
               {/* Comentários Recentes */}
-              <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <div className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h5 className="text-sm font-semibold text-gray-800">Comentários Recentes</h5>
+                  <h5 className="text-sm font-semibold text-gray-900">Comentários Recentes</h5>
                   {user && (
                     <Button
                       onClick={() => setIsModalOpen(true)}
                       size="sm"
-                      className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                      className="flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
                     >
                       <LuMessageCircle className="w-4 h-4" />
                       <span>Avaliar Produto</span>
@@ -172,12 +172,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                 </div>
                 <div className="space-y-4">
                   {product.comments.slice(0, 3).map((comment) => (
-                    <div key={comment.id} className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500">
+                    <div key={comment.id} className="border border-gray-100 rounded-lg p-4">
                       <div className="flex items-center space-x-3 mb-2">
                         <div className="flex">
                           {renderStars(comment.rating)}
                         </div>
-                        <span className="text-sm font-semibold text-gray-900">
+                        <span className="text-sm font-medium text-gray-900">
                           {comment.user.fullname}
                         </span>
                         <span className="text-xs text-gray-500">
@@ -201,7 +201,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               {user && (
                 <Button
                   onClick={() => setIsModalOpen(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-md transition-colors"
                 >
                   <LuMessageCircle className="w-4 h-4 mr-2" />
                   Avaliar Produto

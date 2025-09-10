@@ -83,19 +83,19 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">Avaliar Produto</h2>
-            <p className="text-sm text-gray-600 mt-1">{productTitle}</p>
+            <h2 className="text-lg font-semibold text-gray-900">Avaliar Produto</h2>
+            <p className="text-sm text-gray-500 mt-1">{productTitle}</p>
           </div>
           <button
             onClick={handleClose}
             disabled={isLoading}
             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-50"
           >
-            <LuX className="w-5 h-5" />
+            <LuX className="w-5 h-5 text-gray-500" />
           </button>
         </div>
 
@@ -103,17 +103,17 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Rating */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-900 mb-3">
               Sua avaliação
             </label>
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 mb-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   type="button"
                   onClick={() => setRating(star)}
                   disabled={isLoading}
-                  className="focus:outline-none disabled:opacity-50"
+                  className="focus:outline-none disabled:opacity-50 transition-transform hover:scale-110"
                 >
                   <LuStar
                     className={`w-8 h-8 transition-colors ${
@@ -125,7 +125,7 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
                 </button>
               ))}
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-gray-600 font-medium">
               {rating === 1 && "Muito ruim"}
               {rating === 2 && "Ruim"}
               {rating === 3 && "Regular"}
@@ -136,17 +136,17 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
 
           {/* Message */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-900 mb-3">
               Seu comentário
             </label>
-             <textarea
-               value={message}
-               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-               placeholder="Conte sua experiência com este produto..."
-               className="w-full min-h-[120px] resize-none px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
-               disabled={isLoading}
-               maxLength={500}
-             />
+            <textarea
+              value={message}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
+              placeholder="Conte sua experiência com este produto..."
+              className="w-full min-h-[120px] resize-none px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-sm"
+              disabled={isLoading}
+              maxLength={500}
+            />
             <p className="text-xs text-gray-500 mt-2 text-right">
               {message.length}/500 caracteres
             </p>
@@ -154,7 +154,7 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-900 mb-3">
               Anexar fotos ou vídeos (opcional)
             </label>
             
@@ -172,7 +172,7 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
               variant="outline"
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading}
-              className="w-full"
+              className="w-full border-gray-300 hover:bg-gray-50 text-gray-700"
             >
               <LuImage className="w-4 h-4 mr-2" />
               Adicionar Fotos/Vídeos
@@ -181,19 +181,19 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
             {attachments.length > 0 && (
               <div className="mt-3 space-y-2">
                 {attachments.map((attachment, index) => (
-                  <div key={index} className="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-md border border-gray-200">
                     {attachment.type === 'image' ? (
-                      <LuImage className="w-4 h-4 text-blue-500" />
+                      <LuImage className="w-4 h-4 text-gray-600" />
                     ) : (
-                      <LuVideo className="w-4 h-4 text-red-500" />
+                      <LuVideo className="w-4 h-4 text-gray-600" />
                     )}
-                    <span className="text-sm text-gray-600 flex-1 truncate">
+                    <span className="text-sm text-gray-700 flex-1 truncate">
                       {attachment.alt}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeAttachment(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-gray-400 hover:text-red-500 transition-colors"
                     >
                       <LuTrash2 className="w-4 h-4" />
                     </button>
@@ -204,20 +204,20 @@ export function CommentModal({ isOpen, onClose, onSubmit, isLoading, productTitl
           </div>
 
           {/* Actions */}
-          <div className="flex space-x-3 pt-4">
+          <div className="flex space-x-3 pt-4 border-t border-gray-200">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={isLoading || !message.trim()}
-              className="flex-1"
+              className="flex-1 bg-primary hover:bg-primary/90 text-white"
             >
               {isLoading ? (
                 <>

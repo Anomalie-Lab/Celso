@@ -33,20 +33,20 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-      // Configuração dinâmica para uploads
+      // Configuração dinâmica para arquivos públicos
       ...(process.env.NEXT_PUBLIC_NODE_ENV === 'development' ? [
         {
           protocol: 'http' as const,
           hostname: 'localhost',
           port: '9000',
-          pathname: '/uploads/**',
+          pathname: '/public/**',
         }
       ] : [
         {
           protocol: 'https' as const,
           hostname: process.env.NEXT_PUBLIC_API_URL?.replace('https://', '').replace('http://', '') || 'localhost',
           port: '',
-          pathname: '/uploads/**',
+          pathname: '/public/**',
         }
       ])
     ],

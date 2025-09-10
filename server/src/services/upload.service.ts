@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UploadService {
-  private readonly uploadPath = join(process.cwd(), 'uploads', 'comments');
+  private readonly uploadPath = join(process.cwd(), 'public', 'comments');
 
   constructor() {
     this.ensureUploadDirectory();
@@ -32,7 +32,7 @@ export class UploadService {
     await fs.writeFile(filePath, buffer);
     
     // Retorna a URL relativa para acessar o arquivo
-    return `/uploads/comments/${fileName}`;
+    return `/public/comments/${fileName}`;
   }
 
   private getFileExtension(originalName: string, type: 'image' | 'video'): string {

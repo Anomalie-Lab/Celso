@@ -65,7 +65,7 @@ export default function ProductPage() {
     : 0;
 
   return (
-    <div className="h-[2000px] flex items-center justify-center flex-col space-y-16 mt-16">
+    <div className="py-24 flex items-center justify-center flex-col space-y-16 mt-16">
       <div className="w-3/4 px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           <ProductGallery
@@ -104,7 +104,6 @@ export default function ProductPage() {
 
         <ProductDetails product={product} />
       </div>
-
       <ProductsArea titleArea="Mais buscados com 20% OFF" type="all"/>
     </div>
   );

@@ -31,8 +31,8 @@ async function bootstrap() {
   app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080"], credentials: true }));
 
   // Servir arquivos estáticos
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
-    prefix: '/uploads/',
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/public/',
   });
 
   app.useWebSocketAdapter(new IoAdapter(app));

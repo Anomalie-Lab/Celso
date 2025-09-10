@@ -8,7 +8,7 @@ import PromotionalBanners from "@/components/home/promotionalBanners";
 
 export default function Home() {
   return (
-    <div className="h-[5300px] space-y-24 bg-background">
+    <div className="space-y-24 bg-background">
       <HeroArea/>
       <ConditionsLayer/>
       <CategoriesSection/>

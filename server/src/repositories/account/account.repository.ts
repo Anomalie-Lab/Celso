@@ -6,6 +6,12 @@ import { CreateUpdateAddressDto, UpdateUserDto } from 'src/dtos/account.dto';
 export class AccountRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findById(id: number) {
+    return await this.prisma.user.findUnique({
+      where: { id },
+    });
+  }
+
   async update(data: UpdateUserDto, id: number) {
     return await this.prisma.user.update({
       data: { ...data, birthdate: new Date(data.birthdate) },

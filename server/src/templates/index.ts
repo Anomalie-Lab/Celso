@@ -5,6 +5,8 @@ export { OrderCreatedEmailHtml } from './order-created-email';
 export { OrderStatusUpdateEmailHtml } from './order-status-update-email';
 export { PasswordResetEmailHtml as PasswordResetEmailNew } from './password-reset-email';
 export { SecurityAlertEmailHtml } from './security-alert-email';
+export { CartAbandonmentEmailHtml } from './cart-abandonment-email';
+export { PasswordChangedEmailHtml } from './password-changed-email';
 
 // Legacy password reset (mantido para compatibilidade)
 export { PasswordResetHtml } from './password-reset';
@@ -65,4 +67,22 @@ export type SecurityAlertEmailData = {
   device: string;
   changePasswordUrl: string;
   accountSettingsUrl: string;
+};
+
+export type CartAbandonmentEmailData = {
+  userName: string;
+  userEmail: string;
+  cartItems: string;
+  cartTotal: string;
+  checkoutUrl: string;
+  cartUpdatedAt: string;
+};
+
+export type PasswordChangedEmailData = {
+  userName: string;
+  userEmail: string;
+  changeDate: string;
+  location: string;
+  device: string;
+  supportUrl: string;
 };

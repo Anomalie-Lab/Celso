@@ -150,12 +150,13 @@ model ProductComment {
 }
 
 model Cart {
-  id         Int        @id @default(autoincrement())
-  user_id    Int
-  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  items      CartItem[]
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
+  id                   Int        @id @default(autoincrement())
+  user_id              Int
+  user                 User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  items                CartItem[]
+  abandonment_email_sent Boolean  @default(false)
+  created_at           DateTime   @default(now())
+  updated_at           DateTime   @updatedAt
 
   @@map("carts")
 }

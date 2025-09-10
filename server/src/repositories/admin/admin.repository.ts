@@ -88,9 +88,117 @@ export class AdminRepository {
       orderBy: { created_at: "desc" },
       include: {
         user: { select: { id: true, fullname: true, email: true } },
-        invoices: { select: { id: true, total_amount: true, created_at: true } },
-        histories: true,
+        invoices: { 
+          select: { 
+            id: true, 
+            total_amount: true, 
+            created_at: true,
+            items: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    title: true,
+                    price: true,
+                    images: true
+                  }
+                }
+              }
+            }
+          } 
+        },
+        histories: {
+          orderBy: { created_at: "desc" }
+        },
       },
+    });
+  }
+
+  async createOrder(userId: number, orderData: any) {
+    return this.prisma.transaction.create({
+      data: {
+        user_id: userId,
+        invoices: {
+          create: {
+            ...orderData.invoice,
+            items: {
+              create: orderData.items
+            }
+          }
+        },
+        histories: {
+          create: {
+            status: 'PENDING',
+            text: 'Pedido criado e aguardando pagamento'
+          }
+        }
+      },
+      include: {
+        user: true,
+        invoices: {
+          include: {
+            items: {
+              include: {
+                product: true
+              }
+            }
+          }
+        },
+        histories: true
+      }
+    });
+  }
+
+  async updateOrderStatus(transactionId: number, status: string, statusText: string, additionalData?: any) {
+    // Cria um novo histórico de status
+    await this.prisma.history.create({
+      data: {
+        transaction_id: transactionId,
+        status: status as any,
+        text: statusText
+      }
+    });
+
+    // Busca a transação atualizada com todos os dados necessários
+    return this.prisma.transaction.findUnique({
+      where: { id: transactionId },
+      include: {
+        user: true,
+        invoices: {
+          include: {
+            items: {
+              include: {
+                product: true
+              }
+            }
+          }
+        },
+        histories: {
+          orderBy: { created_at: "desc" },
+          take: 2 // Pega os 2 últimos para comparar
+        }
+      }
+    });
+  }
+
+  async getOrderById(transactionId: number) {
+    return this.prisma.transaction.findUnique({
+      where: { id: transactionId },
+      include: {
+        user: true,
+        invoices: {
+          include: {
+            items: {
+              include: {
+                product: true
+              }
+            }
+          }
+        },
+        histories: {
+          orderBy: { created_at: "desc" }
+        }
+      }
     });
   }
 

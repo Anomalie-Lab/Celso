@@ -104,6 +104,7 @@ export default function ProductPage() {
 
         <ProductDetails product={product} />
       </div>
+
       <ProductsArea titleArea="Mais buscados com 20% OFF" type="all"/>
     </div>
   );

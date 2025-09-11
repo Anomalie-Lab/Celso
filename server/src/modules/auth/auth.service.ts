@@ -22,7 +22,7 @@ export class AuthService {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
 
   async register({ password, ...dto }: RegisterDto, res: ExpressResponse) {
     try {
@@ -90,19 +90,24 @@ export class AuthService {
 
       let user = await this.authRepository.findGoogleAccount(user_google.email);
 
-      if (!user)
-        throw new HttpException(
-          'Usuário não encontrado.',
-          HttpStatus.NOT_FOUND,
-        );
-
+      if (!user) {
+        user = await this.authRepository.create({
+          fullname: user_google.name,
+          email: user_google.email,
+          avatar: user_google.picture,
+          password: await bcrypt.hash(user_google.email, 10),
+          username: generateUsername(),
+        });
+      }
       LoginUser(res, user);
 
       return res
         .status(HttpStatus.OK)
         .redirect(process.env.NEXT_PUBLIC_APP_URL);
     } catch (error: any) {
-      HandleErrorsUserConflict(error);
+      return res
+        .status(HttpStatus.OK)
+        .redirect(process.env.NEXT_PUBLIC_APP_URL);
     }
   }
 
@@ -117,7 +122,7 @@ export class AuthService {
         user.id,
       );
       const resetLink = `${process.env.FRONTEND_URL}/update-password/${encodeURIComponent(email)}/${token.token}`;
-      
+
       try {
         await this.mailerService.sendPasswordResetEmail({
           userName: user.fullname,
@@ -157,7 +162,7 @@ export class AuthService {
       await this.authRepository.updatePassword(id, password, dto.token);
 
       const user = await this.authRepository.findById(+id);
-      
+
       if (user) {
         try {
           await this.mailerService.sendPasswordChangedEmail({

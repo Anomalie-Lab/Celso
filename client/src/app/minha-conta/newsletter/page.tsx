@@ -24,16 +24,25 @@ export default function NewsletterPage() {
   const [originalPreferences, setOriginalPreferences] = useState(preferences);
 
   const handlePreferenceChange = (key: string) => {
-    setPreferences(prev => ({
-      ...prev,
-      [key]: !prev[key as keyof typeof prev]
-    }));
+    const newValue = !preferences[key as keyof typeof preferences];
+    updatePreference(key as keyof typeof preferences, newValue);
+    setHasChanges(true);
   };
 
-  if (!user) {
-    router.push('/login');
-    return null;
-  }
+  const handleSave = async () => {
+    try {
+      await updatePreferences(preferences);
+      setOriginalPreferences(preferences);
+      setHasChanges(false);
+    } catch (error) {
+      console.error('Erro ao salvar preferências:', error);
+    }
+  };
+
+  const handleCancel = () => {
+    setPreferences(originalPreferences);
+    setHasChanges(false);
+  };
 
   const emailPreferences = [
     {

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 interface ProductLayoutProps {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // Função para buscar dados do produto (você pode adaptar conforme sua API)
@@ -23,8 +23,9 @@ async function getProduct(id: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const product = await getProduct(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
   
   if (!product) {
     return {
@@ -71,7 +72,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       images: product.images?.length && product.images.length > 0 ? [product.images[0]] : [],
     },
     alternates: {
-      canonical: `/produto/${params.id}`,
+      canonical: `/produto/${id}`,
     },
     robots: {
       index: true,
@@ -97,7 +98,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 export default async function ProductLayout({ children, params }: ProductLayoutProps) {
-  const product = await getProduct(params.id);
+  const { id } = await params;
+  const product = await getProduct(id);
   
   if (!product) {
     notFound();

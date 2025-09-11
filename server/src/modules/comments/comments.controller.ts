@@ -22,6 +22,7 @@ import { CommentsService } from '../../services/comments.service';
 import { CreateCommentDto, UpdateCommentDto, CommentResponseDto } from '../../dtos/comments.dto';
 import { User } from '../../decorators/user.decorator';
 import type { Response } from 'express';
+import { isPublic } from 'src/decorators/public.decorator';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -55,6 +56,7 @@ export class CommentsController {
   }
 
   @Get('product/:productId')
+  @isPublic()
   @ApiOperation({ summary: 'Buscar comentários de um produto' })
   @ApiParam({ name: 'productId', description: 'ID do produto' })
   @ApiQuery({ name: 'page', required: false, description: 'Página (padrão: 1)' })
@@ -85,6 +87,7 @@ export class CommentsController {
   }
 
   @Get('product/:productId/stats')
+  @isPublic()
   @ApiOperation({ summary: 'Buscar estatísticas de avaliação de um produto' })
   @ApiParam({ name: 'productId', description: 'ID do produto' })
   @ApiResponse({ status: 200, description: 'Estatísticas encontradas' })
@@ -107,6 +110,7 @@ export class CommentsController {
   }
 
   @Get('user/:productId')
+  @isPublic()
   @ApiOperation({ summary: 'Buscar comentário do usuário para um produto' })
   @ApiParam({ name: 'productId', description: 'ID do produto' })
   @ApiResponse({ status: 200, description: 'Comentário encontrado ou null' })
@@ -131,6 +135,7 @@ export class CommentsController {
   }
 
   @Get(':id')
+  @isPublic()
   @ApiOperation({ summary: 'Buscar comentário por ID' })
   @ApiParam({ name: 'id', description: 'ID do comentário' })
   @ApiResponse({ status: 200, description: 'Comentário encontrado', type: CommentResponseDto })

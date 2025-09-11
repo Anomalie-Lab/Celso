@@ -4,6 +4,7 @@ import { LuStar, LuMessageCircle, LuPlay } from "react-icons/lu";
 import { AccordionSearch } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { CommentModal } from "./CommentModal";
+import { ModalAuth } from "@/components/auth/modal.auth";
 import { useState } from "react";
 import { useComments } from "@/hooks/comments.hook";
 import { useUser } from "@/hooks/user.hook";
@@ -14,12 +15,22 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authPage, setAuthPage] = useState<"Login" | "Register" | "ForgotPass">("Login");
   const { user } = useUser();
   const { createComment, canComment, isCreating, userComment } = useComments(product.id);
 
   const handleCreateComment = async (data: any) => {
     await createComment(data);
     setIsModalOpen(false);
+  };
+
+  const handleEvaluateClick = () => {
+    if (user) {
+      setIsModalOpen(true);
+    } else {
+      setIsAuthModalOpen(true);
+    }
   };
 
   const renderAttachments = (attachments: any[]) => {
@@ -159,16 +170,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               <div className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h5 className="text-sm font-semibold text-gray-900">Comentários Recentes</h5>
-                  {user && (
-                    <Button
-                      onClick={() => setIsModalOpen(true)}
-                      size="sm"
-                      className="flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
-                    >
-                      <LuMessageCircle className="w-4 h-4" />
-                      <span>Avaliar Produto</span>
-                    </Button>
-                  )}
+                  <Button
+                    onClick={handleEvaluateClick}
+                    size="sm"
+                    className="flex cursor-pointer items-center space-x-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
+                  >
+                    <LuMessageCircle className="w-4 h-4" />
+                    <span>Avaliar Produto</span>
+                  </Button>
                 </div>
                 <div className="space-y-4">
                   {product.comments.slice(0, 3).map((comment) => (
@@ -198,15 +207,13 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               </div>
               <h4 className="text-lg font-semibold text-gray-700 mb-2">Nenhuma avaliação ainda</h4>
               <p className="text-sm text-gray-500 mb-4">Seja o primeiro a avaliar este produto!</p>
-              {user && (
-                <Button
-                  onClick={() => setIsModalOpen(true)}
-                  className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-md transition-colors"
-                >
-                  <LuMessageCircle className="w-4 h-4 mr-2" />
-                  Avaliar Produto
-                </Button>
-              )}
+              <Button
+                onClick={handleEvaluateClick}
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-md transition-colors"
+              >
+                <LuMessageCircle className="w-4 h-4 mr-2" />
+                Avaliar Produto
+              </Button>
             </div>
           )}
         </AccordionSearch>
@@ -219,6 +226,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         onSubmit={handleCreateComment}
         isLoading={isCreating}
         productTitle={product.title}
+      />
+
+      {/* Modal de Autenticação */}
+      <ModalAuth
+        isOpen={isAuthModalOpen}
+        toggleDialog={() => setIsAuthModalOpen(false)}
+        authPage={authPage}
+        onAuthPageChange={setAuthPage}
       />
     </div>
   );

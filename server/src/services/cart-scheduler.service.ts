@@ -96,10 +96,10 @@ export class CartSchedulerService {
     }
   }
 
-  async sendTestAbandonmentEmail(userId: string) {
+  async sendTestAbandonmentEmail(user_id:number) {
     const cart = await this.prisma.cart.findFirst({
       where: {
-        userId,
+        user_id,
         items: {
           some: {},
         },

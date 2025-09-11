@@ -2,15 +2,26 @@
 
 import { LuMail, LuBell, LuGift, LuTag, LuShield } from "react-icons/lu";
 import { useState } from "react";
+import { useNewsletter } from "@/hooks/useNewsletter";
+import { useUser } from "@/hooks/user.hook";
+import { useRouter } from "next/navigation";
 
 export default function NewsletterPage() {
-  const [preferences, setPreferences] = useState({
-    promotional: true,
-    orderUpdates: true,
-    newProducts: false,
-    exclusiveOffers: true,
-    securityAlerts: true
-  });
+  const { user } = useUser();
+  const router = useRouter();
+  const {
+    preferences,
+    userEmail,
+    loading,
+    saving,
+    error,
+    updatePreferences,
+    updatePreference,
+    setPreferences,
+  } = useNewsletter();
+
+  const [hasChanges, setHasChanges] = useState(false);
+  const [originalPreferences, setOriginalPreferences] = useState(preferences);
 
   const handlePreferenceChange = (key: string) => {
     setPreferences(prev => ({
@@ -18,6 +29,11 @@ export default function NewsletterPage() {
       [key]: !prev[key as keyof typeof prev]
     }));
   };
+
+  if (!user) {
+    router.push('/login');
+    return null;
+  }
 
   const emailPreferences = [
     {
@@ -57,6 +73,22 @@ export default function NewsletterPage() {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Preferências de Newsletter</h1>
+            <p className="text-gray-600">Carregando suas preferências...</p>
+          </div>
+        </div>
+        <div className="animate-pulse">
+          <div className="h-32 bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -65,6 +97,12 @@ export default function NewsletterPage() {
           <p className="text-gray-600">Gerencie suas preferências de comunicação</p>
         </div>
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       <div className="border border-gray-100 rounded-lg p-6">
         <div className="flex items-start gap-4">
@@ -75,7 +113,7 @@ export default function NewsletterPage() {
             <h3 className="text-lg font-semibold text-primary">
               Email Principal
             </h3>
-            <p className="text-black mb-2">joao.silva@email.com</p>
+            <p className="text-black mb-2">{userEmail || user?.email || 'Carregando...'}</p>
             <p className="text-gray-400 text-sm">
               Este é o email que usamos para enviar todas as comunicações importantes sobre sua conta.
             </p>
@@ -128,11 +166,19 @@ export default function NewsletterPage() {
           <p className="text-sm text-gray-600">Suas preferências serão aplicadas imediatamente</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+          <button 
+            onClick={handleCancel}
+            disabled={!hasChanges || saving}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-primary text-white rounded-lg transition-colors cursor-pointer">
-            Salvar Alterações
+          <button 
+            onClick={handleSave}
+            disabled={!hasChanges || saving}
+            className="px-6 py-2 bg-primary text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {saving ? 'Salvando...' : 'Salvar Alterações'}
           </button>
         </div>
       </div>

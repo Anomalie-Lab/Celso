@@ -83,3 +83,25 @@ export class CreateUpdateAddressDto {
   @ApiProperty({description: 'The country of the address.', example: 'Brazil'})
   country?: string;
 }
+
+export class UpdateNewsletterPreferencesDto {
+  @IsBoolean()
+  @ApiProperty({description: 'Whether to receive promotional emails.', example: true})
+  newsletter_promotional: boolean;
+
+  @IsBoolean()
+  @ApiProperty({description: 'Whether to receive order updates.', example: true})
+  newsletter_order_updates: boolean;
+
+  @IsBoolean()
+  @ApiProperty({description: 'Whether to receive new products notifications.', example: false})
+  newsletter_new_products: boolean;
+
+  @IsBoolean()
+  @ApiProperty({description: 'Whether to receive exclusive offers.', example: true})
+  newsletter_exclusive_offers: boolean;
+
+  @IsBoolean()
+  @ApiProperty({description: 'Whether to receive security alerts.', example: true})
+  newsletter_security_alerts: boolean;
+}

@@ -52,7 +52,6 @@ export const useCart = () => {
     }
   }, [user]);
 
-  // Salvar carrinho local no localStorage
   const saveLocalCart = (cart: LocalCart) => {
     if (!user) {
       localStorage.setItem('localCart', JSON.stringify(cart));
@@ -60,14 +59,12 @@ export const useCart = () => {
     }
   };
 
-  // Buscar carrinho do servidor (apenas se usuário autenticado)
   const { data: serverCart, isLoading } = useQuery({
     queryKey: ["cart"],
     queryFn: Cart.getCart,
     enabled: !!user,
   });
 
-  // Usar carrinho do servidor ou local
   const cart = user ? serverCart : localCart;
 
   const addToCartMutation = useMutation({

@@ -3,7 +3,7 @@ import {Response as ExpressResponse} from 'express';
 import {AccountRepository} from '../../repositories/account/account.repository';
 import {LoginUser} from '../../services/cookies.service';
 import {MailerService} from '../../services/mailer.sevice';
-import {CreateUpdateAddressDto, UpdateUserDto} from '../../dtos/account.dto';
+import {CreateUpdateAddressDto, UpdateUserDto, UpdateNewsletterPreferencesDto} from '../../dtos/account.dto';
 import {HandleErrorsUserConflict} from 'src/utils/handle-errors-database.util';
 
 @Injectable()
@@ -155,5 +155,14 @@ export class AccountService {
 
   async clearWishlist(userId: number) {
     return await this.accountRepository.clearWishlist(userId);
+  }
+
+  // Newsletter methods
+  async getNewsletterPreferences(userId: number) {
+    return await this.accountRepository.getNewsletterPreferences(userId);
+  }
+
+  async updateNewsletterPreferences(userId: number, dto: UpdateNewsletterPreferencesDto) {
+    return await this.accountRepository.updateNewsletterPreferences(userId, dto);
   }
 }

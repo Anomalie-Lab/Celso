@@ -156,7 +156,7 @@ export class AuthService {
 
       await this.authRepository.updatePassword(id, password, dto.token);
 
-      const user = await this.authRepository.findAccountById(id);
+      const user = await this.authRepository.findById(+id);
       
       if (user) {
         try {

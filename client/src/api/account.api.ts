@@ -20,6 +20,14 @@ interface AddressData {
   primary: boolean;
 }
 
+interface NewsletterPreferences {
+  promotional: boolean;
+  orderUpdates: boolean;
+  newProducts: boolean;
+  exclusiveOffers: boolean;
+  securityAlerts: boolean;
+}
+
 export const Account = {
   async getUserStats() {
     const response = await api.get('/account/stats');
@@ -58,6 +66,23 @@ export const Account = {
 
   async deleteAddress(id: number) {
     const response = await api.delete(`/account/address/${id}`);
+    return response.data;
+  },
+
+  // Newsletter methods
+  async getNewsletterPreferences() {
+    const response = await api.get('/account/newsletter-preferences');
+    return response.data;
+  },
+
+  async updateNewsletterPreferences(data: NewsletterPreferences) {
+    const response = await api.patch('/account/newsletter-preferences', {
+      newsletter_promotional: data.promotional,
+      newsletter_order_updates: data.orderUpdates,
+      newsletter_new_products: data.newProducts,
+      newsletter_exclusive_offers: data.exclusiveOffers,
+      newsletter_security_alerts: data.securityAlerts,
+    });
     return response.data;
   },
 };

@@ -46,7 +46,7 @@ export const RegisterForm = ({ onAuthPageChange, onClose }: RegisterFormProps) =
     };
 
   return (
-    <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-2 max-h-[500px] md:max-h-[650px] overflow-y-auto md:px-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
         <Button 
           type="button" 

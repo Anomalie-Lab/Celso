@@ -85,12 +85,12 @@ export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
       <div className="flex items-center justify-between text-sm">
         <label className="flex items-center gap-2">
           <input type="checkbox" className="rounded border-gray-300" />
-          <span className="text-gray-600">Lembrar de mim</span>
+          <span className="text-gray-600">Lembrar</span>
         </label>
         <button 
           type="button"
           onClick={() => onAuthPageChange("ForgotPass")}
-          className="text-primary hover:underline font-medium cursor-pointer"
+          className="text-primary hover:underline font-medium cursor-pointer text-right"
         >
           Esqueceu a senha?
         </button>

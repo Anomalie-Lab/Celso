@@ -29,7 +29,7 @@ function AccordionSearch({ nameFilter, children, defaultOpen }: AccordionProps) 
     <div className="border-b border-gray-100">
       <button
         onClick={toggleAccordion}
-        className="flex w-full items-center justify-between py-4 text-md font-medium text-gray-600 hover:text-primary transition-colors duration-200 cursor-pointer"
+        className="flex w-full items-center justify-between py-4 text-sm md:text-md font-medium text-gray-600 hover:text-primary transition-colors duration-200 cursor-pointer"
       >
         {nameFilter}
         <ChevronDown 

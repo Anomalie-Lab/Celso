@@ -60,16 +60,16 @@ export default function NewsletterPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Preferências de Newsletter</h1>
-          <p className="text-gray-600">Gerencie suas preferências de comunicação</p>
+        <div className="text-center md:text-left w-full">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Preferências de Newsletter</h1>
+          <p className="text-gray-600 text-sm md:text-base">Gerencie suas preferências de comunicação</p>
         </div>
       </div>
 
       <div className="border border-gray-100 rounded-lg p-6">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-            <LuMail className="w-6 h-6 text-primary" />
+          <div className="min-w-12 min-h-12 bg-primary-100 rounded-full flex items-center justify-center">
+            <LuMail className="w-4 h-4 text-primary" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-primary">
@@ -84,12 +84,6 @@ export default function NewsletterPage() {
       </div>
 
       <div className="bg-white rounded-lg border border-gray-100">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800">Preferências de Comunicação</h2>
-          <p className="text-gray-600 text-sm mt-1">
-            Escolha quais tipos de emails você gostaria de receber
-          </p>
-        </div>
         <div className="p-6">
           <div className="space-y-4">
             {emailPreferences.map((preference) => {
@@ -122,17 +116,17 @@ export default function NewsletterPage() {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between p-6 bg-gray-50 rounded-lg">
+      <div className="flex flex-col md:flex-row items-center  justify-center text-center md:text-left gap-6 md:gap-0 md:justify-between p-6 bg-gray-50 rounded-lg">
         <div>
           <h3 className="font-semibold text-gray-800 mb-1">Salvar Preferências</h3>
           <p className="text-sm text-gray-600">Suas preferências serão aplicadas imediatamente</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+          <button className="px-4 py-2 border border-gray-300 text-gray-700 text-sm md:text-base rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             Cancelar
           </button>
-          <button className="px-6 py-2 bg-primary text-white rounded-lg transition-colors cursor-pointer">
-            Salvar Alterações
+          <button className="px-6 py-2 bg-primary text-white text-sm md:text-base rounded-lg transition-colors cursor-pointer">
+            Salvar
           </button>
         </div>
       </div>

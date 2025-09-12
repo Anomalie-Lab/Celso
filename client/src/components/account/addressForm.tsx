@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,7 +13,6 @@ import { formatCep, unformatCep } from "@/lib/utils";
 
 interface AddressFormProps {
   mode: "create" | "edit";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   address?: any;
   children?: React.ReactNode;
   onSuccess?: () => void;
@@ -41,7 +39,6 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     formState: { errors },
     reset,
     setValue,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<any>({
     resolver: yupResolver(SchemaAddress),
     defaultValues: {
@@ -124,7 +121,6 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     }
   }, [address, mode, reset]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);
@@ -175,7 +171,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     }
 
     return (
-      <Button variant="outline" size="sm" className="flex items-center gap-2">
+      <Button variant="outline" size="sm" className="flex items-center gap-2 cursor-pointer border-gray-300 text-gray-700">
         <LucideEdit className="w-4 h-4" />
         Editar
       </Button>

@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { LuPackage, LuTruck, LuEye, LuDownload, LuCheck, LuClock, LuLoader } from "react-icons/lu";
@@ -44,42 +43,92 @@ export default function OrdersPage() {
     queryFn: Account.getUserOrders,
   });
 
+  // Dados mockados para teste do status SHIPPED
+  const mockShippedOrder: Order = {
+    id: 9999,
+    total_amount: 250.00,
+    status: "SHIPPED",
+    created_at: "2024-01-15T10:30:00Z",
+    invoices: [
+      {
+        id: 1,
+        total_amount: 250.00,
+        items: [
+          {
+            id: 1,
+            quantity: 2,
+            price: 125.00,
+            product: {
+              id: 101,
+              title: "Kit de Primeiros Socorros Completo"
+            }
+          }
+        ]
+      }
+    ],
+    histories: [
+      {
+        id: 1,
+        status: "PENDING",
+        created_at: "2024-01-15T10:30:00Z"
+      },
+      {
+        id: 2,
+        status: "APPROVED",
+        created_at: "2024-01-15T14:20:00Z"
+      },
+      {
+        id: 3,
+        status: "SHIPPED",
+        created_at: "2024-01-16T09:15:00Z"
+      }
+    ]
+  };
+
+  const displayOrders = orders ? [...orders, mockShippedOrder] : [mockShippedOrder];
+
   const getStatusInfo = (status: OrderStatus) => {
     switch (status) {
       case "PENDING":
         return {
           label: "Processando",
           color: "bg-yellow-100 text-yellow-800",
+          iconColor: "text-yellow-600",
           icon: LuClock,
         };
       case "APPROVED":
         return {
           label: "Aprovado",
           color: "bg-blue-100 text-blue-800",
+          iconColor: "text-blue-600",
           icon: LuCheck,
         };
       case "SHIPPED":
         return {
           label: "Em Transporte",
           color: "bg-purple-100 text-purple-800",
+          iconColor: "text-purple-600",
           icon: LuTruck,
         };
       case "COMPLETED":
         return {
           label: "Entregue",
           color: "bg-green-100 text-green-800",
+          iconColor: "text-green-600",
           icon: LuCheck,
         };
       case "CANCELLED":
         return {
           label: "Cancelado",
           color: "bg-red-100 text-red-800",
+          iconColor: "text-red-600",
           icon: LuPackage,
         };
       default:
         return {
           label: "Desconhecido",
           color: "bg-gray-100 text-gray-800",
+          iconColor: "text-gray-600",
           icon: LuPackage,
         };
     }
@@ -89,6 +138,17 @@ export default function OrdersPage() {
     return new Date(dateString).toLocaleDateString("pt-BR");
   };
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hour = date.getHours().toString().padStart(2, '0');
+    const minute = date.getMinutes().toString().padStart(2, '0');
+    
+    return `${day}/${month}/${year} - ${hour}:${minute}`;
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -96,7 +156,7 @@ export default function OrdersPage() {
     }).format(value);
   };
 
-  const filteredOrders = orders?.filter((order: Order) => {
+  const filteredOrders = displayOrders?.filter((order: Order) => {
     if (selectedStatus === "ALL") return true;
     return order.status === selectedStatus;
   }) || [];
@@ -132,13 +192,13 @@ export default function OrdersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Meus Pedidos</h1>
-          <p className="text-gray-600">Acompanhe o histórico de suas compras</p>
+        <div className="text-center md:text-left w-full">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Meus Pedidos</h1>
+          <p className="text-gray-600 text-sm md:text-base">Acompanhe o histórico de suas compras</p>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 justify-center">
         {statusFilters.map((filter) => {
           const isActive = selectedStatus === filter.value;
           return (
@@ -185,7 +245,7 @@ export default function OrdersPage() {
             return (
               <div key={order.id} className="bg-white rounded-lg border border-gray-100">
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex flex-col gap-2 md:flex-row items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
                         <LuPackage className="w-5 h-5 text-gray-400" />
@@ -222,16 +282,17 @@ export default function OrdersPage() {
                         <Button 
                           variant="outline" 
                           size="sm"
+                          className="border border-gray-300 p-5 text-gray-700 cursor-pointer"
                         >
                           <LuEye className="w-4 h-4 mr-2" />
                           Ver Detalhes
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="sm:max-w-[600px]">
+                      <DialogContent className="sm:max-w-[600px] p-12">
                         <DialogHeader>
                           <DialogTitle>Detalhes do Pedido #{order.id}</DialogTitle>
                         </DialogHeader>
-                        <div className="space-y-4">
+                        <div className="space-y-5">
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <div className="text-sm text-gray-500">Data do Pedido</div>
@@ -239,7 +300,10 @@ export default function OrdersPage() {
                             </div>
                             <div>
                               <div className="text-sm text-gray-500">Status</div>
-                              <div className="font-medium">{statusInfo.label}</div>
+                              <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
+                                <statusInfo.icon className="w-3 h-3" />
+                                {statusInfo.label}
+                              </span>
                             </div>
                             <div>
                               <div className="text-sm text-gray-500">Total</div>
@@ -258,8 +322,8 @@ export default function OrdersPage() {
                                 invoice.items.map((item) => (
                                   <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                     <div>
-                                      <div className="font-medium">{item.product.title}</div>
-                                      <div className="text-sm text-gray-500">
+                                      <div className="font-medium text-sm">{item.product.title}</div>
+                                      <div className="text-xs text-gray-500">
                                         Quantidade: {item.quantity} x {formatCurrency(item.price)}
                                       </div>
                                     </div>
@@ -280,10 +344,10 @@ export default function OrdersPage() {
                                 const HistoryIcon = historyStatusInfo.icon;
                                 return (
                                   <div key={history.id} className="flex items-center gap-3 p-2">
-                                    <HistoryIcon className="w-4 h-4 text-gray-400" />
+                                    <HistoryIcon className={`w-4 h-4 ${historyStatusInfo.iconColor}`} />
                                     <div className="flex-1">
                                       <div className="text-sm font-medium">{historyStatusInfo.label}</div>
-                                      <div className="text-xs text-gray-500">{formatDate(history.created_at)}</div>
+                                      <div className="text-xs text-gray-500">{formatDateTime(history.created_at)}</div>
                                     </div>
                                   </div>
                                 );
@@ -294,7 +358,7 @@ export default function OrdersPage() {
                       </DialogContent>
                     </Dialog>
 
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm"   className="border border-gray-300 p-5 text-gray-700 cursor-pointer">
                       <LuDownload className="w-4 h-4 mr-2" />
                       Nota Fiscal
                     </Button>

@@ -74,23 +74,23 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="flex justify-center items-center bg-primary-50 relative overflow-hidden h-[700px]">
-      <div className="container mx-auto px-6 relative">
+    <section className="flex justify-center items-center bg-primary-50 relative overflow-hidden min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] py-8 sm:py-12">
+      <div className="container-responsive relative">
         {/* Header */}
-        <div className="text-center mb-2">
-          <div className="inline-flex items-center justify-center w-16 h-16 mb-4">
-            <Quote className="w-8 h-8 text-primary" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 mb-3 sm:mb-4">
+            <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-black/90 mb-4">
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold text-black/90 mb-3 sm:mb-4">
             O que nossos clientes dizem
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Mais de 50.000 clientes satisfeitos confiam na nossa farmácia online
           </p>
         </div>
 
         {/* Testimonials Carousel */}
-        <div className="max-w-6xl mx-auto p-8">
+        <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
           <Carousel
             opts={{
               align: "start",
@@ -98,39 +98,39 @@ export default function TestimonialsSection() {
             }}
             className="w-full"
           >
-            <CarouselContent className="-ml-2 md:-ml-4 p-4">
+            <CarouselContent className="-ml-1 sm:-ml-2 md:-ml-4 p-2 sm:p-4">
               {testimonials.map((testimonial) => (
-                <CarouselItem key={testimonial.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 cursor-pointer">
+                <CarouselItem key={testimonial.id} className="pl-1 sm:pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 cursor-pointer">
                   <div className="h-full">
-                    <div className="bg-white rounded-2xl p-10 h-full flex flex-col">
-                      <div className="flex justify-center mb-6">
-                        <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center">
-                          <Quote className="w-6 h-6 text-primary" />
+                    <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 h-full flex flex-col">
+                      <div className="flex justify-center mb-4 sm:mb-6">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-50 rounded-full flex items-center justify-center">
+                          <Quote className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                         </div>
                       </div>
 
-                      <div className="flex justify-center mb-4">
+                      <div className="flex justify-center mb-3 sm:mb-4">
                         <div className="flex space-x-1">
                           {renderStars(testimonial.rating)}
                         </div>
                       </div>
 
-                      <blockquote className="text-gray-700 text-center mb-6 flex-grow leading-relaxed text-sm">
+                      <blockquote className="text-gray-700 text-center mb-4 sm:mb-6 flex-grow leading-relaxed text-xs sm:text-sm">
                         &quot;{testimonial.text}&quot;
                       </blockquote>
 
-                      <div className="flex items-center justify-center space-x-4">
+                      <div className="flex items-center justify-center space-x-3 sm:space-x-4">
                         <div className="relative">
                           <Image
                             src={testimonial.avatar}
                             alt={testimonial.name}
-                            width={48}
-                            height={48}
-                            className="w-12 h-12 rounded-full object-cover"
+                            width={40}
+                            height={40}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                           />
                         </div>
                         <div className="text-left">
-                          <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                          <h4 className="font-semibold text-gray-900 text-sm sm:text-base">{testimonial.name}</h4>
                           <p className="text-xs text-gray-500">{testimonial.location}</p>
                         </div>
                       </div>
@@ -139,8 +139,8 @@ export default function TestimonialsSection() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-2 md:left-4" />
-            <CarouselNext className="right-2 md:right-4" />
+            <CarouselPrevious className="left-1 sm:left-2 md:left-4 w-8 h-8 sm:w-10 sm:h-10" />
+            <CarouselNext className="right-1 sm:right-2 md:right-4 w-8 h-8 sm:w-10 sm:h-10" />
           </Carousel>
         </div>
       </div>

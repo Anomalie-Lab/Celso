@@ -1,5 +1,4 @@
 "use client";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Account } from "@/api/account.api";
@@ -51,11 +50,10 @@ export default function AddressesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Meus Endereços</h1>
-          <p className="text-gray-600">Gerencie seus endereços de entrega</p>
+        <div className="text-center md:text-left w-full">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Meus Endereços</h1>
+          <p className="text-gray-600 text-sm md:text-base">Gerencie seus endereços de entrega</p>
         </div>
-        <AddressForm mode="create" />
       </div>
 
       <div className="grid gap-4">
@@ -114,7 +112,9 @@ export default function AddressesPage() {
           <p className="text-gray-500 mb-6">
             Adicione um endereço para facilitar suas compras
           </p>
-          <AddressForm mode="create" />
+          <div className="flex justify-center mt-4">
+            <AddressForm mode="create" />
+          </div>
         </div>
       )}
     </div>

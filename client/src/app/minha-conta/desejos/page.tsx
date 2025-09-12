@@ -8,7 +8,7 @@ import { PiBasketLight } from "react-icons/pi";
 import { toast } from "sonner";
 import { useState } from "react";
 import { WishlistSkeleton } from "@/components/ui/wishlistSkeleton";
-// Interface unificada para itens da wishlist (local e servidor)
+
 interface UnifiedWishlistItem {
   id: number;
   product_id: number;
@@ -82,12 +82,9 @@ export default function WishesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Lista de Desejos</h1>
-          <p className="text-gray-600">Seus produtos favoritos salvos</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">{wishlistItemsCount} produtos</span>
+        <div className="text-center md:text-left w-full">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Lista de Desejos</h1>
+          <p className="text-gray-600 text-sm md:text-base">Seus produtos favoritos salvos</p>
         </div>
       </div>
 
@@ -101,7 +98,7 @@ export default function WishesPage() {
                 checked={selectedItems.length === wishlistItemsCount && wishlistItemsCount > 0}
                 onChange={handleSelectAll}
               />
-              <span className="text-sm font-regular text-gray-700 cursor-pointer">Selecionar Todos</span>
+              <span className="text-sm font-regular text-gray-700 cursor-pointer">Todos</span>
             </label>
           </div>
           <div className="flex items-center gap-2">
@@ -120,6 +117,9 @@ export default function WishesPage() {
           </div>
         </div>
       )}
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-sm text-gray-500">{wishlistItemsCount} produtos</span>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {wishlist?.items?.map((item: UnifiedWishlistItem) => (

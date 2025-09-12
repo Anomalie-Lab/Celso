@@ -28,9 +28,9 @@ export const metadata: Metadata = {
 
 const MinhaContaLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen bg-white py-8 mt-44">
+    <div className="min-h-screen bg-white py-4 sm:py-6 lg:py-8 mt-20 sm:mt-32 lg:mt-44">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           <Sidebar />
           <div className="flex-1">{children}</div>
         </div>

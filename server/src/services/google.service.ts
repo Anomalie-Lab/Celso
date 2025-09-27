@@ -1,21 +1,21 @@
-import axios from "axios";
+import axios from 'axios';
 
 export async function GetGoogleOAuthToken(code: string) {
-  const url = "https://oauth2.googleapis.com/token";
+  const url = 'https://oauth2.googleapis.com/token';
 
   const params = {
     code,
-    client_id: process.env.VITE_GOOGLE_CLIENT_ID as string,
-    client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
-    redirect_uri: process.env.GOOGLE_URI_REDIRECT as string,
-    grant_type: "authorization_code",
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+    client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_URI_REDIRECT as string,
+    grant_type: 'authorization_code',
   };
 
   const qs = new URLSearchParams(params);
 
   try {
     const res = await axios.post<Auth.GoogleTokensResult>(url, qs.toString(), {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     });
 
     return res.data;

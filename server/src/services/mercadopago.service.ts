@@ -1,7 +1,7 @@
-import { Payment, MercadoPagoConfig } from "mercadopago";
-import { Injectable } from "@nestjs/common";
-import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+import {Payment, MercadoPagoConfig} from 'mercadopago';
+import {Injectable} from '@nestjs/common';
+import {v4 as uuidv4} from 'uuid';
+import axios from 'axios';
 
 interface CardProcessI {
   number: string;
@@ -41,17 +41,17 @@ export class MercadoPago {
   // }
   private async generateTokenCard(data: CardProcessI) {
     const response = await axios.post(
-      "https://api.mercadopago.com/v1/card_tokens",
+      'https://api.mercadopago.com/v1/card_tokens',
       {
         card_number: data.number,
-        cardholder: { name: data.name, identification: { type: "CPF", number: data.document } },
-        expiration_month: data.exp.split("/")[0],
-        expiration_year: data.exp.split("/")[1],
+        cardholder: {name: data.name, identification: {type: 'CPF', number: data.document}},
+        expiration_month: data.exp.split('/')[0],
+        expiration_year: data.exp.split('/')[1],
         security_code: data.cvv,
         transaction_amount: data.amount,
         installments: data.installments,
       },
-      { headers: { "Content-Type": "application/json", Authorization: `Bearer ${this.accessToken}` } },
+      {headers: {'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}`}}
     );
 
     return response.data;
@@ -59,17 +59,17 @@ export class MercadoPago {
 
   async processCardPayment(data: CardProcessI) {
     const token = await this.generateTokenCard(data);
-    const client = new MercadoPagoConfig({ accessToken: this.accessToken });
+    const client = new MercadoPagoConfig({accessToken: this.accessToken});
     const pay = new Payment(client);
     const response = await pay.create({
       body: {
         transaction_amount: data.amount,
         token: token.id,
-        description: "Buy Access in Aegis Capital",
+        description: 'Buy Access in Aegis Capital',
         installments: Number(data.installments) || 1,
-        payer: { email: data.email, identification: { type: "CPF", number: data.document } },
+        payer: {email: data.email, identification: {type: 'CPF', number: data.document}},
       },
-      requestOptions: { idempotencyKey: uuidv4() },
+      requestOptions: {idempotencyKey: uuidv4()},
     });
 
     return response;

@@ -7,4 +7,9 @@ declare namespace Ui {
     name: string;
     maxLength?: number;
   }
+
+  interface Order {
+    sortOption: string;
+    setSortOption: (value: string) => void;
+  }
 }

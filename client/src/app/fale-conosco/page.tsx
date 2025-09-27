@@ -2,22 +2,23 @@
 import { InputAuthUi } from "@/components/ui/inputs/input.auth";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { ContactFormData, SchemaContact } from "@/schemas/schemas";
+import { FormDataContact, SchemaContact } from "@/entities/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
-export default function FaleConosco() {
-  const { register, handleSubmit, formState } = useForm<ContactFormData>({ resolver: yupResolver(SchemaContact) });
 
-  const onSubmit = (data: ContactFormData) => {
+
+export default function ContactUs() {
+  const { register, handleSubmit, formState } = useForm<FormDataContact>({ resolver: yupResolver(SchemaContact) });
+
+  const onSubmit = (data: FormDataContact) => {
     console.log(data);
   };
   return (
-    <main className=" flex-wrap font-inter flex w-full max-w-[1550px] mx-auto p-4 font-inter justify-center  gap-12 lg:flex-nowrap">
-      <section className=" w-[100%] lg:w-1/2 gap-6 flex flex-col text-[#555555] lg:pl-6 ">
-        <div className="max-w-[480px]] ">
-          <h2 className="font-bold">• Televendas</h2>
-          <p className="font-light">Fale com um Consultor de Negócios.</p>
-          <p className="font-light">Através do (11) 3136 - 2431 ou entre em contato Atendimento de segunda a sexta das 9h às 18h.</p>
-        </div>
+    <main className="grid grid-cols-2 h-[800px] bg-black">
+      <section className=" w-1/2 items-center justify-center lg:pl-6 bg-red-500 ">
+      <div className="w-full">
+        <h1 className="text-3xl font-bold text-gray-900 
+        mb-4">Fale Conosco</h1>
+      </div>
 
         <div className="max-w-[400px]">
           <h2 className="font-bold">• E-mail</h2>
@@ -32,10 +33,6 @@ export default function FaleConosco() {
           <p className="font-light">Se preferir preencha com seus dados para que possamos responder.</p>
         </div>
 
-        <div className="max-w-[800px]">
-          <h2 className=" font-bold">• medicine.com.br para empresas</h2>
-          <p className="font-light">Pelo fato atendermos somente no varejo, pedidos de quantidades superiores a 5 exemplares de um mesmo produto estarão sujeitos à disponibilidade de estoque. Se o seu perfil é este entre em contato com nossos Consultor de Negócios.</p>
-        </div>
 
         <div className="max-w-[400px]">
           <h2 className=" font-bold">• Informações:</h2>
@@ -53,7 +50,7 @@ export default function FaleConosco() {
         <p>© Copyright 2025 - Todos os Direitos Reservados !</p>
       </section>
 
-      <section className=" w-[100%] lg:w-1/2 flex flex-col items-center lg:pl-16 mt-9">
+      <section className=" w-[100%] lg:w-1/2 flex flex-col items-center justify-center lg:pl-16 mt-9">
         <h3 className="font-medium text-[#555555] text-[18px] text-start  w-full">Enviar uma mensagem</h3>
         <form action="" onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-4  w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>

@@ -5,11 +5,13 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { AppModule } from "./app.module";
 import { IoAdapter } from "@nestjs/platform-socket.io";
+import { NestExpressApplication } from "@nestjs/platform-express";
+import { join } from "path";
 
 async function bootstrap() {
   dotenv.config();
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const config = new DocumentBuilder()
     .setTitle("Ecommerce API")
@@ -26,7 +28,12 @@ async function bootstrap() {
   SwaggerModule.setup("docs", app, document);
 
   app.use(cookieParser());
-  app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+  app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080"], credentials: true }));
+
+  // Servir arquivos estáticos
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/public/',
+  });
 
   app.useWebSocketAdapter(new IoAdapter(app));
 

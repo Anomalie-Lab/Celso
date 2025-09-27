@@ -42,7 +42,7 @@ export default function Conditions() {
           <h2 className="text-xl font-semibold mb-2">5. Contato</h2>
           <p className="text-gray-700">
             Em caso de dúvidas sobre seu cadastro ou produtos, entre em contato:{" "}
-            <a href="mailto:seuemail@dominio.com" className="text-[var(--txt-terciary)] hover:underline">
+            <a href="mailto:seuemail@dominio.com" className="text-primary hover:underline">
               @gmail.com
             </a>
           </p>

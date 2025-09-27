@@ -4,11 +4,9 @@ import { LuMail, LuBell, LuGift, LuTag, LuShield } from "react-icons/lu";
 import { useState } from "react";
 import { useNewsletter } from "@/hooks/useNewsletter";
 import { useUser } from "@/hooks/user.hook";
-import { useRouter } from "next/navigation";
 
 export default function NewsletterPage() {
   const { user } = useUser();
-  const router = useRouter();
   const {
     preferences,
     userEmail,

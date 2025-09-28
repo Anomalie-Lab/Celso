@@ -34,7 +34,7 @@ export default function HeroArea() {
 
 
 return (
-    <div className="relative h-[700px] w-full overflow-hidden cursor-pointer mt-28">
+    <div className="relative max-h-[700px] w-full overflow-hidden cursor-pointer mt-28">
       <Carousel 
         setApi={setApi} 
         className="h-full w-full"

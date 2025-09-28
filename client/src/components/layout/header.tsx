@@ -311,14 +311,16 @@ export default function Header() {
                     <div className="text-gray-900 font-medium">Minha Conta</div>
                     <div className="text-sm text-gray-500">
                       <button onClick={() => {
-                        router.push("/login");
+                        toggleDialog();
+                        toggleAuthPage("Login");
                         setIsMenuOpen(false);
                       }} className="hover:text-primary transition-colors">
                         Entrar
                       </button>{" "}
                       /
                       <button onClick={() => {
-                        router.push("/register");
+                        toggleDialog();
+                        toggleAuthPage("Register");
                         setIsMenuOpen(false);
                       }} className="hover:text-primary transition-colors">
                         {" "}

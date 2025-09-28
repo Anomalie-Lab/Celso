@@ -64,7 +64,7 @@ export function ProductInfo({
 
       {/* Preço */}
       <div className="space-y-2 mt-8">
-        <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
+        <div className="flex gap-2 sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
           <span className="text-2xl sm:text-3xl font-bold text-gray-900">
             {formatPrice(price)}
           </span>

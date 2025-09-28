@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -175,7 +174,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     }
 
     return (
-      <Button variant="outline" size="sm" className="flex items-center gap-2">
+      <Button variant="outline" size="sm" className="flex items-center gap-2 cursor-pointer border-gray-300 text-gray-700">
         <LucideEdit className="w-4 h-4" />
         Editar
       </Button>

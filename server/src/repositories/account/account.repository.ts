@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma.service';
-import { CreateUpdateAddressDto, UpdateUserDto, UpdateNewsletterPreferencesDto } from 'src/dtos/account.dto';
+import { CreateUpdateAddressDto, UpdateUserDto } from 'src/dtos/account.dto';
 
 @Injectable()
 export class AccountRepository {
   constructor(private readonly prisma: PrismaService) {}
-
-  async findById(id: number) {
-    return await this.prisma.user.findUnique({
-      where: { id },
-    });
-  }
 
   async update(data: UpdateUserDto, id: number) {
     return await this.prisma.user.update({
@@ -518,71 +512,5 @@ export class AccountRepository {
     }
 
     return { message: 'Lista de desejos limpa com sucesso' };
-  }
-
-  // Newsletter methods
-  async getNewsletterPreferences(userId: number) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        newsletter_promotional: true,
-        newsletter_order_updates: true,
-        newsletter_new_products: true,
-        newsletter_exclusive_offers: true,
-        newsletter_security_alerts: true,
-      },
-    });
-
-    if (!user) {
-      throw new Error('Usuário não encontrado');
-    }
-
-    return {
-      id: user.id,
-      email: user.email,
-      preferences: {
-        promotional: user.newsletter_promotional,
-        orderUpdates: user.newsletter_order_updates,
-        newProducts: user.newsletter_new_products,
-        exclusiveOffers: user.newsletter_exclusive_offers,
-        securityAlerts: user.newsletter_security_alerts,
-      },
-    };
-  }
-
-  async updateNewsletterPreferences(userId: number, dto: UpdateNewsletterPreferencesDto) {
-    const user = await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        newsletter_promotional: dto.newsletter_promotional,
-        newsletter_order_updates: dto.newsletter_order_updates,
-        newsletter_new_products: dto.newsletter_new_products,
-        newsletter_exclusive_offers: dto.newsletter_exclusive_offers,
-        newsletter_security_alerts: dto.newsletter_security_alerts,
-      },
-      select: {
-        id: true,
-        email: true,
-        newsletter_promotional: true,
-        newsletter_order_updates: true,
-        newsletter_new_products: true,
-        newsletter_exclusive_offers: true,
-        newsletter_security_alerts: true,
-      },
-    });
-
-    return {
-      id: user.id,
-      email: user.email,
-      preferences: {
-        promotional: user.newsletter_promotional,
-        orderUpdates: user.newsletter_order_updates,
-        newProducts: user.newsletter_new_products,
-        exclusiveOffers: user.newsletter_exclusive_offers,
-        securityAlerts: user.newsletter_security_alerts,
-      },
-    };
   }
 }

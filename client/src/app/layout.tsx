@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "SuaFarmácia - Farmácia Online",
+    default: "Clinivix - Farmácia Online",
     template: "%s | SuaFarmácia"
   },
   description: "Farmácia online com medicamentos, cosméticos e suplementos. Entrega rápida e segura.",

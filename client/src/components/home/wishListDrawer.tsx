@@ -22,11 +22,19 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
     const { wishlist, isLoading, wishlistItemsCount, removeFromWishlist, isItemRemoving } = useWishlist();
     const { addToCart, isAddingToCart } = useCart();
     const router = useRouter();
-
+    const [isMobile, setIsMobile] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
       setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const checkScreen = () => setIsMobile(window.innerWidth < 768);
+        checkScreen();
+
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
     }, []);
 
     if (!isMounted) return null;
@@ -70,7 +78,7 @@ export default function WishListDrawer({ isOpen, toggleDrawer }: WishListProps) 
         <Drawer
             open={isOpen}
             onClose={toggleDrawer}
-            size={450}
+            size={isMobile ? "100%" : 450}
             direction='right'
             className="!bg-white drawer-panel"
             overlayClassName="drawer-overlay"

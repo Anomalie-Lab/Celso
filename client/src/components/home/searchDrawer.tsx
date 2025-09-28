@@ -22,12 +22,12 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
     const [selectedCategory, setSelectedCategory] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [isMounted, setIsMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
       setIsMounted(true);
     }, []);
 
-    // Debounce search term
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearchTerm(searchTerm);
@@ -36,14 +36,20 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
         return () => clearTimeout(timer);
     }, [searchTerm]);
 
-    // Fetch categories
+    useEffect(() => {
+        const checkScreen = () => setIsMobile(window.innerWidth < 768);
+        checkScreen();
+
+        window.addEventListener("resize", checkScreen);
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
+
     const { data: categories = [], isLoading: categoriesLoading } = useQuery({
         queryKey: ['categories'],
         queryFn: Products.getCategories,
         enabled: isOpen,
     });
 
-    // Search products
     const { data: searchData, isLoading: searchLoading } = useQuery({
         queryKey: ['search-products', debouncedSearchTerm, selectedCategory],
         queryFn: () => Products.searchProducts({
@@ -54,7 +60,6 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
         enabled: (!!debouncedSearchTerm || !!selectedCategory) && isOpen,
     });
 
-    // Não renderizar o Drawer até que o componente esteja montado no cliente
     if (!isMounted) return null;
 
     const handleClearFilters = () => {
@@ -64,18 +69,17 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
 
     const handleCategoryClick = (categoryName: string) => {
         if (selectedCategory === categoryName) {
-            setSelectedCategory(''); // Desmarca se já estiver selecionada
+            setSelectedCategory(''); 
         } else {
             setSelectedCategory(categoryName);
         }
     };
 
     const filteredProducts = searchData?.products || [];
-    const displayedProducts = filteredProducts.slice(0, 3); // Máximo 3 produtos
+    const displayedProducts = filteredProducts.slice(0, 3);
     const hasMoreProducts = filteredProducts.length > 3;
     const isLoading = searchLoading || categoriesLoading;
 
-    // Construir URL de busca
     const buildSearchUrl = () => {
         const params = new URLSearchParams();
         if (debouncedSearchTerm) params.append('q', debouncedSearchTerm);
@@ -87,7 +91,7 @@ export default function SearchDrawer({ isOpen, toggleDrawer }: SearchDrawerProps
         <Drawer
             open={isOpen}
             onClose={toggleDrawer}
-            size={500}
+            size={isMobile ? "100%" : 450} 
             direction='right'
             className="!bg-white drawer-panel"
             overlayClassName="drawer-overlay"

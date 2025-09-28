@@ -8,6 +8,7 @@ export function useProductState({ product }: UseProductStateProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
+  const [shippingInfo, setShippingInfo] = useState<{ localidade: string; bairro: string; shippingCost?: number; deliveryTime?: number } | null>(null);
 
   useEffect(() => {
     if (product) {
@@ -32,13 +33,18 @@ export function useProductState({ product }: UseProductStateProps) {
     setSelectedColor(color);
   };
 
+  const handleShippingInfoChange = (info: { localidade: string; bairro: string; shippingCost?: number; deliveryTime?: number } | null) => {
+    setShippingInfo(info);
+  };
 
   return {
     quantity,
     selectedSize,
     selectedColor,
+    shippingInfo,
     handleQuantityChange,
     handleSizeChange,
-    handleColorChange
+    handleColorChange,
+    handleShippingInfoChange
   };
 }

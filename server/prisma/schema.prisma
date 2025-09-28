@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("NEXT_DATABASE_URL")
 }
 
@@ -15,30 +15,22 @@ model Role {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  google_id  String?
-  fullname   String
-  username   String    @unique
-  email      String    @unique
-  password   String
-  phone      String?
-  avatar     String    @default("https://lh3.googleusercontent.com/a/default-avatar")
-  birthdate  DateTime?
-  role_id    Int       @default(2)
-  document   String?   @unique
-  enable_2fa Boolean   @default(false)
-  
-  // Newsletter preferences
-  newsletter_promotional     Boolean @default(true)
-  newsletter_order_updates   Boolean @default(true)
-  newsletter_new_products    Boolean @default(false)
-  newsletter_exclusive_offers Boolean @default(true)
-  newsletter_security_alerts Boolean @default(true)
-  
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  id            Int      @id @default(autoincrement())
+  google_id     String?
+  fullname      String
+  username      String   @unique
+  email         String   @unique
+  password      String
+  phone         String?
+  avatar        String   @default("https://lh3.googleusercontent.com/a/default-avatar")
+  birthdate     DateTime?
+  role_id       Int      @default(2)
+  document      String?  @unique
+  enable_2fa    Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
-  role          Role               @relation(fields: [role_id], references: [id])
+  role          Role     @relation(fields: [role_id], references: [id])
   addresses     Address[]
   cards         Card[]
   notifications Notification[]
@@ -96,7 +88,7 @@ model Notification {
   created_at DateTime  @default(now())
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([user_id], map: "notifications_user_id_idx")
+  @@index([user_id], map: "notifications_user_id_fkey")
   @@map("notifications")
 }
 
@@ -111,36 +103,36 @@ model PasswordReset {
 }
 
 model Product {
-  id           Int     @id @default(autoincrement())
-  title        String
-  summary      String  @db.Text
-  description  String  @db.Text
-  brand        String
-  price        Decimal @db.Decimal(10, 2)
-  last_price   Decimal @db.Decimal(10, 2)
-  installments Int     @default(12)
-  blur         String? @db.Text
-  details      Json?
-  flags        Json?
-  categories   Json?
-  images       Json?
-  sizes        Json?
-  stock        Int     @default(0)
+  id                Int      @id @default(autoincrement())
+  title             String
+  summary           String   @db.Text
+  description       String   @db.Text
+  brand             String
+  price             Decimal  @db.Decimal(10, 2)
+  last_price        Decimal  @db.Decimal(10, 2)
+  installments      Int      @default(12)
+  blur              String?  @db.Text
+  details           Json?
+  flags             Json?
+  categories        Json?
+  images            Json?
+  sizes             Json?
+  stock             Int      @default(0)
 
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
 
-  comments       ProductComment[]
-  cart_items     CartItem[]
+  comments   ProductComment[]
+  cart_items CartItem[]
   wishlist_items WishlistItem[]
-  invoices       InvoiceItem[]
-  analytics      ProductAnalytics[]
+  invoices   InvoiceItem[]
+  analytics  ProductAnalytics[]
 
   @@map("products")
 }
 
 model ProductComment {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   message     String
   rating      Int
   attachments Json?
@@ -158,13 +150,12 @@ model ProductComment {
 }
 
 model Cart {
-  id                     Int        @id @default(autoincrement())
-  user_id                Int
-  user                   User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  items                  CartItem[]
-  abandonment_email_sent Boolean    @default(false)
-  created_at             DateTime   @default(now())
-  updated_at             DateTime   @updatedAt
+  id         Int        @id @default(autoincrement())
+  user_id    Int
+  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  items      CartItem[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
 
   @@map("carts")
 }
@@ -188,23 +179,23 @@ model CartItem {
 }
 
 model Wishlist {
-  id         Int            @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   user_id    Int
-  user       User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items      WishlistItem[]
-  created_at DateTime       @default(now())
-  updated_at DateTime       @updatedAt
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
 
   @@map("wishlists")
 }
 
 model WishlistItem {
-  id          Int      @id @default(autoincrement())
-  wishlist_id Int
-  wishlist    Wishlist @relation(fields: [wishlist_id], references: [id], onDelete: Cascade)
+  id           Int       @id @default(autoincrement())
+  wishlist_id  Int
+  wishlist     Wishlist  @relation(fields: [wishlist_id], references: [id], onDelete: Cascade)
 
-  product_id Int
-  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product_id   Int
+  product      Product   @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   created_at DateTime @default(now())
 
@@ -297,14 +288,14 @@ model Delivery {
 }
 
 model Invoice {
-  id                 Int      @id @default(autoincrement())
-  subtotal           Decimal? @db.Decimal(10, 2)
-  total_amount       Decimal? @db.Decimal(10, 2)
+  id                 Int     @id @default(autoincrement())
+  subtotal           Decimal? @db.Decimal(10,2)
+  total_amount       Decimal? @db.Decimal(10,2)
   freight_provider   String?
-  freight_fee        Decimal? @default(0.00) @db.Decimal(10, 2)
-  payment_method_fee Decimal  @default(0.00) @db.Decimal(10, 2)
-  processing_fee     Decimal  @default(0.00) @db.Decimal(10, 2)
-  coupon_discount    Decimal  @default(0.00) @db.Decimal(10, 2)
+  freight_fee        Decimal? @default(0.00) @db.Decimal(10,2)
+  payment_method_fee Decimal  @default(0.00) @db.Decimal(10,2)
+  processing_fee     Decimal  @default(0.00) @db.Decimal(10,2)
+  coupon_discount    Decimal  @default(0.00) @db.Decimal(10,2)
 
   receiver_first_name   String?
   receiver_last_name    String?
@@ -315,7 +306,7 @@ model Invoice {
   receiver_address      String?
 
   coupon_id Int?
-  coupon    Coupon? @relation(fields: [coupon_id], references: [id])
+  coupon    Coupon?   @relation(fields: [coupon_id], references: [id])
 
   transaction_id Int
   transaction    Transaction @relation(fields: [transaction_id], references: [id], onDelete: Cascade)
@@ -329,7 +320,7 @@ model Invoice {
 }
 
 model InvoiceItem {
-  id Int @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
 
   invoice_id Int
   invoice    Invoice @relation(fields: [invoice_id], references: [id], onDelete: Cascade)
@@ -344,20 +335,20 @@ model InvoiceItem {
 }
 
 model ProductAnalytics {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   product_id Int
-  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
-
-  action     String
-  source     String?
-  user_agent String?
-  referrer   String?
-  ip_address String?
-  session_id String?
-  user_id    Int?
-  user       User?   @relation(fields: [user_id], references: [id], onDelete: SetNull)
-
-  metadata   Json?
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  
+  action     String  
+  source     String? 
+  user_agent String? 
+  referrer   String? 
+  ip_address String? 
+  session_id String? 
+  user_id    Int?    
+  user       User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  
+  metadata   Json?   
   created_at DateTime @default(now())
 
   @@index([product_id])

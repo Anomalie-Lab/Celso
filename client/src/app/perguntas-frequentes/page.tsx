@@ -88,8 +88,8 @@ export default function PerguntasFrequentesPage() {
             />
           </div>
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Filtrar por categoria:</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-sm font-medium text-gray-900 mb-3 text-center">Filtrar por categoria:</h3>
+            <div className="flex flex-wrap gap-2 justify-center">
               {categories.map((category) => (
                 <button
                   key={category.id}

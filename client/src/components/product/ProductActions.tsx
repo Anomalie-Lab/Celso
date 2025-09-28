@@ -1,11 +1,10 @@
 "use client";
 
-import { LuHeart, LuShare2, LuLoader, LuPlus, LuMinus, LuTruck, LuMapPin } from "react-icons/lu";
+import { LuHeart, LuShare2, LuLoader, LuPlus, LuMinus, LuTruck } from "react-icons/lu";
 import { PiBasketLight } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { ShieldCheck } from "lucide-react";
-import { useShipping } from "@/hooks/shipping.hook";
 
 interface ProductActionsProps {
   quantity: number;
@@ -13,6 +12,7 @@ interface ProductActionsProps {
   onAddToCart: () => void;
   onWishlistToggle: () => void;
   onShare: () => void;
+  onShippingInfoChange: (info: { localidade: string; bairro: string; shippingCost?: number; deliveryTime?: number } | null) => void;
   isAddingToCart: boolean;
   isInWishlist: boolean;
   isItemAdding: boolean;
@@ -31,7 +31,6 @@ export function ProductActions({
   isItemAdding,
   isItemRemoving
 }: ProductActionsProps) {
-  const { cep, shippingInfo, isLoading: isCalculatingShipping, handleCepChange, getShippingCost } = useShipping();
   const handleQuantityIncrease = () => {
     onQuantityChange(quantity + 1);
   };
@@ -69,50 +68,19 @@ export function ProductActions({
 
       {/* CEP e Frete */}
       <div className="py-3">
-        <p className="text-sm font-semibold text-gray-800 mb-2">Calcular frete</p>
-        <InputOTP maxLength={8} value={cep} onChange={handleCepChange} disabled={isCalculatingShipping}>
-          <InputOTPGroup>
-            <InputOTPSlot index={0} className="border-gray-300" />
-            <InputOTPSlot index={1} className="border-gray-300" />
-            <InputOTPSlot index={2} className="border-gray-300" />
-            <InputOTPSlot index={3} className="border-gray-300" />
-            <InputOTPSlot index={4} className="border-gray-300" />
-            <InputOTPSlot index={5} className="border-gray-300" />
-            <InputOTPSlot index={6} className="border-gray-300" />
-            <InputOTPSlot index={7} className="border-gray-300" />
-          </InputOTPGroup>
-        </InputOTP>
-
-        {isCalculatingShipping && (
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
-            <LuLoader className="w-4 h-4 animate-spin text-primary" />
-            Calculando frete...
-          </div>
-        )}
-
-        {shippingInfo && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
-            <div className="flex items-start gap-2">
-              <LuMapPin className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-green-800">
-                  {shippingInfo.localidade} - {shippingInfo.bairro}
-                </p>
-                <p className="text-sm text-green-600 mt-1">
-                  Frete: R$ {getShippingCost().toFixed(2)}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {cep.length === 8 && !shippingInfo && !isCalculatingShipping && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-2">
-            <p className="text-sm text-red-600">
-              CEP não encontrado. Verifique e tente novamente.
-            </p>
-          </div>
-        )}
+            <p className="text-sm font-semibold text-gray-800 mb-2">Calcular frete</p>
+                <InputOTP maxLength={8}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} className="border-gray-300" />
+                    <InputOTPSlot index={1} className="border-gray-300" />
+                    <InputOTPSlot index={2} className="border-gray-300" />
+                    <InputOTPSlot index={3} className="border-gray-300" />
+                    <InputOTPSlot index={4} className="border-gray-300" />
+                    <InputOTPSlot index={5} className="border-gray-300" />
+                    <InputOTPSlot index={6} className="border-gray-300" />
+                    <InputOTPSlot index={7} className="border-gray-300" />
+                  </InputOTPGroup>
+                </InputOTP>
       </div>
 
       {/* Botões de Ação */}

@@ -42,11 +42,20 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [authPage, setAuthPage] = useState<AuthPage>("Login");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    checkScreen();
+
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+}, []);
 
   useDrawer(isOpen);
   const { 
@@ -89,22 +98,20 @@ export default function Cart({ isOpen, toggleDrawer }: CartProps) {
 
   const { addToWishlist, removeFromWishlist, isInWishlist, isItemAdding, isItemRemoving, wishlist } = useWishlist();
 
-
-  // Não renderizar o Drawer até que o componente esteja montado no cliente
   if (!isMounted) {
     return null;
   }
 
   if (isLoading) {
     return (
-      <Drawer open={isOpen} onClose={toggleDrawer} size={450} direction="right" className="!bg-white drawer-panel" overlayClassName="drawer-overlay">
+      <Drawer open={isOpen} onClose={toggleDrawer} size={isMobile ? "100%" : 450} direction="right" className="!bg-white drawer-panel" overlayClassName="drawer-overlay">
         <CartDrawerSkeleton />
       </Drawer>
     );
   }
 
   return (
-    <Drawer open={isOpen} onClose={toggleDrawer} size={450} direction="right" className="!bg-white drawer-panel" overlayClassName="drawer-overlay">
+    <Drawer open={isOpen} onClose={toggleDrawer} size={isMobile ? "100%" : 450} direction="right" className="!bg-white drawer-panel" overlayClassName="drawer-overlay">
       <div className="h-full flex flex-col overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center gap-3">

@@ -40,13 +40,13 @@ export default function PromotionalBanners() {
   };
 
   return (
-    <section className="py-12">
-      <div className="mx-auto px-12 sm:px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <section className="py-8 sm:py-12">
+      <div className="container-responsive">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {banners.map((banner) => (
             <div
               key={banner.id}
-              className="relative h-[500px] rounded-xl overflow-hidden group cursor-pointer cursor-pointer"
+              className="relative h-[300px] sm:h-[400px] lg:h-[500px] rounded-xl overflow-hidden group cursor-pointer"
               onClick={() => handleBannerClick(banner.link)}
             >
               {/* Background Image */}
@@ -61,16 +61,16 @@ export default function PromotionalBanners() {
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
               
               {/* Content */}
-              <div className="relative h-full flex flex-col justify-center items-center text-center p-8">
+              <div className="relative h-full flex flex-col justify-center items-center text-center p-4 sm:p-6 lg:p-8">
                 {/* White Border Frame */}
-                <div className="border-2 border-white/30 rounded-xl h-full w-full  flex flex-col justify-center items-center backdrop-blur-sm bg-white/5">
-                  <div className="text-white/90 text-sm font-medium mb-2 tracking-wide">
+                <div className="border-2 border-white/30 rounded-xl h-full w-full flex flex-col justify-center items-center backdrop-blur-sm bg-white/5">
+                  <div className="text-white/90 text-xs sm:text-sm font-medium mb-2 tracking-wide">
                     {banner.subtitle}
                   </div>
-                  <h3 className="text-4xl font-bold text-white mb-6">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">
                     {banner.title}
                   </h3>
-                  <button className="inline-flex items-center gap-2 px-7 py-3 bg-primary text-white rounded-full hover:bg-primary-600 transition-colors font-medium group-hover:scale-105 transform transition-transform cursor-pointer">
+                  <button className="inline-flex items-center gap-2 px-4 sm:px-6 lg:px-7 py-2 sm:py-3 bg-primary text-white rounded-full hover:bg-primary-600 transition-colors font-medium group-hover:scale-105 transform transition-transform cursor-pointer text-sm sm:text-base">
                     {banner.buttonText}
                   </button>
                 </div>

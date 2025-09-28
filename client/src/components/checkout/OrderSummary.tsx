@@ -67,30 +67,30 @@ export default function OrderSummary({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-8 sticky top-8 w-[450px]">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-          <PiBasketLight className="w-5 h-5 text-primary" />
+    <div className="bg-white rounded-xl lg:rounded-2xl border border-gray-200 p-4 lg:p-8 sticky top-4 lg:top-8 w-full lg:w-[450px] order-2 lg:order-1">
+      <div className="flex items-center gap-3 mb-6 lg:mb-8">
+        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+          <PiBasketLight className="w-4 h-4 lg:w-5 lg:h-5 text-primary" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">Resumo do Pedido</h3>
+          <h3 className="text-lg lg:text-xl font-semibold text-gray-900">Resumo do Pedido</h3>
           <p className="text-gray-600 text-xs">Confira os detalhes da sua compra</p>
         </div>
       </div>
-      <div className="mb-6">
+      <div className="mb-4 lg:mb-6">
         <button
           onClick={onContinueShopping}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-lg lg:rounded-xl text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-sm"
         >
           <PiBasketLight className="w-4 h-4" />
-          <span className="text-sm font-medium">Continuar Comprando</span>
+          <span className="font-medium">Continuar Comprando</span>
         </button>
       </div>
       
-      <div className="space-y-4 mb-8">
+      <div className="space-y-3 lg:space-y-4 mb-6 lg:mb-8">
         {cartItems.map((item) => (
-          <div key={item.id} className="flex gap-4 p-4 border border-gray-200 rounded-xl relative">
-            <div className="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
+          <div key={item.id} className="flex gap-3 lg:gap-4 p-3 lg:p-4 border border-gray-200 rounded-lg lg:rounded-xl relative">
+            <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg lg:rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
               <Image
                 src={item.image}
                 alt={item.productName}
@@ -116,25 +116,25 @@ export default function OrderSummary({
             {/* Botão Excluir */}
             <button
               onClick={() => onRemoveItem?.(item.id)}
-              className="absolute top-3 right-5 w-8 h-8 border border-gray-200 hover:bg-primary group rounded-full flex items-center justify-center cursor-pointer transition-colors"
+              className="absolute top-2 right-2 lg:top-3 lg:right-5 w-7 h-7 lg:w-8 lg:h-8 border border-gray-200 hover:bg-primary group rounded-full flex items-center justify-center cursor-pointer transition-colors"
             >
-              <Trash2 className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+              <Trash2 className="w-3 h-3 lg:w-4 lg:h-4 text-gray-500 group-hover:text-white transition-colors" />
             </button>
           </div>
         ))}
       </div>
 
       {/* Cupom de Desconto */}
-      <div className="mb-6 p-6 rounded-xl border border-primary/20">
+      <div className="mb-4 lg:mb-6 p-4 lg:p-6 rounded-lg lg:rounded-xl border border-primary/20">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+          <div className="w-4 h-4 lg:w-5 lg:h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
             <span className="text-white text-xs font-bold">%</span>
           </div>
           <span className="text-sm font-semibold text-primary">Cupom de Desconto</span>
         </div>
         
         {!appliedCoupon ? (
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={couponCode}
@@ -144,7 +144,7 @@ export default function OrderSummary({
             />
             <button
               onClick={handleApplyCoupon}
-              className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
+              className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors cursor-pointer whitespace-nowrap"
             >
               Aplicar
             </button>
@@ -152,12 +152,12 @@ export default function OrderSummary({
         ) : (
           <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-600" />
+              <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
               <span className="text-sm font-medium text-green-800">Cupom {appliedCoupon} aplicado!</span>
             </div>
             <button
               onClick={handleRemoveCoupon}
-              className="text-green-600 hover:text-green-800"
+              className="text-green-600 hover:text-green-800 p-1"
             >
               <X className="w-4 h-4" />
             </button>
@@ -169,7 +169,7 @@ export default function OrderSummary({
         </p>
       </div>
 
-      <div className="space-y-4 border-t border-gray-200 py-6">
+      <div className="space-y-3 lg:space-y-4 border-t border-gray-200 py-4 lg:py-6">
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Subtotal</span>
           <span className="text-gray-900 font-semibold">R$ {subtotal.toFixed(2)}</span>
@@ -188,19 +188,19 @@ export default function OrderSummary({
           <span className="text-gray-600">Frete</span>
           <span className="text-gray-900 font-semibold">{shipping === 0 ? 'Grátis' : `R$ ${shipping.toFixed(2)}`}</span>
         </div>
-        <div className="flex justify-between text-xl font-bold border-t border-gray-200 pt-4">
+        <div className="flex justify-between text-lg lg:text-xl font-bold border-t border-gray-200 pt-3 lg:pt-4">
           <span className="text-gray-900">Total</span>
           <span className="text-primary">R$ {total.toFixed(2)}</span>
         </div>
       </div>
 
       {currentStep === 4 && (
-        <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+        <div className="mt-6 lg:mt-8 p-4 lg:p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl lg:rounded-2xl border border-green-200">
           <div className="flex items-center gap-3 text-green-800 mb-3">
-            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-              <Check className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 lg:w-8 lg:h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <Check className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
             </div>
-            <span className="font-bold">Pedido processado com sucesso!</span>
+            <span className="font-bold text-sm lg:text-base">Pedido processado com sucesso!</span>
           </div>
           <p className="text-green-700 text-sm mb-3">
             Número do pedido: <span className="font-bold">#12345</span>
@@ -212,7 +212,7 @@ export default function OrderSummary({
       )}
 
       {/* Informações de Segurança */}
-      <div className="mt-8 p-2">
+      <div className="mt-6 lg:mt-8 p-2">
         <h4 className="text-sm font-semibold text-gray-900 mb-2">Segurança da Compra</h4>
         <p className="text-xs text-gray-400 leading-relaxed text-justify">
           Sua compra está protegida. Utilizamos conexão segura (SSL) e criptografia de dados para garantir a confidencialidade das suas informações durante todo o processo de pagamento.

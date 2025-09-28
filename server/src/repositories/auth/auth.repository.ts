@@ -6,7 +6,7 @@ import {RegisterDto} from 'src/dtos/auth.dto';
 @Injectable()
 export class AuthRepository {
   constructor(private readonly prisma: PrismaService) {}
-  async create(dto: RegisterDto & {username: string, avatar?: string}) {
+  async create(dto: RegisterDto & {username: string}) {
     return await this.prisma.user.create({data: {...dto, avatar: 'https://ui-avatars.com/api/?name=John+Doe', enable_2fa: false}});
   }
 

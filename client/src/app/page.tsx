@@ -8,15 +8,15 @@ import PromotionalBanners from "@/components/home/promotionalBanners";
 
 export default function Home() {
   return (
-    <div className="space-y-24 bg-background">
+    <div className="min-h-screen space-y-8 sm:space-y-12 md:space-y-16 lg:space-y-20 xl:space-y-24 bg-background">
       <HeroArea/>
       <ConditionsLayer/>
       <CategoriesSection/>
       <ProductsArea titleArea="Produtos mais vendidos" type="bestSellers"/>
       <PromotionalBanners/>
-      <ProductsArea titleArea="Mais buscados com 20% OFF" type="all"/>
+      <ProductsArea titleArea="Produtos com 20% OFF" type="all"/>
       <TestimonialsSection/>
-      <ProductsArea titleArea="Mais buscados com 20% OFF" type="all"/>
+      <ProductsArea titleArea="Produtos com 20% OFF" type="all"/>
       <Newsletter/>
     </div>
   );

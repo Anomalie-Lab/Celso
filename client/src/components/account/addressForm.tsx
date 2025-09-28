@@ -13,6 +13,7 @@ import { formatCep, unformatCep } from "@/lib/utils";
 
 interface AddressFormProps {
   mode: "create" | "edit";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   address?: any;
   children?: React.ReactNode;
   onSuccess?: () => void;
@@ -39,6 +40,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     formState: { errors },
     reset,
     setValue,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useForm<any>({
     resolver: yupResolver(SchemaAddress),
     defaultValues: {
@@ -121,6 +123,7 @@ const AddressForm = ({ mode, address, children, onSuccess }: AddressFormProps) =
     }
   }, [address, mode, reset]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     try {
       setIsLoading(true);

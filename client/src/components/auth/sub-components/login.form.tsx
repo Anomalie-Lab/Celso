@@ -9,6 +9,8 @@ import { Auth } from "@/api/auth.api";
 import { toast } from "sonner";
 import { useState } from "react";
 import { FormDataLogin, SchemaLogin } from "@/entities/schemas";
+import Link from "next/link";
+import { getGoogleOAuthURL } from "@/utils/get-google-url";
 
 interface LoginFormProps {
   onAuthPageChange: (page: "Login" | "Register" | "ForgotPass") => void
@@ -47,14 +49,13 @@ export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
   return (
     <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
-        <Button 
-          type="button" 
-          variant="outline" 
-          className="w-full h-12 flex items-center justify-center gap-3 border-gray-200 hover:bg-gray-50 cursor-pointer"
+        <Link
+          href={getGoogleOAuthURL()}
+            className="w-full h-12 flex items-center justify-center gap-3 border-gray-200 hover:bg-gray-50 cursor-pointer"
         >
           <FcGoogle className="w-5 h-5" />
           <span>Continuar com Google</span>
-        </Button>
+        </Link>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-300" />
@@ -85,7 +86,7 @@ export const LoginForm = ({ onAuthPageChange, onClose }: LoginFormProps) => {
       <div className="flex items-center justify-between text-sm">
         <label className="flex items-center gap-2">
           <input type="checkbox" className="rounded border-gray-300" />
-          <span className="text-gray-600">Lembrar</span>
+          <span className="text-gray-600">Lembrar-me</span>
         </label>
         <button 
           type="button"

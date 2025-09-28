@@ -99,11 +99,11 @@ export default function OrderSummary({
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="font-semibold text-gray-900 text-sm lg:text-base truncate">{item.productName}</h4>
-              <div className="flex flex-col items-start gap-2 lg:gap-3 mt-2">
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <span className="text-base lg:text-lg font-bold text-gray-900">{item.currentPrice}</span>
-                <span className="text-xs lg:text-sm text-gray-400 line-through">{item.originalPrice}</span>
+              <h4 className="font-semibold text-gray-900 text-sm truncate">{item.productName}</h4>
+              <div className="flex flex-col items-start gap-3 mt-2">
+                <div className="flex items-center gap-2 mt-1">
+                <span className="text-lg font-bold text-gray-900">{item.currentPrice}</span>
+                <span className="text-sm text-gray-400 line-through">{item.originalPrice}</span>
                 <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
                   {item.discount}
                 </span>

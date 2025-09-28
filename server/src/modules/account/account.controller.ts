@@ -1,4 +1,4 @@
-import {CreateUpdateAddressDto, UpdateUserDto} from './../../dtos/account.dto';
+import {CreateUpdateAddressDto, UpdateUserDto, UpdateNewsletterPreferencesDto} from './../../dtos/account.dto';
 import {AddToCartDto, UpdateCartItemDto} from './../../dtos/cart.dto';
 import {AddToWishlistDto} from './../../dtos/wishlist.dto';
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Res, UsePipes, ValidationPipe} from '@nestjs/common';
@@ -193,6 +193,27 @@ export class AccountController {
   @ApiResponse({status: 200, description: 'Order retrieved successfully'})
   async getOrderById(@Param('id') id: string, @Res() res) {
     const data = await this.accountService.getOrderById(+id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  // Newsletter endpoints
+  @Get('newsletter-preferences')
+  @ApiOperation({summary: 'Get User Newsletter Preferences', description: 'Get user newsletter communication preferences'})
+  @ApiResponse({status: 200, description: 'Newsletter preferences retrieved successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  async getNewsletterPreferences(@User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.getNewsletterPreferences(user.id);
+    return res.status(HttpStatus.OK).json(data);
+  }
+
+  @Patch('newsletter-preferences')
+  @ApiOperation({summary: 'Update Newsletter Preferences', description: 'Update user newsletter communication preferences'})
+  @ApiResponse({status: 200, description: 'Newsletter preferences updated successfully'})
+  @ApiResponse({status: 403, description: 'Authentication required.'})
+  @ApiBody({type: UpdateNewsletterPreferencesDto})
+  @UsePipes(new ValidationPipe({whitelist: true, transform: true}))
+  async updateNewsletterPreferences(@Body() dto: UpdateNewsletterPreferencesDto, @User() user: Account.UserI, @Res() res) {
+    const data = await this.accountService.updateNewsletterPreferences(user.id, dto);
     return res.status(HttpStatus.OK).json(data);
   }
 }

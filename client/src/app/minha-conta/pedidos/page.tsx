@@ -43,50 +43,6 @@ export default function OrdersPage() {
     queryFn: Account.getUserOrders,
   });
 
-  // Dados mockados para teste do status SHIPPED
-  const mockShippedOrder: Order = {
-    id: 9999,
-    total_amount: 250.00,
-    status: "SHIPPED",
-    created_at: "2024-01-15T10:30:00Z",
-    invoices: [
-      {
-        id: 1,
-        total_amount: 250.00,
-        items: [
-          {
-            id: 1,
-            quantity: 2,
-            price: 125.00,
-            product: {
-              id: 101,
-              title: "Kit de Primeiros Socorros Completo"
-            }
-          }
-        ]
-      }
-    ],
-    histories: [
-      {
-        id: 1,
-        status: "PENDING",
-        created_at: "2024-01-15T10:30:00Z"
-      },
-      {
-        id: 2,
-        status: "APPROVED",
-        created_at: "2024-01-15T14:20:00Z"
-      },
-      {
-        id: 3,
-        status: "SHIPPED",
-        created_at: "2024-01-16T09:15:00Z"
-      }
-    ]
-  };
-
-  const displayOrders = orders ? [...orders, mockShippedOrder] : [mockShippedOrder];
-
   const getStatusInfo = (status: OrderStatus) => {
     switch (status) {
       case "PENDING":
@@ -156,7 +112,7 @@ export default function OrdersPage() {
     }).format(value);
   };
 
-  const filteredOrders = displayOrders?.filter((order: Order) => {
+  const filteredOrders = orders?.filter((order: Order) => {
     if (selectedStatus === "ALL") return true;
     return order.status === selectedStatus;
   }) || [];

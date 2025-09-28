@@ -3,14 +3,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { LiaUserSolid } from "react-icons/lia";
-import { LuSearch, LuHeart, LuShoppingCart } from "react-icons/lu";
+import { LuSearch, LuHeart, LuX, LuShoppingCart } from "react-icons/lu";
 import { CiDeliveryTruck, CiDiscount1 } from "react-icons/ci";
 import { TbPointFilled } from "react-icons/tb";
 import Cart from "../home/cartDrawer";
 import { ModalAuth } from "../auth/modal.auth";
 import WishListDrawer from "../home/wishListDrawer";
 import SearchDrawer from "../home/searchDrawer";
-import MenuDrawer from "../home/menuDrawer";
 import Notification from "./notification";
 import { useUser } from "@/hooks/user.hook";
 import { useCart } from "@/hooks/cart.hook";
@@ -203,7 +202,6 @@ export default function Header() {
                   </span>
                 )}
               </button>
-
               {user && <Notification />}
             </div>
           </div>
@@ -213,7 +211,6 @@ export default function Header() {
       <ModalAuth isOpen={isDialogOpen} toggleDialog={toggleDialog} authPage={authPage} onAuthPageChange={toggleAuthPage} />
       <WishListDrawer isOpen={isWishListOpen} toggleDrawer={toggleWishList} />
       <SearchDrawer isOpen={isSearchOpen} toggleDrawer={toggleSearch} />
-      <MenuDrawer isOpen={isMenuOpen} toggleDrawer={toggleMenu} />
     </header>
   );
 }

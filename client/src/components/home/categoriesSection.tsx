@@ -1,5 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
+import { LuArrowRight } from "react-icons/lu";
 import { BriefcaseMedical } from "lucide-react";
 import {
   Carousel,
@@ -16,9 +17,14 @@ import { Products } from "@/api/products.api";
 export default function CategoriesSection() {
   const router = useRouter();
 
-  const handleCategoryClick = (categoryName: string) => {
-    router.push(`/search?q=${categoryName}`);
+  const handleCategoryClick = (categoryId: string) => {
+    router.push(`/search?category=${categoryId}`);
   };
+
+  const handleAllCategoriesClick = () => {
+    router.push("/search");
+  };
+
 
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],

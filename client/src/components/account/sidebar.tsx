@@ -1,14 +1,15 @@
 "use client";
 import { LuPackage, LuHeart, LuMapPin, LuMail, LuLogOut } from "react-icons/lu";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Auth } from "@/api/auth.api";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const menuItems = [
     // {
     //   id: "resumo",
@@ -47,6 +48,11 @@ const Sidebar = () => {
     },
   ];
 
+  const Logout = async () => {
+    await Auth.logout();
+    router.push("/");
+  };
+
   const isActive = (href: string) => {
     if (href === "/minha-conta") {
       return pathname === "/minha-conta";
@@ -82,7 +88,7 @@ const Sidebar = () => {
         </nav>
 
         <div className="mt-8 pt-6 border-t border-gray-100">
-          <button className="w-full border border-gray-200 flex items-center justify-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer">
+          <button onClick={Logout} className="w-full border border-gray-200 flex items-center justify-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer">
             <LuLogOut className="w-5 h-5" />
             <span className="font-medium">Sair</span>
           </button>

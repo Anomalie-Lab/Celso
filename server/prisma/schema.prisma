@@ -96,7 +96,7 @@ model Notification {
   created_at DateTime  @default(now())
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([user_id], map: "notifications_user_id_fkey")
+  @@index([user_id], map: "notifications_user_id_idx")
   @@map("notifications")
 }
 

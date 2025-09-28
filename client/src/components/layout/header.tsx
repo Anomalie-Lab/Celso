@@ -211,6 +211,53 @@ export default function Header() {
       <ModalAuth isOpen={isDialogOpen} toggleDialog={toggleDialog} authPage={authPage} onAuthPageChange={toggleAuthPage} />
       <WishListDrawer isOpen={isWishListOpen} toggleDrawer={toggleWishList} />
       <SearchDrawer isOpen={isSearchOpen} toggleDrawer={toggleSearch} />
+
+      {isMenuOpen && (
+        <div className="lg:hidden fixed inset-0 bg-white/20 backdrop-blur-md z-[99999] h-screen">
+          <div className="bg-white h-full w-80 max-w-full shadow-xl">
+            <div className="p-6 flex flex-col justify-between h-full">
+              <div className="flex items-center justify-between mb-8">
+                <Image src="/images/logo.png" width={200} height={80} alt="logo" />
+                <button onClick={toggleMenu} className="p-2 hover:bg-gray-100 rounded-full">
+                  <LuX className="w-5 h-5" />
+                </button>
+              </div>
+              <nav className="space-y-4">
+                <button onClick={() => router.push("/produtos")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Produtos
+                </button>
+                <button onClick={() => router.push("/categorias")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Categorias
+                </button>
+                <button onClick={() => router.push("/sobre-nos")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Sobre Nós
+                </button>
+                <button onClick={() => router.push("/fale-conosco")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Contato
+                </button>
+              </nav>
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <LiaUserSolid className="text-xl text-gray-600" />
+                  <div>
+                    <div className="text-gray-900 font-medium">Minha Conta</div>
+                    <div className="text-sm text-gray-500">
+                      <button onClick={() => router.push("/login")} className="hover:text-primary transition-colors">
+                        Entrar
+                      </button>{" "}
+                      /
+                      <button onClick={() => router.push("/register")} className="hover:text-primary transition-colors">
+                        {" "}
+                        Cadastrar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

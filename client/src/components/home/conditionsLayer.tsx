@@ -67,7 +67,7 @@ export default function ConditionsLayer() {
            </div>
         </div>
         {/* Carousel para dispositivos sm */}
-        <div className="block md:hidden px-2 cursor-pointer">
+        <div className="block md:hidden px-2 cursor-pointer mt-12">
             <Carousel
                 opts={{
                     align: "start",

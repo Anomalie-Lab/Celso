@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Meus Endereços - SuaFarmácia",
-  description: "Gerencie seus endereços de entrega na SuaFarmácia. Adicione, edite ou remova endereços para receber seus pedidos.",
+  title: "Meus Endereços - Dinivix",
+  description: "Gerencie seus endereços de entrega na Dinivix. Adicione, edite ou remova endereços para receber seus pedidos.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "Meus Endereços - SuaFarmácia",
-    description: "Gerencie seus endereços de entrega na SuaFarmácia.",
-    url: "https://suafarmacia.com.br/minha-conta/enderecos",
-    siteName: "SuaFarmácia",
+    title: "Meus Endereços - Dinivix",
+    description: "Gerencie seus endereços de entrega na Dinivix.",
+    url: "https://www.fernandoesdras.store/minha-conta/enderecos",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Meus Endereços - SuaFarmácia",
-    description: "Gerencie seus endereços de entrega na SuaFarmácia.",
+    title: "Meus Endereços - Dinivix",
+    description: "Gerencie seus endereços de entrega na Dinivix.",
   },
   alternates: {
     canonical: "/minha-conta/enderecos",

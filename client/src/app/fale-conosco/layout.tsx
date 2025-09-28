@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Fale Conosco - SuaFarmácia",
-  description: "Entre em contato com a SuaFarmácia. Atendimento ao cliente, suporte, dúvidas sobre produtos e informações de contato da farmácia online.",
+  title: "Fale Conosco - Dinivix",
+  description: "Entre em contato com a Dinivix. Atendimento ao cliente, suporte, dúvidas sobre produtos e informações de contato da farmácia online.",
   keywords: [
     "fale conosco",
     "contato farmácia",
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
     "contato online"
   ],
   openGraph: {
-    title: "Fale Conosco - SuaFarmácia",
-    description: "Entre em contato com a SuaFarmácia. Atendimento ao cliente e suporte.",
-    url: "https://suafarmacia.com.br/fale-conosco",
-    siteName: "SuaFarmácia",
+    title: "Fale Conosco - Dinivix",
+    description: "Entre em contato com a Dinivix. Atendimento ao cliente e suporte.",
+    url: "https://www.fernandoesdras.store/fale-conosco",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Fale Conosco - SuaFarmácia",
-    description: "Entre em contato com a SuaFarmácia.",
+    title: "Fale Conosco - Dinivix",
+    description: "Entre em contato com a Dinivix.",
   },
   alternates: {
     canonical: "/fale-conosco",

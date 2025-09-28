@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lista de Desejos - SuaFarmácia",
-  description: "Visualize e gerencie sua lista de desejos na SuaFarmácia. Adicione produtos ao carrinho, remova itens e organize seus favoritos.",
+  title: "Lista de Desejos - Dinivix",
+  description: "Visualize e gerencie sua lista de desejos na Dinivix. Adicione produtos ao carrinho, remova itens e organize seus favoritos.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "Lista de Desejos - SuaFarmácia",
-    description: "Visualize e gerencie sua lista de desejos na SuaFarmácia.",
-    url: "https://suafarmacia.com.br/minha-conta/desejos",
-    siteName: "SuaFarmácia",
+    title: "Lista de Desejos - Dinivix",
+    description: "Visualize e gerencie sua lista de desejos na Dinivix.",
+    url: "https://www.fernandoesdras.store/minha-conta/desejos",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Lista de Desejos - SuaFarmácia",
-    description: "Visualize e gerencie sua lista de desejos na SuaFarmácia.",
+    title: "Lista de Desejos - Dinivix",
+    description: "Visualize e gerencie sua lista de desejos na Dinivix.",
   },
   alternates: {
     canonical: "/minha-conta/desejos",

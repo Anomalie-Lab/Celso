@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sobre Nós - SuaFarmácia",
-  description: "Conheça a história da SuaFarmácia. Farmácia online comprometida com a saúde e bem-estar, oferecendo produtos de qualidade e atendimento diferenciado.",
+  title: "Sobre Nós - Dinivix",
+  description: "Conheça a história da Dinivix. Farmácia online comprometida com a saúde e bem-estar, oferecendo produtos de qualidade e atendimento diferenciado.",
   keywords: [
     "sobre nós",
     "história farmácia",
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
     "valores farmácia"
   ],
   openGraph: {
-    title: "Sobre Nós - SuaFarmácia",
-    description: "Conheça a história da SuaFarmácia. Farmácia online comprometida com a saúde e bem-estar.",
-    url: "https://suafarmacia.com.br/sobre-nos",
-    siteName: "SuaFarmácia",
+    title: "Sobre Nós - Dinivix",
+    description: "Conheça a história da Dinivix. Farmácia online comprometida com a saúde e bem-estar.",
+    url: "https://www.fernandoesdras.store/sobre-nos",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Sobre Nós - SuaFarmácia",
-    description: "Conheça a história da SuaFarmácia.",
+    title: "Sobre Nós - Dinivix",
+    description: "Conheça a história da Dinivix.",
   },
   alternates: {
     canonical: "/sobre-nos",

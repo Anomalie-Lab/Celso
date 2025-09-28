@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade - SuaFarmácia",
-  description: "Conheça a política de privacidade da SuaFarmácia. Como protegemos seus dados pessoais e informações de compra na nossa farmácia online.",
+  title: "Política de Privacidade - Dinivix",
+  description: "Conheça a política de privacidade da Dinivix. Como protegemos seus dados pessoais e informações de compra na nossa farmácia online.",
   keywords: [
     "política de privacidade",
     "privacidade farmácia",
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
     "dados pessoais"
   ],
   openGraph: {
-    title: "Política de Privacidade - SuaFarmácia",
-    description: "Conheça a política de privacidade da SuaFarmácia. Como protegemos seus dados pessoais.",
-    url: "https://suafarmacia.com.br/politica-de-privacidade",
-    siteName: "SuaFarmácia",
+    title: "Política de Privacidade - Dinivix",
+    description: "Conheça a política de privacidade da Dinivix. Como protegemos seus dados pessoais.",
+    url: "https://www.fernandoesdras.store/politica-de-privacidade",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Política de Privacidade - SuaFarmácia",
-    description: "Conheça a política de privacidade da SuaFarmácia.",
+    title: "Política de Privacidade - Dinivix",
+    description: "Conheça a política de privacidade da Dinivix.",
   },
   alternates: {
     canonical: "/politica-de-privacidade",

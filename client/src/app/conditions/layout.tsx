@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Condições de Uso - SuaFarmácia",
-  description: "Conheça as condições de uso da SuaFarmácia. Termos e condições para compras online, entrega, pagamento e políticas da farmácia.",
+  title: "Condições de Uso - Dinivix",
+  description: "Conheça as condições de uso da Dinivix. Termos e condições para compras online, entrega, pagamento e políticas da farmácia.",
   keywords: [
     "condições de uso",
     "termos farmácia",
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
     "termos online"
   ],
   openGraph: {
-    title: "Condições de Uso - SuaFarmácia",
-    description: "Conheça as condições de uso da SuaFarmácia. Termos e condições para compras online.",
-    url: "https://suafarmacia.com.br/conditions",
-    siteName: "SuaFarmácia",
+    title: "Condições de Uso - Dinivix",
+    description: "Conheça as condições de uso da Dinivix. Termos e condições para compras online.",
+    url: "https://www.fernandoesdras.store/conditions",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Condições de Uso - SuaFarmácia",
-    description: "Conheça as condições de uso da SuaFarmácia.",
+    title: "Condições de Uso - Dinivix",
+    description: "Conheça as condições de uso da Dinivix.",
   },
   alternates: {
     canonical: "/conditions",

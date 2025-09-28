@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Perguntas Frequentes - SuaFarmácia",
-  description: "Encontre respostas para as principais dúvidas sobre a SuaFarmácia. FAQ sobre entrega, pagamento, produtos, trocas e devoluções.",
+  title: "Perguntas Frequentes - Dinivix",
+  description: "Encontre respostas para as principais dúvidas sobre a Dinivix. FAQ sobre entrega, pagamento, produtos, trocas e devoluções.",
   keywords: [
     "perguntas frequentes",
     "FAQ farmácia",
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
     "ajuda farmácia"
   ],
   openGraph: {
-    title: "Perguntas Frequentes - SuaFarmácia",
-    description: "Encontre respostas para as principais dúvidas sobre a SuaFarmácia. FAQ sobre entrega, pagamento e produtos.",
-    url: "https://suafarmacia.com.br/perguntas-frequentes",
-    siteName: "SuaFarmácia",
+    title: "Perguntas Frequentes - Dinivix",
+    description: "Encontre respostas para as principais dúvidas sobre a Dinivix. FAQ sobre entrega, pagamento e produtos.",
+    url: "https://www.fernandoesdras.store/perguntas-frequentes",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Perguntas Frequentes - SuaFarmácia",
-    description: "Encontre respostas para as principais dúvidas sobre a SuaFarmácia.",
+    title: "Perguntas Frequentes - Dinivix",
+    description: "Encontre respostas para as principais dúvidas sobre a Dinivix.",
   },
   alternates: {
     canonical: "/perguntas-frequentes",

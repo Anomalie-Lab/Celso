@@ -2,24 +2,24 @@ import type { Metadata } from "next";
 import Sidebar from "@/components/account/sidebar";
 
 export const metadata: Metadata = {
-  title: "Minha Conta - SuaFarmácia",
-  description: "Gerencie sua conta na SuaFarmácia. Visualize pedidos, endereços, lista de desejos e informações pessoais. Farmácia online segura e confiável.",
+  title: "Minha Conta - Dinivix",
+  description: "Gerencie sua conta na Dinivix. Visualize pedidos, endereços, lista de desejos e informações pessoais. Farmácia online segura e confiável.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "Minha Conta - SuaFarmácia",
-    description: "Gerencie sua conta na SuaFarmácia. Visualize pedidos, endereços e informações pessoais.",
-    url: "https://suafarmacia.com.br/minha-conta",
-    siteName: "SuaFarmácia",
+    title: "Minha Conta - Dinivix",
+    description: "Gerencie sua conta na Dinivix. Visualize pedidos, endereços e informações pessoais.",
+    url: "https://www.fernandoesdras.store/minha-conta",
+    siteName: "Dinivix",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Minha Conta - SuaFarmácia",
-    description: "Gerencie sua conta na SuaFarmácia.",
+    title: "Minha Conta - Dinivix",
+    description: "Gerencie sua conta na Dinivix.",
   },
   alternates: {
     canonical: "/minha-conta",

@@ -15,14 +15,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Buscar Produtos - Farmácia Online",
     description: "Encontre medicamentos, cosméticos, suplementos e produtos de saúde na nossa farmácia online.",
-    url: "https://suafarmacia.com.br/search",
-    siteName: "SuaFarmácia",
+    url: "https://www.fernandoesdras.store/search",
+    siteName: "Dinivix",
     images: [
       {
         url: "/images/search-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Buscar Produtos - SuaFarmácia",
+        alt: "Buscar Produtos - Dinivix",
       },
     ],
     locale: "pt_BR",

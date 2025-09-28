@@ -11,10 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     default: "Clinivix - Farmácia Online",
-    template: "%s | SuaFarmácia"
+    template: "%s | Dinivix"
   },
   description: "Farmácia online com medicamentos, cosméticos e suplementos. Entrega rápida e segura.",
-  metadataBase: new URL('https://suafarmacia.com.br'),
+  metadataBase: new URL('https://www.fernandoesdras.store'),
 };
 
 export default function RootLayout({

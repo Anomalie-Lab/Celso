@@ -28,14 +28,15 @@ async function bootstrap() {
   SwaggerModule.setup("docs", app, document);
 
   app.use(cookieParser());
-  app.use(cors({ 
+  app.use(cors({
     origin: [
-      "http://localhost:3000", 
+      "http://localhost:3000",
       "http://localhost:8080",
+      "https://www.fernandoesdras.store",
       "https://fernandoesdras.store",
       "https://admin.fernandoesdras.store"
-    ], 
-    credentials: true 
+    ],
+    credentials: true
   }));
 
   // Servir arquivos estáticos

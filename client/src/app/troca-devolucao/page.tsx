@@ -1,11 +1,9 @@
 "use client"
 import { useState } from 'react';
-import { useRouter } from "next/navigation";
 import { LuPackage, LuRefreshCw, LuShield } from 'react-icons/lu';
 import PageLayout from '@/components/support/pageLayout';
 
 export default function TrocaDevolucaoPage() {
-  const router = useRouter();
   const [selectedOption, setSelectedOption] = useState('troca');
 
   const exchangeOptions = [
@@ -195,12 +193,14 @@ export default function TrocaDevolucaoPage() {
         <p className="text-primary-100 mb-6 text-sm">
           Nossa equipe está pronta para auxiliar você em qualquer dúvida.
         </p>
-        <button
-          onClick={() => router.push('/fale-conosco')}
-          className="inline-flex items-center px-6 py-3 bg-white text-primary rounded-lg hover:bg-gray-50 transition-colors font-medium cursor-pointer"
-        >
-          Fale Conosco
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="tel:1832212232"
+              className="inline-flex items-center px-6 py-3 border border-gray-300 text-white rounded-lg hover:bg-white hover:text-primary transition-colors font-medium cursor-pointer"
+            >
+              (18) 3221-2232
+            </a>
+        </div>
       </div>
     </PageLayout>
   );

@@ -4,7 +4,7 @@ export default function PolicySupport() {
   return (
     <PageLayout title="Política de Privacidade">
       <div className="prose prose-lg max-w-none max-h-[600px] overflow-y-auto">
-        <div className="space-y-8 text-justify max-w-4/5">
+        <div className="space-y-8 text-justify   md:max-w-4/5">
           <section>
             <h2 className="text-md font-bold text-gray-900 mb-4">
               1. Informações que Coletamos
@@ -140,10 +140,9 @@ export default function PolicySupport() {
                 como tratamos suas informações pessoais, entre em contato conosco:
               </p>
               <div className="bg-gray-50 rounded-lg p-6">
-                <div className="space-y-2">
-                  <p><strong>Email:</strong> privacidade@hospitalardistribuidora.com.br</p>
+                <div className="space-y-2 text-sm">
+                  <p><strong>Email:</strong> privacidade@gmail.com.br</p>
                   <p><strong>Telefone:</strong> (18) 3221-2232</p>
-                  <p><strong>Endereço:</strong> Rua das Flores, 123 - São Paulo, SP</p>
                 </div>
               </div>
             </div>

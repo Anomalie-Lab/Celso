@@ -15,7 +15,9 @@ import { useUser } from "@/hooks/user.hook";
 import { useCart } from "@/hooks/cart.hook";
 import { useWishlist } from "@/hooks/wishlist.hook";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { ChevronDown, ChevronUp, Menu } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Products } from "@/api/products.api";
 type AuthPage = "Login" | "Register" | "ForgotPass";
 
 export default function Header() {
@@ -26,11 +28,18 @@ export default function Header() {
   const [isWishListOpen, setIsWishListOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user } = useUser();
   const { cartItemsCount } = useCart();
   const { wishlistItemsCount } = useWishlist();
+
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: Products.getCategories,
+    enabled: isMenuOpen,
+  });
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -56,6 +65,10 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const toggleCategories = () => {
+    setIsCategoriesOpen(!isCategoriesOpen);
+  };
+
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -74,7 +87,18 @@ export default function Header() {
     };
   }, [handleScroll]);
 
-  const category =['MEDICAMENTOS', 'EQUIPAMENTOS', 'COSMETICOS', 'HIGIENE PESSOAL', 'ANALGESICOS']
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 shadow-sm transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
@@ -130,9 +154,9 @@ export default function Header() {
             </div>
 
             <div className="hidden lg:flex items-center space-x-6 xl:space-x-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-              {category.map((category,index) => (
-                <button key={index} onClick={() => router.push(`/search?q=${category}`)} className="text-gray-700 hover:text-primary transition-colors font-medium text-xs 2xl:text-sm cursor-pointer">
-                  {category}
+              {categories?.map((category) => (
+                <button key={category.id} onClick={() => router.push(`/search?category=${category.name}`)} className="text-gray-700 hover:text-primary transition-colors font-medium text-xs 2xl:text-sm cursor-pointer">
+                  {category.name}
                 </button>
               ))}
             </div>
@@ -213,27 +237,71 @@ export default function Header() {
       <SearchDrawer isOpen={isSearchOpen} toggleDrawer={toggleSearch} />
 
       {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 bg-white/20 backdrop-blur-md z-[99999] h-screen">
-          <div className="bg-white h-full w-80 max-w-full shadow-xl">
+        <div 
+          className="lg:hidden fixed inset-0 bg-white/20 backdrop-blur-md z-[40] h-screen"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <div 
+            className="bg-white h-full w-80 max-w-full shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-6 flex flex-col justify-between h-full">
               <div className="flex items-center justify-between mb-8">
-                <Image src="/images/logo.png" width={200} height={80} alt="logo" />
+                <Image src="/images/logo.png" width={120} height={80} alt="logo" />
                 <button onClick={toggleMenu} className="p-2 hover:bg-gray-100 rounded-full">
                   <LuX className="w-5 h-5" />
                 </button>
               </div>
               <nav className="space-y-4">
-                <button onClick={() => router.push("/produtos")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
-                  Produtos
+                <div className="border-b border-gray-100">
+                    <button onClick={toggleCategories} className="flex items-center justify-between py-3 text-gray-700 hover:text-primary transition-colors font-medium w-full text-left">
+                      <span>Categorias</span>
+                    {isCategoriesOpen ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4" />
+                    )}
+                    </button>
+                  {isCategoriesOpen && (
+                    <div className="ml-4 space-y-2 pb-3">
+                      {categoriesLoading ? (
+                        <div className="flex items-center justify-center py-4">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                        </div>
+                      ) : (
+                        categories.map((category) => (
+                          <button
+                            key={category.id}
+                            onClick={() => {
+                              router.push(`/search?category=${category.name}`);
+                              setIsMenuOpen(false);
+                            }}
+                            className="block py-2 text-gray-600 hover:text-primary transition-colors text-sm w-full text-left"
+                          >
+                            {category.name} ({category.count})
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+                <button onClick={() => {
+                  toggleDrawer();
+                  setIsMenuOpen(false);
+                }} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Carrinho
                 </button>
-                <button onClick={() => router.push("/categorias")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
-                  Categorias
-                </button>
-                <button onClick={() => router.push("/sobre-nos")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                <button onClick={() => {
+                  router.push("/sobre-nos");
+                  setIsMenuOpen(false);
+                }} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
                   Sobre Nós
                 </button>
-                <button onClick={() => router.push("/fale-conosco")} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
-                  Contato
+                <button onClick={() => {
+                  router.push("/minha-conta/pedidos");
+                  setIsMenuOpen(false);
+                }} className="block py-3 text-gray-700 hover:text-primary transition-colors font-medium border-b border-gray-100 w-full text-left">
+                  Meus Dados
                 </button>
               </nav>
               <div className="mt-8 pt-6 border-t border-gray-200">
@@ -242,11 +310,17 @@ export default function Header() {
                   <div>
                     <div className="text-gray-900 font-medium">Minha Conta</div>
                     <div className="text-sm text-gray-500">
-                      <button onClick={() => router.push("/login")} className="hover:text-primary transition-colors">
+                      <button onClick={() => {
+                        router.push("/login");
+                        setIsMenuOpen(false);
+                      }} className="hover:text-primary transition-colors">
                         Entrar
                       </button>{" "}
                       /
-                      <button onClick={() => router.push("/register")} className="hover:text-primary transition-colors">
+                      <button onClick={() => {
+                        router.push("/register");
+                        setIsMenuOpen(false);
+                      }} className="hover:text-primary transition-colors">
                         {" "}
                         Cadastrar
                       </button>

@@ -11,6 +11,7 @@ import { HandleErrorsUserConflict } from '../../utils/handle-errors-database.uti
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PasswordResetHtml } from '../../templates/password-reset';
 import { LoginUser } from '../../services/cookies.service';
+import { MailerService } from '../../services/mailer.sevice';
 import { sign, verify } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { generateUsername } from 'src/utils/generate.util';
@@ -18,7 +19,10 @@ import { AuthRepository } from 'src/repositories';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(
+    private readonly authRepository: AuthRepository,
+    private readonly mailerService: MailerService,
+  ) { }
 
   async register({ password, ...dto }: RegisterDto, res: ExpressResponse) {
     try {
@@ -36,9 +40,15 @@ export class AuthService {
       );
       const link = `${process.env.VITE_API_URL}auth/login/token/${token}`;
 
-      // await axios.post("https://marketinglead.app.n8n.cloud/webhook/b23798ff-33f5-4f2b-a46d-47e259a35591", {
-      //   body: { name: dto.fullname, email: dto.email, password: dto.password, link },
-      // });
+      try {
+        await this.mailerService.sendWelcomeEmail({
+          userName: dto.fullname,
+          userEmail: dto.email,
+          loginUrl: `${process.env.FRONTEND_URL}/minha-conta`,
+        });
+      } catch (emailError) {
+        // Não falha o registro se o email falhar
+      }
 
       LoginUser(res, user);
       return user;
@@ -80,19 +90,24 @@ export class AuthService {
 
       let user = await this.authRepository.findGoogleAccount(user_google.email);
 
-      if (!user)
-        throw new HttpException(
-          'Usuário não encontrado.',
-          HttpStatus.NOT_FOUND,
-        );
-
+      if (!user) {
+        user = await this.authRepository.create({
+          fullname: user_google.name,
+          email: user_google.email,
+          avatar: user_google.picture,
+          password: await bcrypt.hash(user_google.email, 10),
+          username: generateUsername(),
+        });
+      }
       LoginUser(res, user);
 
       return res
         .status(HttpStatus.OK)
         .redirect(process.env.NEXT_PUBLIC_APP_URL);
     } catch (error: any) {
-      HandleErrorsUserConflict(error);
+      return res
+        .status(HttpStatus.OK)
+        .redirect(process.env.NEXT_PUBLIC_APP_URL);
     }
   }
 
@@ -106,10 +121,17 @@ export class AuthService {
         email,
         user.id,
       );
-      const link = `${process.env.VITE_APP_URL}update-password/${encodeURIComponent(email)}/${token.token}`;
-      const html = await PasswordResetHtml(link);
+      const resetLink = `${process.env.FRONTEND_URL}/update-password/${encodeURIComponent(email)}/${token.token}`;
 
-      // await axios.post("https://marketinglead.app.n8n.cloud/webhook/40c692fc-e19b-448b-a21c-d1197f8d8246", { email, urlConfirmEmail: link, nameUser: user.fullname });
+      try {
+        await this.mailerService.sendPasswordResetEmail({
+          userName: user.fullname,
+          userEmail: email,
+          resetPasswordUrl: resetLink,
+        });
+      } catch (emailError) {
+        // Continua mesmo se o email falhar
+      }
 
       return res.status(200).end();
     } catch (error) {
@@ -138,6 +160,29 @@ export class AuthService {
       const password = await bcrypt.hash(dto.password, salt);
 
       await this.authRepository.updatePassword(id, password, dto.token);
+
+      const user = await this.authRepository.findById(+id);
+
+      if (user) {
+        try {
+          await this.mailerService.sendPasswordChangedEmail({
+            userName: user.fullname,
+            userEmail: user.email,
+            changeDate: new Intl.DateTimeFormat('pt-BR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            }).format(new Date()),
+            location: 'Brasil',
+            device: 'Navegador',
+            supportUrl: `${process.env.FRONTEND_URL}/fale-conosco`,
+          });
+        } catch (emailError) {
+          // Não falha a operação se o email falhar
+        }
+      }
 
       return res.status(200).end();
     } catch {

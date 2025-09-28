@@ -5,9 +5,9 @@ export async function GetGoogleOAuthToken(code: string) {
 
   const params = {
     code,
-    client_id: process.env.VITE_GOOGLE_CLIENT_ID as string,
-    client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
-    redirect_uri: process.env.GOOGLE_URI_REDIRECT as string,
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+    client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_URI_REDIRECT as string,
     grant_type: 'authorization_code',
   };
 

@@ -32,8 +32,8 @@ async function bootstrap() {
     origin: [
       "http://localhost:3000", 
       "http://localhost:8080",
-      "https://ecommerce-wl.vercel.app",
-      "https://celso-admin.vercel.app"
+      "https://fernandoesdras.store",
+      "https://admin.fernandoesdras.store"
     ], 
     credentials: true 
   }));

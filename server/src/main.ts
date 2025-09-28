@@ -28,7 +28,15 @@ async function bootstrap() {
   SwaggerModule.setup("docs", app, document);
 
   app.use(cookieParser());
-  app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080"], credentials: true }));
+  app.use(cors({ 
+    origin: [
+      "http://localhost:3000", 
+      "http://localhost:8080",
+      "https://ecommerce-wl.vercel.app",
+      "https://celso-admin.vercel.app"
+    ], 
+    credentials: true 
+  }));
 
   // Servir arquivos estáticos
   app.useStaticAssets(join(__dirname, '..', 'public'), {

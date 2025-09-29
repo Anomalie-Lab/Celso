@@ -147,12 +147,6 @@ export default function PerguntasFrequentesPage() {
             Nossa equipe está pronta para ajudar você. Entre em contato conosco.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => router.push('/fale-conosco')}
-              className="inline-flex items-center px-6 py-3 bg-white text-primary rounded-lg transition-colors font-medium cursor-pointer"
-            >
-              Fale Conosco
-            </button>
             <a
               href="tel:1832212232"
               className="inline-flex items-center px-6 py-3 border border-gray-300 text-white rounded-lg hover:bg-white hover:text-primary transition-colors font-medium cursor-pointer"

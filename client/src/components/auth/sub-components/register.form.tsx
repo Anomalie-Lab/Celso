@@ -48,10 +48,10 @@ export const RegisterForm = ({ onAuthPageChange, onClose }: RegisterFormProps) =
   };
 
   return (
-    <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-4">
-        <Link href={getGoogleOAuthURL()} className="w-full h-12 flex items-center justify-center gap-3 border-gray-300 hover:bg-gray-50 cursor-pointer">
-          <FcGoogle className="w-5 h-5" />
+    <form className="space-y-2 p-6" onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-2 sm:space-y-4">
+        <Link href={getGoogleOAuthURL()} className="w-full h-10 sm:h-12 flex items-center justify-center gap-2 sm:gap-3 border border-gray-300 hover:bg-gray-50 cursor-pointer text-xs sm:text-base rounded-md">
+          <FcGoogle className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>Continuar com Google</span>
         </Link>
 
@@ -59,35 +59,35 @@ export const RegisterForm = ({ onAuthPageChange, onClose }: RegisterFormProps) =
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-300" />
           </div>
-          <div className="relative flex justify-center text-sm mt-4">
-            <span className="bg-white px-4 text-gray-400">ou registre-se com email</span>
+          <div className="relative flex justify-center text-xs sm:text-sm mt-3 sm:mt-4">
+            <span className="bg-white px-2 sm:px-4 text-gray-400">ou registre-se com email</span>
           </div>
         </div>
       </div>
-      <div className="space-y-1 mt-6">
-        <div className="space-y-2">
+      <div className="space-y-2 sm:space-y-1 mt-10">
+        <div className="space-y-1 sm:space-y-2">
           <InputAuthUi placeholder="Nome completo" type="text" {...register("fullname")} error={formState.errors.fullname?.message} />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <InputAuthUi placeholder="Telefone" type="text" maxLength={11} {...register("phone")} error={formState.errors.phone?.message} />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <InputAuthUi type="email" placeholder="Email" {...register("email")} error={formState.errors.email?.message} />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <InputAuthUi placeholder="Senha" type="password" {...register("password")} error={formState.errors.password?.message} />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <InputAuthUi placeholder="Confirmar senha" type="password" {...register("confirm_password")} error={formState.errors.confirm_password?.message} />
         </div>
 
-        <div className="flex items-start gap-2 mt-4">
-          <input type="checkbox" className="rounded border-gray-300 mt-1" {...register("terms")} />
-          <label className="text-sm text-gray-600">
+        <div className="flex items-start gap-2 mt-3 sm:mt-4">
+          <input type="checkbox" className="rounded border-gray-300 mt-0.5 sm:mt-1" {...register("terms")} />
+          <label className="text-xs sm:text-sm text-gray-600 leading-relaxed">
             Eu concordo com os{" "}
             <a href="/terms" className="text-primary hover:underline">
               Termos de Uso
@@ -98,16 +98,16 @@ export const RegisterForm = ({ onAuthPageChange, onClose }: RegisterFormProps) =
             </a>
           </label>
         </div>
-        {formState.errors.terms && <p className="text-sm text-red-500">{formState.errors.terms.message}</p>}
+        {formState.errors.terms && <p className="text-xs sm:text-sm text-red-500">{formState.errors.terms.message}</p>}
       </div>
-      <div className="pt-4">
-        <Button type="submit" disabled={isLoading} className="w-full h-14 text-base font-medium bg-primary text-white cursor-pointer disabled:opacity-50">
+      <div className="pt-3 sm:pt-4">
+        <Button type="submit" disabled={isLoading} className="w-full h-12 sm:h-14 text-sm sm:text-base font-medium bg-primary text-white cursor-pointer disabled:opacity-50">
           {isLoading ? "Criando conta..." : "Criar conta"}
         </Button>
       </div>
-      <DialogFooter className="border-t border-gray-200 py-5 mt-6">
+      <DialogFooter className="border-t border-gray-200 py-4 sm:py-5 mt-4 sm:mt-6">
         <div className="flex items-center justify-center w-full">
-          <p className="text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600">
             Já possui uma conta?{" "}
             <button type="button" onClick={() => onAuthPageChange("Login")} className="text-primary hover:underline font-medium cursor-pointer">
               Entrar

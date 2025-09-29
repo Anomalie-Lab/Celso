@@ -21,7 +21,7 @@ export default function PageLayout({
           <SidebarMenu title={sidebarTitle} />
           <div className="flex-1">
             <div className="bg-white rounded-lg p-4 sm:p-6 lg:p-8 min-h-full">
-              <h1 className="text-md md:text-xl font-bold text-gray-900 mb-6 sm:mb-8 text-center md:text-left">
+              <h1 className="text-xl md:text-xl font-bold text-gray-900 mb-6 sm:mb-8 text-center md:text-left">
                 {title}
               </h1>
               {children}

@@ -66,7 +66,7 @@ export default function ProductPage() {
 
   return (
     <div className="h-[2150px] flex items-center justify-center flex-col space-y-16 mt-16">
-      <div className="w-full px-8 lg:w-3/4 lg:px-8 py-4 pt-44">
+      <div className="w-full px-8 lg:w-3/4 lg:px-8 py-4 pt-52">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           <ProductGallery
             images={product.images ?? []}
